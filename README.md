@@ -1,4 +1,4 @@
-# Donyo
+# Smart Feed
 
 Desenvolvedores: Gabriel Villar Scalese
                  Guilherme Augusto F. Teixeira
