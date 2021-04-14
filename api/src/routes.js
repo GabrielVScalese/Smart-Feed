@@ -9,6 +9,8 @@ router.get('/', (req, res) =>{
 
 router.get('/api/users', UserController.findAll)
 
+router.get('/api/users/:email', UserController.findByEmail)
+
 router.post('/api/insertUser', UserController.insertUser)
 
 router.delete('/api/deleteUsers', UserController.deleteAll)
