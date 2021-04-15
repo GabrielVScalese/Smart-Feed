@@ -216,7 +216,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             return;
                           }
                         } catch (error) {
-                          print('Usuario invalido!');
+                          print('Invalid user!');
                         }
                       },
                     ),
