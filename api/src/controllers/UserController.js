@@ -33,6 +33,7 @@ const Students = {
 
   async insertUser(req, res) {
     try {
+      console.log(req.body)
       const { name, email, password } = req.body
 
       var crypto_password =  CryptoJS.AES.encrypt(password, "hex").toString()
@@ -41,12 +42,10 @@ const Students = {
       
       const user = await Student.create(new_user)
   
-      console.log(user)
-  
-      return res.json(user).status(200)
+      return res.status(200).json(user)
     }
     catch (error){
-      return res.json({message: 'Error for insert user'}).status(500)
+      return res.status(406).json({message: 'Error for insert user'})
     }
   },
 
