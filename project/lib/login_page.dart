@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/models/user.dart';
+import 'package:project/models/user_repository.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,6 +10,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var is_obscure = true;
+
+  var email = "";
+  var password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,11 @@ class _LoginPageState extends State<LoginPage> {
                 height: 70.0,
                 margin: const EdgeInsets.only(left: 15, right: 15, top: 20),
                 child: TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        email = text;
+                      });
+                    },
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
@@ -53,6 +63,11 @@ class _LoginPageState extends State<LoginPage> {
                 height: 70.0,
                 margin: const EdgeInsets.only(left: 15, right: 15, top: 20),
                 child: TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        password = text;
+                      });
+                    },
                     obscureText: is_obscure,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -89,11 +104,11 @@ class _LoginPageState extends State<LoginPage> {
                 gradient: LinearGradient(
                   // LinearGradient para fazer o degrade
                   begin: Alignment.topLeft, //degrade começa no top left
-                  end: Alignment.bottomRight, // e termina no bottom right
+                  end: Alignment.bottomRight,
                   stops: [
                     0.3,
                     1
-                  ], // Define quando o degrade começa, numero de parametros é o mesmo numero de cores
+                  ],
                   colors: [
                     Color.fromRGBO(2, 221, 253, 1), // cores
                     Color.fromRGBO(2, 197, 253, 1), // do degrade
@@ -105,7 +120,19 @@ class _LoginPageState extends State<LoginPage> {
                   'Fazer Login',
                   style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  try {
+                    var statusCode = await UserRepository.authenticateUser(
+                        new User.fromUser(email, password));
+
+                    if (statusCode == 200)
+                      print('Valid user!');
+                    else
+                      print('Invalid user!');
+                  } catch (error) {
+                    print('Invalid user!');
+                  }
+                },
               ),
             ),
             Container(

@@ -207,9 +207,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             var status_code = await UserRepository.insertUser(
                                 new User(name, email, password));
 
-                            if (status_code == 200)
+                            if (status_code == 200) {
                               print('Inserted user!');
-                            else
+                              Navigator.of(context).pushNamed('/');
+                            } else
                               print('Error for insert user!');
                           } else {
                             print('Diferrent passwords!');

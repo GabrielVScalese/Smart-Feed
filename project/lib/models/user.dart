@@ -9,6 +9,11 @@ class User {
     setPassword(password);
   }
 
+  User.fromUser(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
+
   setName(String name) {
     if (name.isEmpty) throw Exception('Name is invalid!');
 

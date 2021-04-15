@@ -13,6 +13,8 @@ router.get('/api/users/:email', UserController.findByEmail)
 
 router.post('/api/insertUser', UserController.insertUser)
 
+router.post('/api/authenticateUser', UserController.authenticateUser)
+
 router.delete('/api/deleteUsers', UserController.deleteAll)
 
 module.exports = router
