@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project/models/user.dart';
+import 'package:project/models/user_repository.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -9,6 +11,11 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   var is_obscure1 = true;
   var is_obscure2 = true;
+
+  var name = "";
+  var email = "";
+  var password = "";
+  var confirm_password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 50),
                       child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              name = text;
+                            });
+                          },
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -71,6 +83,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              email = text;
+                            });
+                          },
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -91,6 +108,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              password = text;
+                            });
+                          },
                           obscureText: is_obscure1,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -121,6 +143,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              confirm_password = text;
+                            });
+                          },
                           obscureText: is_obscure2,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -174,7 +201,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         'Criar Conta',
                         style: TextStyle(color: Colors.white, fontSize: 22),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                          if (password == confirm_password) {
+                            var status_code = await UserRepository.insertUser(
+                                new User(name, email, password));
+
+                            if (status_code == 200)
+                              print('Inserted user!');
+                            else
+                              print('Error for insert user!');
+                          } else {
+                            print('Diferrent passwords!');
+                            return;
+                          }
+                        } catch (error) {
+                          print('Usuario invalido!');
+                        }
+                      },
                     ),
                   ),
                 ],
