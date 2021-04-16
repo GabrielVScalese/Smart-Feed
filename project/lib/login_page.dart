@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project/models/user.dart';
 import 'package:project/models/user_repository.dart';
 
@@ -9,7 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var is_obscure = true;
+  var isObscure = true;
 
   var email = "";
   var password = "";
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                         email = text;
                       });
                     },
-                    style: TextStyle(color: Colors.white),
+                    style: GoogleFonts.lato(color: Colors.white),
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
@@ -68,8 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                         password = text;
                       });
                     },
-                    obscureText: is_obscure,
-                    style: TextStyle(color: Colors.white),
+                    obscureText: isObscure,
+                    style: GoogleFonts.lato(color: Colors.white),
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)),
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            is_obscure
+                            isObscure
                                 ? Icons.visibility_sharp
                                 : Icons.visibility_off_sharp,
                             color: Colors.white,
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              is_obscure = !is_obscure;
+                              isObscure = !isObscure;
                             });
                           },
                         ),
@@ -113,10 +114,10 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              child: FlatButton(
+              child: TextButton(
                 child: Text(
                   'Fazer Login',
-                  style: TextStyle(color: Colors.white, fontSize: 22),
+                  style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
                 ),
                 onPressed: () async {
                   try {
@@ -150,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: Text(
                 'Crie uma conta',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: GoogleFonts.lato(fontSize: 20, color: Colors.white),
               ),
             ),
             Container(
@@ -176,10 +177,10 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              child: FlatButton(
+              child: TextButton(
                 child: Text(
                   'Criar Conta',
-                  style: TextStyle(color: Colors.white, fontSize: 22),
+                  style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
                 ),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/register');

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project/models/user.dart';
 import 'package:project/models/user_repository.dart';
 
@@ -9,13 +10,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  var is_obscure1 = true;
-  var is_obscure2 = true;
+  var isObscure1 = true;
+  var isObscure2 = true;
 
   var name = "";
   var email = "";
   var password = "";
-  var confirm_password = "";
+  var confirmPassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     margin: const EdgeInsets.only(top: 60),
                     child: Text(
                       'Cadastro',
-                      style: TextStyle(
+                      style: GoogleFonts.lato(
                           fontSize: 42,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -79,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 size: 27,
                               ),
                               labelText: 'Digite seu nome',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
                       height: 70.0,
@@ -104,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 size: 27,
                               ),
                               labelText: 'Digite seu email',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
                       height: 70.0,
@@ -116,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               password = text;
                             });
                           },
-                          obscureText: is_obscure1,
+                          obscureText: isObscure1,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -126,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  is_obscure1
+                                  isObscure1
                                       ? Icons.visibility_sharp
                                       : Icons.visibility_off_sharp,
                                   color: Colors.white,
@@ -134,12 +135,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    is_obscure1 = !is_obscure1;
+                                    isObscure1 = !isObscure1;
                                   });
                                 },
                               ),
                               labelText: 'Digite sua senha',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
                       height: 70.0,
@@ -148,10 +149,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: TextField(
                           onChanged: (text) {
                             setState(() {
-                              confirm_password = text;
+                              confirmPassword = text;
                             });
                           },
-                          obscureText: is_obscure2,
+                          obscureText: isObscure2,
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -161,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  is_obscure2
+                                  isObscure2
                                       ? Icons.visibility_sharp
                                       : Icons.visibility_off_sharp,
                                   color: Colors.white,
@@ -169,12 +170,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    is_obscure2 = !is_obscure2;
+                                    isObscure2 = !isObscure2;
                                   });
                                 },
                               ),
                               labelText: 'Confirme sua senha',
-                              labelStyle: TextStyle(
+                              labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
                     height: 40,
@@ -199,18 +200,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                     ),
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text(
                         'Criar Conta',
-                        style: TextStyle(color: Colors.white, fontSize: 22),
+                        style:
+                            GoogleFonts.lato(color: Colors.white, fontSize: 22),
                       ),
                       onPressed: () async {
                         try {
-                          if (password == confirm_password) {
-                            var status_code = await UserRepository.insertUser(
+                          if (password == confirmPassword) {
+                            var statusCode = await UserRepository.insertUser(
                                 new User(name, email, password));
 
-                            if (status_code == 200) {
+                            if (statusCode == 200) {
                               print('Inserted user!');
                               Navigator.of(context).pushNamed('/');
                             } else
