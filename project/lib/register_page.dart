@@ -38,15 +38,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 40),
+                    margin: const EdgeInsets.only(top: 60),
                     child: Text(
                       'Cadastro',
-                      style: TextStyle(fontSize: 38, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 42,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   Container(
                     height: 70,
-                    margin: const EdgeInsets.only(left: 20, top: 40),
+                    margin: const EdgeInsets.only(left: 20, top: 60),
                     child: Image.asset('assets/images/logo.png'),
                   ),
                 ],
@@ -56,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Container(
                       height: 70.0,
                       margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 50),
+                          const EdgeInsets.only(left: 15, right: 15, top: 70),
                       child: TextField(
                           onChanged: (text) {
                             setState(() {
@@ -72,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               suffixIcon: Icon(
                                 Icons.account_box,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 size: 27,
                               ),
                               labelText: 'Digite seu nome',
@@ -97,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               suffixIcon: Icon(
                                 Icons.email,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 size: 27,
                               ),
                               labelText: 'Digite seu email',

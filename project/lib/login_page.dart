@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image.asset('assets/images/logo.png')),
             Container(
                 height: 70.0,
-                margin: const EdgeInsets.only(left: 15, right: 15, top: 20),
+                margin: const EdgeInsets.only(left: 15, right: 15, top: 50),
                 child: TextField(
                     onChanged: (text) {
                       setState(() {
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         suffixIcon: Icon(
                           Icons.email,
-                          color: Colors.white70,
+                          color: Colors.white,
                           size: 27,
                         ),
                         labelText: 'Email',
@@ -82,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ? Icons.visibility_sharp
                                 : Icons.visibility_off_sharp,
                             color: Colors.white,
+                            size: 27,
                           ),
                           onPressed: () {
                             setState(() {
@@ -105,10 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   // LinearGradient para fazer o degrade
                   begin: Alignment.topLeft, //degrade começa no top left
                   end: Alignment.bottomRight,
-                  stops: [
-                    0.3,
-                    1
-                  ],
+                  stops: [0.3, 1],
                   colors: [
                     Color.fromRGBO(2, 221, 253, 1), // cores
                     Color.fromRGBO(2, 197, 253, 1), // do degrade
