@@ -99,18 +99,16 @@ class _LoginPageState extends State<LoginPage> {
               width: 190,
               margin: const EdgeInsets.only(top: 45),
               decoration: BoxDecoration(
-                // BoxDecoration para poder fazer a decoração normal e a decoração das bordas
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),
                 gradient: LinearGradient(
-                  // LinearGradient para fazer o degrade
-                  begin: Alignment.topLeft, //degrade começa no top left
+                  begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.3, 1],
                   colors: [
-                    Color.fromRGBO(2, 221, 253, 1), // cores
-                    Color.fromRGBO(2, 197, 253, 1), // do degrade
+                    Color.fromRGBO(2, 221, 253, 1),
+                    Color.fromRGBO(2, 197, 253, 1),
                   ],
                 ),
               ),
@@ -159,21 +157,16 @@ class _LoginPageState extends State<LoginPage> {
               width: 190,
               margin: const EdgeInsets.only(top: 15),
               decoration: BoxDecoration(
-                // BoxDecoration para poder fazer a decoração normal e a decoração das bordas
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),
                 gradient: LinearGradient(
-                  // LinearGradient para fazer o degrade
-                  begin: Alignment.topLeft, //degrade começa no top left
-                  end: Alignment.bottomRight, // e termina no bottom right
-                  stops: [
-                    0.3,
-                    1
-                  ], // Define quando o degrade começa, numero de parametros é o mesmo numero de cores
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.3, 1],
                   colors: [
-                    Color.fromRGBO(2, 221, 253, 1), // cores
-                    Color.fromRGBO(2, 197, 253, 1), // do degrade
+                    Color.fromRGBO(2, 221, 253, 1),
+                    Color.fromRGBO(2, 197, 253, 1),
                   ],
                 ),
               ),
