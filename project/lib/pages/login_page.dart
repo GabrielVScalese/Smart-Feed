@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                         new User.fromUser(email, password));
 
                     if (statusCode == 200)
-                      print('Valid user!');
+                      Navigator.of(context).pushNamed('/home');
                     else
                       print('Invalid user!');
                   } catch (error) {

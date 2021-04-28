@@ -13,6 +13,12 @@ class _RegisterPageState extends State<RegisterPage> {
   var isObscure1 = true;
   var isObscure2 = true;
 
+  var emailError = false;
+  var passwordError = false;
+
+  var emailPlaceholder = 'Digite seu email';
+  var passwordPlaceholder = 'Digite sua senha';
+
   var name = "";
   var email = "";
   var password = "";
@@ -95,7 +101,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide: BorderSide(
+                                      color: emailError
+                                          ? Colors.red
+                                          : Colors.white)),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green),
                               ),
@@ -104,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.white,
                                 size: 27,
                               ),
-                              labelText: 'Digite seu email',
+                              labelText: emailPlaceholder,
                               labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
@@ -121,7 +130,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide: BorderSide(
+                                      color: passwordError
+                                          ? Colors.red
+                                          : Colors.white)),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green),
                               ),
@@ -139,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   });
                                 },
                               ),
-                              labelText: 'Digite sua senha',
+                              labelText: passwordPlaceholder,
                               labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
@@ -210,11 +222,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (statusCode == 200) {
                               print('Inserted user!');
                               Navigator.of(context).pushNamed('/');
-                            } else
-                              print('Error for insert user!');
+                            } else {
+                              print('email errado');
+                              emailError = true;
+                              emailPlaceholder = 'Digite um email válido';
+                            }
                           } else {
-                            print('Diferrent passwords!');
-                            return;
+                            passwordError = true;
+                            passwordPlaceholder = '';
                           }
                         } catch (error) {
                           print('Invalid user!');

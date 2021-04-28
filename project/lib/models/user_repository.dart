@@ -11,7 +11,7 @@ class UserRepository {
     });
 
     var response = await http.post(
-        Uri.parse('http://192.168.0.12:5000/api/insertUser'),
+        Uri.parse('https://smart-feed-api.herokuapp.com/api/insertUser'),
         body: body,
         headers: {"Content-Type": "application/json"});
 
@@ -23,7 +23,7 @@ class UserRepository {
         json.encode({'email': user.getEmail(), 'password': user.getPassword()});
 
     var response = await http.post(
-        Uri.parse('http://192.168.0.12:5000/api/authenticateUser'),
+        Uri.parse('https://smart-feed-api.herokuapp.com/api/authenticateUser'),
         body: body,
         headers: {"Content-Type": "application/json"});
 
