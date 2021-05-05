@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:project/pages/historic_page.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/pages/register_page.dart';
@@ -15,7 +16,8 @@ class AppWidget extends StatelessWidget {
       routes: {
         '/register': (context) => RegisterPage(),
         '/home': (context) => HomePage(),
-        '/information': (context) => InformationPage()
+        '/information': (context) => InformationPage(),
+        '/historic': (context) => HistoricPage()
       },
     );
   }

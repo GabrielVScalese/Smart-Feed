@@ -56,25 +56,42 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {},
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Seus Pets',
+          style: GoogleFonts.lato(color: Colors.black, fontSize: 25),
+        ),
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: Container(
         height: double.infinity,
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    alignment: Alignment.topCenter,
-                    height: 75,
-                    margin: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, top: 50.0),
-                    child: Image.asset('assets/images/logo.png')),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //         alignment: Alignment.topCenter,
+            //         height: 75,
+            //         margin: const EdgeInsets.only(
+            //             left: 10.0, right: 10.0, top: 50.0),
+            //         child: Image.asset('assets/images/logo.png')),
+            //   ],
+            // ),
             Container(
-              height: 650,
+              height: 700,
               child: ListView(
-                padding: EdgeInsets.only(left: 30, right: 30, top: 10),
+                padding: EdgeInsets.only(left: 30, right: 30, top: 25),
                 children: [
                   Card(
                       margin: EdgeInsets.only(bottom: 15),
@@ -85,8 +102,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/information');
+                          Navigator.of(context).pushNamed('/information');
                         },
                         child: Container(
                           child: Container(

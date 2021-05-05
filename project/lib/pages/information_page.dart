@@ -45,12 +45,16 @@ class _InformationPageState extends State<InformationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.white,
-        title: Center(
-            child: Text(
+        title: Text(
           'Bella',
           style: GoogleFonts.lato(color: Colors.black, fontSize: 25),
-        )),
+        ),
+        centerTitle: true,
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -113,14 +117,85 @@ class _InformationPageState extends State<InformationPage> {
                   onTap: () {
                     print('ok');
                   },
-                  child: Container(
-                      alignment: Alignment.topCenter,
-                      height: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 50.0),
-                      child: Image.asset('assets/images/logo.png')),
+                  child: Column(children: [
+                    Container(
+                        alignment: Alignment.topCenter,
+                        height: 90,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        margin: const EdgeInsets.only(right: 10.0, top: 14),
+                        child: Image.asset('assets/images/logo.png')),
+                    Container(
+                      padding: EdgeInsets.only(bottom: 14),
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            Container(
+                              height: 30,
+                              child: Icon(Icons.pets, size: 24),
+                              margin: EdgeInsets.only(left: 20),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Bella',
+                                style: GoogleFonts.lato(fontSize: 19),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 30,
+                              child: Icon(Icons.pets, size: 24),
+                              margin: EdgeInsets.only(left: 20),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Cachorro',
+                                style: GoogleFonts.lato(fontSize: 19),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 30,
+                              child: Icon(Icons.restaurant_menu, size: 24),
+                              margin: EdgeInsets.only(left: 20),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Premium',
+                                style: GoogleFonts.lato(fontSize: 19),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 30,
+                              child: Icon(Icons.aspect_ratio, size: 24),
+                              margin: EdgeInsets.only(left: 20),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                'Grande',
+                                style: GoogleFonts.lato(fontSize: 19),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
+                    )
+                  ]),
                 ),
               ),
             ),
@@ -142,7 +217,9 @@ class _InformationPageState extends State<InformationPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/historic');
+                    },
                     child: Container(
                       padding: EdgeInsets.all(5),
                       child: charts.BarChart(_seriesData,
