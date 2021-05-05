@@ -14,15 +14,20 @@ class _RegisterPageState extends State<RegisterPage> {
   var isObscure2 = true;
 
   var emailError = false;
-  var passwordError = false;
+  var confirmPasswordError = false;
 
   var emailPlaceholder = 'Digite seu email';
-  var passwordPlaceholder = 'Digite sua senha';
+  var confirmPasswordPlaceholder = 'Confirme sua senha';
 
   var name = "";
   var email = "";
   var password = "";
   var confirmPassword = "";
+
+  var emailController = TextEditingController();
+
+  var passwordController = TextEditingController();
+  var confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +98,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          onTap: () {
+                            setState(() {
+                              emailError = false;
+                              emailPlaceholder = "Digite seu email";
+                            });
+                          },
                           onChanged: (text) {
                             setState(() {
                               email = text;
                             });
                           },
                           style: TextStyle(color: Colors.white),
+                          controller: emailController,
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
@@ -115,12 +127,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               labelText: emailPlaceholder,
                               labelStyle: GoogleFonts.lato(
-                                  fontSize: 21.0, color: Colors.white)))),
+                                  fontSize: 21.0,
+                                  color: emailError
+                                      ? Colors.red
+                                      : Colors.white)))),
                   Container(
                       height: 70.0,
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          controller: passwordController,
                           onChanged: (text) {
                             setState(() {
                               password = text;
@@ -130,10 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: passwordError
-                                          ? Colors.red
-                                          : Colors.white)),
+                                  borderSide: BorderSide(color: Colors.white)),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green),
                               ),
@@ -151,7 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   });
                                 },
                               ),
-                              labelText: passwordPlaceholder,
+                              labelText: "Digite sua senha",
                               labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0, color: Colors.white)))),
                   Container(
@@ -159,16 +172,29 @@ class _RegisterPageState extends State<RegisterPage> {
                       margin:
                           const EdgeInsets.only(left: 15, right: 15, top: 35),
                       child: TextField(
+                          controller: confirmPasswordController,
+                          onTap: () {
+                            setState(() {
+                              confirmPasswordError = false;
+                              confirmPasswordPlaceholder = "Confirme sua senha";
+                            });
+                          },
                           onChanged: (text) {
                             setState(() {
                               confirmPassword = text;
                             });
                           },
                           obscureText: isObscure2,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: confirmPasswordError
+                                  ? Colors.red
+                                  : Colors.white),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide: BorderSide(
+                                      color: confirmPasswordError
+                                          ? Colors.red
+                                          : Colors.white)),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green),
                               ),
@@ -186,9 +212,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   });
                                 },
                               ),
-                              labelText: 'Confirme sua senha',
+                              labelText: confirmPasswordPlaceholder,
                               labelStyle: GoogleFonts.lato(
-                                  fontSize: 21.0, color: Colors.white)))),
+                                  fontSize: 21.0,
+                                  color: confirmPasswordError
+                                      ? Colors.red
+                                      : Colors.white)))),
                   Container(
                     height: 40,
                     width: 190,
@@ -224,12 +253,20 @@ class _RegisterPageState extends State<RegisterPage> {
                               Navigator.of(context).pushNamed('/');
                             } else {
                               print('email errado');
-                              emailError = true;
-                              emailPlaceholder = 'Digite um email válido';
+                              setState(() {
+                                emailError = true;
+                                emailPlaceholder = 'Digite um email válido';
+                                emailController.clear();
+                              });
                             }
                           } else {
-                            passwordError = true;
-                            passwordPlaceholder = '';
+                            setState(() {
+                              confirmPasswordError = true;
+                              confirmPasswordPlaceholder =
+                                  'As senhas não são iguais';
+                              passwordController.clear();
+                              confirmPasswordController.clear();
+                            });
                           }
                         } catch (error) {
                           print('Invalid user!');

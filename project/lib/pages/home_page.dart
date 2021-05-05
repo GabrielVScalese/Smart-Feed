@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0;
-  var devices = ['a', 'b', 'c'];
+  List<String> devices = ['aabecerasd', 'b', 'c'];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(7))),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
-                    value: 'a',
+                    value: 'aabecerasd',
                     isExpanded: true,
                     items:
                         devices.map<DropdownMenuItem<String>>((String value) {
