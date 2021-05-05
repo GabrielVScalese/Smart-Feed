@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/pages/information_page.dart';
 import 'package:project/pages/register_page.dart';
 import 'package:project/pages/login_page.dart';
 
@@ -13,7 +14,8 @@ class AppWidget extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/register': (context) => RegisterPage(),
-        '/home': (context) => HomePage()
+        '/home': (context) => HomePage(),
+        '/information': (context) => InformationPage()
       },
     );
   }

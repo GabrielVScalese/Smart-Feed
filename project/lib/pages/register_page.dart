@@ -25,7 +25,6 @@ class _RegisterPageState extends State<RegisterPage> {
   var confirmPassword = "";
 
   var emailController = TextEditingController();
-
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 

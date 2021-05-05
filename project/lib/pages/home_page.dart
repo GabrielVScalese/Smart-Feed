@@ -51,163 +51,273 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Container(
-        color: Color.fromRGBO(238, 243, 255, 1),
-        height: MediaQuery.of(context).size.height,
+        height: double.infinity,
         child: Column(
           children: [
-            Container(
-                alignment: Alignment.topCenter,
-                height: 75,
-                margin:
-                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 50.0),
-                child: Image.asset('assets/images/logo.png')),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.only(top: 25, left: 30, bottom: 13),
-              child: Text(
-                'Dispositivo',
-                style: GoogleFonts.lato(fontSize: 23.0),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    alignment: Alignment.topCenter,
+                    height: 75,
+                    margin: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 50.0),
+                    child: Image.asset('assets/images/logo.png')),
+              ],
             ),
             Container(
-              padding: EdgeInsets.only(top: 10, left: 20, right: 20),
-              alignment: Alignment.topLeft,
-              height: 50,
-              width: 340,
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(246, 241, 105, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(7))),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                    value: 'aabecerasd',
-                    isExpanded: true,
-                    items:
-                        devices.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Center(
-                          child: Text(
-                            value,
-                          ),
+              height: 650,
+              child: ListView(
+                padding: EdgeInsets.only(left: 30, right: 30, top: 10),
+                children: [
+                  Card(
+                      margin: EdgeInsets.only(bottom: 15),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed('/information');
+                        },
+                        child: Container(
+                          child: Container(
+                              alignment: Alignment.topCenter,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              margin: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0, top: 50.0),
+                              child: Image.asset('assets/images/logo.png')),
+                          height: 200,
                         ),
-                      );
-                    }).toList(),
-                    onChanged: (String value) {
-                      setState(() {});
-                    }),
+                      )),
+                  Card(
+                      margin: EdgeInsets.only(bottom: 15),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          print('ok');
+                        },
+                        child: Container(
+                          child: Container(
+                              alignment: Alignment.topCenter,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              margin: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0, top: 50.0),
+                              child: Image.asset('assets/images/logo.png')),
+                          height: 200,
+                        ),
+                      )),
+                  Card(
+                      margin: EdgeInsets.only(bottom: 15),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          print('ok');
+                        },
+                        child: Container(
+                          child: Container(
+                              alignment: Alignment.topCenter,
+                              height: 75,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              margin: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0, top: 50.0),
+                              child: Image.asset('assets/images/logo.png')),
+                          height: 200,
+                        ),
+                      )),
+                ],
               ),
             ),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.only(left: 30, top: 10),
-              child: Text(
-                'Resumo',
-                style: GoogleFonts.lato(fontSize: 23.0),
-              ),
-            ),
-            Positioned(
-                left: 0,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 13),
-                  height: 150,
-                  width: 335,
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(246, 241, 105, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(7))),
-                  child: Column(children: [
-                    Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        alignment: Alignment.center,
-                        width: 310,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(188, 241, 255, 1),
-                            borderRadius: BorderRadius.all(Radius.circular(7))),
-                        child: Text('Bella',
-                            style: GoogleFonts.lato(fontSize: 23.0))),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: const EdgeInsets.only(left: 14, top: 10),
-                      child: Text(
-                        'Pet: Cachorro',
-                        style: GoogleFonts.lato(fontSize: 18),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: const EdgeInsets.only(left: 14, top: 6),
-                      child: Text(
-                        'Ração: Premium',
-                        style: GoogleFonts.lato(fontSize: 18),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      margin: const EdgeInsets.only(left: 14, top: 6),
-                      child: Text(
-                        'Porte: Grande',
-                        style: GoogleFonts.lato(fontSize: 18),
-                      ),
-                    )
-                  ]),
-                )),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.only(left: 30, top: 16),
-              child: Text(
-                'Histórico',
-                style: GoogleFonts.lato(fontSize: 23.0),
-              ),
-            ),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(153, 217, 217, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(7))),
-              margin: const EdgeInsets.only(left: 30, right: 30, top: 15),
-              child: charts.BarChart(
-                _seriesData,
-                animate: true,
-                animationDuration: Duration(seconds: 5),
-              ),
-            )
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 300,
-        unselectedItemColor: Colors.white,
-        backgroundColor: Colors.blue,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.pets,
-              color: Colors.white,
-            ),
-            label: 'Informações',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            label: 'Configurações',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-      ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Container(
+  //       color: Color.fromRGBO(238, 243, 255, 1),
+  //       height: MediaQuery.of(context).size.height,
+  //       child: Column(
+  //         children: [
+  //           Container(
+  //               alignment: Alignment.topCenter,
+  //               height: 75,
+  //               margin:
+  //                   const EdgeInsets.only(left: 10.0, right: 10.0, top: 50.0),
+  //               child: Image.asset('assets/images/logo.png')),
+  //           Container(
+  //             alignment: Alignment.topLeft,
+  //             margin: const EdgeInsets.only(top: 25, left: 30, bottom: 13),
+  //             child: Text(
+  //               'Dispositivo',
+  //               style: GoogleFonts.lato(fontSize: 23.0),
+  //             ),
+  //           ),
+  //           Container(
+  //             padding: EdgeInsets.only(top: 10, left: 20, right: 20),
+  //             alignment: Alignment.topLeft,
+  //             height: 50,
+  //             width: 340,
+  //             decoration: BoxDecoration(
+  //                 color: Color.fromRGBO(246, 241, 105, 1),
+  //                 borderRadius: BorderRadius.all(Radius.circular(7))),
+  //             child: DropdownButtonHideUnderline(
+  //               child: DropdownButton<String>(
+  //                   value: 'aabecerasd',
+  //                   isExpanded: true,
+  //                   items:
+  //                       devices.map<DropdownMenuItem<String>>((String value) {
+  //                     return DropdownMenuItem<String>(
+  //                       value: value,
+  //                       child: Center(
+  //                         child: Text(
+  //                           value,
+  //                         ),
+  //                       ),
+  //                     );
+  //                   }).toList(),
+  //                   onChanged: (String value) {
+  //                     setState(() {});
+  //                   }),
+  //             ),
+  //           ),
+  //           Container(
+  //             alignment: Alignment.topLeft,
+  //             margin: const EdgeInsets.only(left: 30, top: 10),
+  //             child: Text(
+  //               'Resumo',
+  //               style: GoogleFonts.lato(fontSize: 23.0),
+  //             ),
+  //           ),
+  //           Positioned(
+  //               left: 0,
+  //               child: Container(
+  //                 margin: const EdgeInsets.only(top: 13),
+  //                 height: 150,
+  //                 width: 335,
+  //                 decoration: BoxDecoration(
+  //                     color: Color.fromRGBO(246, 241, 105, 1),
+  //                     borderRadius: BorderRadius.all(Radius.circular(7))),
+  //                 child: Column(children: [
+  //                   Container(
+  //                       margin: const EdgeInsets.only(top: 10),
+  //                       alignment: Alignment.center,
+  //                       width: 310,
+  //                       height: 40,
+  //                       decoration: BoxDecoration(
+  //                           color: Color.fromRGBO(188, 241, 255, 1),
+  //                           borderRadius: BorderRadius.all(Radius.circular(7))),
+  //                       child: Text('Bella',
+  //                           style: GoogleFonts.lato(fontSize: 23.0))),
+  //                   Container(
+  //                     alignment: Alignment.topLeft,
+  //                     margin: const EdgeInsets.only(left: 14, top: 10),
+  //                     child: Text(
+  //                       'Pet: Cachorro',
+  //                       style: GoogleFonts.lato(fontSize: 18),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     alignment: Alignment.topLeft,
+  //                     margin: const EdgeInsets.only(left: 14, top: 6),
+  //                     child: Text(
+  //                       'Ração: Premium',
+  //                       style: GoogleFonts.lato(fontSize: 18),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     alignment: Alignment.topLeft,
+  //                     margin: const EdgeInsets.only(left: 14, top: 6),
+  //                     child: Text(
+  //                       'Porte: Grande',
+  //                       style: GoogleFonts.lato(fontSize: 18),
+  //                     ),
+  //                   )
+  //                 ]),
+  //               )),
+  //           Container(
+  //             alignment: Alignment.topLeft,
+  //             margin: const EdgeInsets.only(left: 30, top: 16),
+  //             child: Text(
+  //               'Histórico',
+  //               style: GoogleFonts.lato(fontSize: 23.0),
+  //             ),
+  //           ),
+  //           Container(
+  //             height: 200,
+  //             decoration: BoxDecoration(
+  //                 color: Color.fromRGBO(153, 217, 217, 1),
+  //                 borderRadius: BorderRadius.all(Radius.circular(7))),
+  //             margin: const EdgeInsets.only(left: 30, right: 30, top: 15),
+  //             child: charts.BarChart(
+  //               _seriesData,
+  //               animate: true,
+  //               animationDuration: Duration(seconds: 5),
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //     bottomNavigationBar: BottomNavigationBar(
+  //       elevation: 300,
+  //       unselectedItemColor: Colors.white,
+  //       backgroundColor: Colors.blue,
+  //       items: const <BottomNavigationBarItem>[
+  //         BottomNavigationBarItem(
+  //           icon: Icon(
+  //             Icons.home,
+  //             color: Colors.white,
+  //           ),
+  //           label: 'Home',
+  //         ),
+  //         BottomNavigationBarItem(
+  //           icon: Icon(
+  //             Icons.pets,
+  //             color: Colors.white,
+  //           ),
+  //           label: 'Informações',
+  //         ),
+  //         BottomNavigationBarItem(
+  //           icon: Icon(
+  //             Icons.settings,
+  //             color: Colors.white,
+  //           ),
+  //           label: 'Configurações',
+  //         ),
+  //       ],
+  //       currentIndex: _selectedIndex,
+  //       selectedItemColor: Colors.white,
+  //       onTap: _onItemTapped,
+  //     ),
+  //   );
+  // }
 }
 
 class Consumption {
