@@ -1,16 +1,26 @@
+import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:project/pages/information_page.dart';
 
 class HomePage extends StatefulWidget {
+  var pets = [];
+
+  HomePage(this.pets);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(this.pets);
 }
 
 class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0;
-  List<String> devices = ['aabecerasd', 'b', 'c'];
+  var devices = ['aabecerasd', 'b', 'c'];
+  var pets = [];
+
+  _HomePageState(this.pets);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -55,7 +65,6 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
         onPressed: () {},
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -77,95 +86,50 @@ class _HomePageState extends State<HomePage> {
         height: double.infinity,
         child: Column(
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Container(
-            //         alignment: Alignment.topCenter,
-            //         height: 75,
-            //         margin: const EdgeInsets.only(
-            //             left: 10.0, right: 10.0, top: 50.0),
-            //         child: Image.asset('assets/images/logo.png')),
-            //   ],
-            // ),
             Container(
               height: 700,
-              child: ListView(
+              child: ListView.builder(
+                itemCount: pets.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                      margin: EdgeInsets.only(bottom: 15),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  InformationPage(pets[index])));
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  alignment: Alignment.topCenter,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  margin: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0, top: 30.0),
+                                  child: Image.asset('assets/images/logo.png')),
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                child: Text(
+                                  this.pets[index].getName(),
+                                  style: GoogleFonts.lato(fontSize: 22),
+                                ),
+                              )
+                            ],
+                          ),
+                          height: 200,
+                        ),
+                      ));
+                },
                 padding: EdgeInsets.only(left: 30, right: 30, top: 25),
-                children: [
-                  Card(
-                      margin: EdgeInsets.only(bottom: 15),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/information');
-                        },
-                        child: Container(
-                          child: Container(
-                              alignment: Alignment.topCenter,
-                              height: 75,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              margin: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0, top: 50.0),
-                              child: Image.asset('assets/images/logo.png')),
-                          height: 200,
-                        ),
-                      )),
-                  Card(
-                      margin: EdgeInsets.only(bottom: 15),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          print('ok');
-                        },
-                        child: Container(
-                          child: Container(
-                              alignment: Alignment.topCenter,
-                              height: 75,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              margin: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0, top: 50.0),
-                              child: Image.asset('assets/images/logo.png')),
-                          height: 200,
-                        ),
-                      )),
-                  Card(
-                      margin: EdgeInsets.only(bottom: 15),
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          print('ok');
-                        },
-                        child: Container(
-                          child: Container(
-                              alignment: Alignment.topCenter,
-                              height: 75,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              margin: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0, top: 50.0),
-                              child: Image.asset('assets/images/logo.png')),
-                          height: 200,
-                        ),
-                      )),
-                ],
               ),
             ),
           ],

@@ -1,46 +1,48 @@
 class User {
-  String name;
-  String email;
-  String password;
+  String _name;
+  String _email;
+  String _password;
 
-  User(String name, String email, String password) {
-    setName(name);
-    setEmail(email);
-    setPassword(password);
+  User(this._name, this._email, this._password);
+
+  // User(String _name, String _email, String _password) {
+  //   setName(_name);
+  //   setEmail(_email);
+  //   setPassword(_password);
+  // }
+
+  User.fromUser(String _email, String _password) {
+    this._email = _email;
+    this._password = _password;
   }
 
-  User.fromUser(String email, String password) {
-    this.email = email;
-    this.password = password;
-  }
+  // setName(String _name) {
+  //   if (_name.isEmpty) throw Exception('_name is invalid!');
 
-  setName(String name) {
-    if (name.isEmpty) throw Exception('Name is invalid!');
+  //   this._name = _name;
+  // }
 
-    this.name = name;
-  }
+  // setEmail(String _email) {
+  //   if (_email.isEmpty) throw Exception('_email is invalid!');
 
-  setEmail(String email) {
-    if (email.isEmpty) throw Exception('Email is invalid!');
+  //   this._email = _email;
+  // }
 
-    this.email = email;
-  }
+  // setPassword(String _password) {
+  //   if (_password.isEmpty) throw Exception('_password is invalid!');
 
-  setPassword(String password) {
-    if (password.isEmpty) throw Exception('Password is invalid!');
-
-    this.password = password;
-  }
+  //   this._password = _password;
+  // }
 
   getName() {
-    return this.name;
+    return this._name;
   }
 
   getEmail() {
-    return this.email;
+    return this._email;
   }
 
   getPassword() {
-    return this.password;
+    return this._password;
   }
 }

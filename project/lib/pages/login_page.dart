@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/models/pet_repository.dart';
 import 'package:project/models/user.dart';
 import 'package:project/models/user_repository.dart';
+import 'package:project/pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -135,12 +137,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: () async {
                   WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+
                   try {
                     var statusCode = await UserRepository.authenticateUser(
                         new User.fromUser(email, password));
 
+                    var pets = await PetRepository.findPetsByUserEmail(email);
+                    print(pets);
+
                     if (statusCode == 200)
-                      Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => HomePage(pets)));
                     else {
                       print('Invalid user!');
                       setState(() {

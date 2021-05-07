@@ -4,12 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class InformationPage extends StatefulWidget {
+  var pet;
+
+  InformationPage(this.pet);
+
   @override
-  _InformationPageState createState() => _InformationPageState();
+  _InformationPageState createState() => _InformationPageState(this.pet);
 }
 
 class _InformationPageState extends State<InformationPage> {
-  List<String> devices = ['aabecerasd', 'b', 'c'];
+  var pet;
+
+  _InformationPageState(this.pet);
+
+  var devices = ['Smart Feed UHG78F'];
 
   List<charts.Series<Consumption, String>> _seriesData;
 
@@ -78,7 +86,7 @@ class _InformationPageState extends State<InformationPage> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                        value: 'aabecerasd',
+                        value: 'Smart Feed UHG78F',
                         isExpanded: true,
                         items: devices
                             .map<DropdownMenuItem<String>>((String value) {
@@ -139,7 +147,7 @@ class _InformationPageState extends State<InformationPage> {
                             Container(
                               margin: EdgeInsets.only(left: 10),
                               child: Text(
-                                'Bella',
+                                this.pet.getName(),
                                 style: GoogleFonts.lato(fontSize: 19),
                               ),
                             ),
@@ -155,7 +163,7 @@ class _InformationPageState extends State<InformationPage> {
                             Container(
                               margin: EdgeInsets.only(left: 10),
                               child: Text(
-                                'Cachorro',
+                                this.pet.getAnimal(),
                                 style: GoogleFonts.lato(fontSize: 19),
                               ),
                             ),
@@ -171,7 +179,7 @@ class _InformationPageState extends State<InformationPage> {
                             Container(
                               margin: EdgeInsets.only(left: 10),
                               child: Text(
-                                'Premium',
+                                this.pet.getRation(),
                                 style: GoogleFonts.lato(fontSize: 19),
                               ),
                             ),
@@ -187,7 +195,7 @@ class _InformationPageState extends State<InformationPage> {
                             Container(
                               margin: EdgeInsets.only(left: 10),
                               child: Text(
-                                'Grande',
+                                this.pet.getSize(),
                                 style: GoogleFonts.lato(fontSize: 19),
                               ),
                             ),

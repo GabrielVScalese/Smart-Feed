@@ -15,8 +15,6 @@ class AppWidget extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/register': (context) => RegisterPage(),
-        '/home': (context) => HomePage(),
-        '/information': (context) => InformationPage(),
         '/historic': (context) => HistoricPage()
       },
     );
