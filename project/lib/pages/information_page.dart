@@ -64,179 +64,181 @@ class _InformationPageState extends State<InformationPage> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 20, left: 20),
-              child: Text(
-                'Dispositivo',
-                style: GoogleFonts.lato(fontSize: 23),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 20, left: 20),
+                child: Text(
+                  'Dispositivo',
+                  style: GoogleFonts.lato(fontSize: 23),
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-              child: Card(
+              Container(
+                padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: Card(
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          value: 'Smart Feed UHG78F',
+                          isExpanded: true,
+                          items: devices
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Center(
+                                child: Text(
+                                  value,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() {});
+                          }),
+                    )),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 20, left: 20),
+                child: Text(
+                  'Dados',
+                  style: GoogleFonts.lato(fontSize: 23),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Card(
                   elevation: 10,
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: Colors.white, width: 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                        value: 'Smart Feed UHG78F',
-                        isExpanded: true,
-                        items: devices
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Center(
-                              child: Text(
-                                value,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String value) {
-                          setState(() {});
-                        }),
-                  )),
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 20, left: 20),
-              child: Text(
-                'Dados',
-                style: GoogleFonts.lato(fontSize: 23),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    print('ok');
-                  },
-                  child: Column(children: [
-                    Container(
-                        alignment: Alignment.topCenter,
-                        height: 90,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        margin: const EdgeInsets.only(right: 10.0, top: 14),
-                        child: Image.asset('assets/images/logo.png')),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 14),
-                      child: Column(children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              child: Icon(Icons.pets, size: 24),
-                              margin: EdgeInsets.only(left: 20),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                this.pet.getName(),
-                                style: GoogleFonts.lato(fontSize: 19),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              child: Icon(Icons.pets, size: 24),
-                              margin: EdgeInsets.only(left: 20),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                this.pet.getAnimal(),
-                                style: GoogleFonts.lato(fontSize: 19),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              child: Icon(Icons.restaurant_menu, size: 24),
-                              margin: EdgeInsets.only(left: 20),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                this.pet.getRation(),
-                                style: GoogleFonts.lato(fontSize: 19),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              child: Icon(Icons.aspect_ratio, size: 24),
-                              margin: EdgeInsets.only(left: 20),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                this.pet.getSize(),
-                                style: GoogleFonts.lato(fontSize: 19),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ]),
-                    )
-                  ]),
-                ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: 20, left: 20),
-              child: Text(
-                'Histórico',
-                style: GoogleFonts.lato(fontSize: 23),
-              ),
-            ),
-            Container(
-              height: 200,
-              margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: InkWell(
+                  child: InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/historic');
+                      print('ok');
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: charts.BarChart(_seriesData,
-                          animate: true,
-                          animationDuration: Duration(seconds: 5)),
-                    )),
+                    child: Column(children: [
+                      Container(
+                          alignment: Alignment.topCenter,
+                          height: 90,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          margin: const EdgeInsets.only(right: 10.0, top: 14),
+                          child: Image.asset('assets/images/logo.png')),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 14),
+                        child: Column(children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                child: Icon(Icons.pets, size: 24),
+                                margin: EdgeInsets.only(left: 20),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  this.pet.getName(),
+                                  style: GoogleFonts.lato(fontSize: 19),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                child: Icon(Icons.pets, size: 24),
+                                margin: EdgeInsets.only(left: 20),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  this.pet.getAnimal(),
+                                  style: GoogleFonts.lato(fontSize: 19),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                child: Icon(Icons.restaurant_menu, size: 24),
+                                margin: EdgeInsets.only(left: 20),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  this.pet.getRation(),
+                                  style: GoogleFonts.lato(fontSize: 19),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 30,
+                                child: Icon(Icons.aspect_ratio, size: 24),
+                                margin: EdgeInsets.only(left: 20),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  this.pet.getSize(),
+                                  style: GoogleFonts.lato(fontSize: 19),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      )
+                    ]),
+                  ),
+                ),
               ),
-            )
-          ],
+              Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only(top: 20, left: 20),
+                child: Text(
+                  'Histórico',
+                  style: GoogleFonts.lato(fontSize: 23),
+                ),
+              ),
+              Container(
+                height: 200,
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
+                child: Card(
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/historic');
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        child: charts.BarChart(_seriesData,
+                            animate: true,
+                            animationDuration: Duration(seconds: 5)),
+                      )),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

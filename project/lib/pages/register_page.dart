@@ -59,8 +59,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   Container(
+                    alignment: Alignment.centerRight,
                     height: 70,
-                    margin: const EdgeInsets.only(left: 10, top: 60),
+                    margin: const EdgeInsets.only(top: 60),
                     child: Image.asset('assets/images/logo.png'),
                   ),
                 ],

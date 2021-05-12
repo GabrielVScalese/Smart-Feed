@@ -13,8 +13,26 @@ class PetRepository {
     var pets = [];
     for (var item in map)
       pets.add(Pet(item["name"], item["animal"], item["ration"], item["size"],
-          item["device"]));
+          item["device"], item["img"]));
 
     return pets;
+  }
+
+  static insertPet(Pet pet) async {
+    var body = json.encode({
+      'name': pet.getName(),
+      'animal': pet.getAnimal(),
+      'ration': pet.getRation(),
+      'size': pet.getSize(),
+      'device': pet.getDevice(),
+      'img': pet.getImg(),
+    });
+
+    var response = await http.post(
+        Uri.parse('https://smart-feed-api.herokuapp.com/api/insertPet'),
+        headers: {"Content-Type": "application/json"},
+        body: body);
+
+    return response.statusCode;
   }
 }

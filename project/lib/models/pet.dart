@@ -4,8 +4,10 @@ class Pet {
   String _ration;
   String _size;
   String _device;
+  String _img;
 
-  Pet(this._name, this._animal, this._ration, this._size, this._device);
+  Pet(this._name, this._animal, this._ration, this._size, this._device,
+      this._img);
 
   getName() {
     return this._name;
@@ -25,5 +27,9 @@ class Pet {
 
   getDevice() {
     return this._device;
+  }
+
+  getImg() {
+    return this._img;
   }
 }

@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:project/models/hero_dialog_route.dart';
 import 'package:project/pages/information_page.dart';
+import 'package:project/pages/add_modal.dart';
+import 'package:project/pages/add_pet_page.dart';
 
 class HomePage extends StatefulWidget {
   var pets = [];
@@ -61,10 +64,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {},
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Hero(tag: 'addModal', child: Icon(Icons.add)),
+      //   onPressed: () {
+      //     Navigator.of(context).push(HeroDialogRoute(builder: (context) {
+      //       return const AddPetModal();
+      //     }));
+      //   },
+      // ),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -84,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         height: double.infinity,
-        child: Column(
+        child: Stack(
           children: [
             Container(
               height: 700,
@@ -132,6 +139,35 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.only(left: 30, right: 30, top: 25),
               ),
             ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(HeroDialogRoute(builder: (context) {
+                      return AddPet();
+                    }));
+                  },
+                  child: Hero(
+                    tag: 'addPetPage',
+                    child: Material(
+                      color: Colors.blue,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      ),
+                      child: const Icon(
+                        Icons.add_rounded,
+                        size: 60,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

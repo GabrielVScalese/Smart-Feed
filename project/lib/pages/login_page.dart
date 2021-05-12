@@ -53,34 +53,36 @@ class _LoginPageState extends State<LoginPage> {
                   )),
             ),
             Container(
-                height: 70.0,
-                margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                child: TextField(
-                    onTap: () {
-                      setState(() {
-                        loginError = false;
-                      });
-                    },
-                    onChanged: (text) {
-                      setState(() {
-                        email = text;
-                      });
-                    },
-                    style: GoogleFonts.lato(color: Colors.white),
-                    decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green),
-                        ),
-                        suffixIcon: Icon(
-                          Icons.email,
-                          color: Colors.white,
-                          size: 27,
-                        ),
-                        labelText: 'Email',
-                        labelStyle:
-                            TextStyle(fontSize: 21.0, color: Colors.white)))),
+              height: 70.0,
+              margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+              child: TextField(
+                onTap: () {
+                  setState(() {
+                    loginError = false;
+                  });
+                },
+                onChanged: (text) {
+                  setState(() {
+                    email = text;
+                  });
+                },
+                style: GoogleFonts.lato(color: Colors.white),
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                  suffixIcon: Icon(
+                    Icons.email,
+                    color: Colors.white,
+                    size: 27,
+                  ),
+                  labelText: 'Email',
+                  labelStyle: TextStyle(fontSize: 21.0, color: Colors.white),
+                ),
+              ),
+            ),
             Container(
                 height: 70.0,
                 margin: const EdgeInsets.only(left: 15, right: 15, top: 20),
