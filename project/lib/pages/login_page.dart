@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     if (statusCode == 200)
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => HomePage(pets)));
+                          builder: (context) => HomePage(pets, email)));
                     else {
                       print('Invalid user!');
                       setState(() {

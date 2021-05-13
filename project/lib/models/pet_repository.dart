@@ -18,8 +18,9 @@ class PetRepository {
     return pets;
   }
 
-  static insertPet(Pet pet) async {
+  static insertPet(String userEmail, Pet pet) async {
     var body = json.encode({
+      'userEmail': userEmail,
       'name': pet.getName(),
       'animal': pet.getAnimal(),
       'ration': pet.getRation(),

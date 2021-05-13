@@ -3,63 +3,67 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/models/pet_repository.dart';
+import 'package:project/pages/home_page.dart';
 
 class AddPet extends StatefulWidget {
+  var userEmail;
+
+  AddPet(this.userEmail);
+
   @override
-  _AddPetState createState() => _AddPetState();
+  _AddPetState createState() => _AddPetState(this.userEmail);
 }
 
 class _AddPetState extends State<AddPet> {
-  var animalTypes = ['Cachorro', 'Gato'];
-
-  File imageFile;
-  var picBytes;
+  File imgFile;
+  var img64;
 
   var nameController = new TextEditingController();
+  var animalTypes = ['Cachorro', 'Gato'];
   var animalType = 'Cachorro';
   var rationController = new TextEditingController();
   var sizeController = new TextEditingController();
 
-  Future<void> _openGallery() async {
+  var userEmail;
+
+  _AddPetState(this.userEmail);
+
+  _openGallery() async {
     try {
-      var picture =
-          await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+      var imgPicker = ImagePicker();
+      var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
 
       setState(() {
-        imageFile = picture as File;
-        _decideImageView();
+        imgFile = File(pickedFile.path);
       });
 
-      List imageBytes = await picture.readAsBytes();
-
-      var icPicBytes = base64Encode(imageBytes);
-      return icPicBytes;
+      var bytes = await pickedFile.readAsBytes();
+      img64 = base64Encode(bytes);
     } catch (error) {}
   }
 
   Widget _decideImageView() {
-    print('imagem : $imageFile');
-    if (imageFile == null)
+    if (imgFile == null)
       return Icon(
         Icons.add_photo_alternate_outlined,
         size: 50,
       );
     else {
       return Image.file(
-        imageFile,
+        imgFile,
         width: 300,
         height: 100,
       );
     }
   }
 
-  _uploadImage(picBytes) async {
-    var clientID = '2f7307ddc860abf'; // your client id
-    var jsonData = json.encode({'image': picBytes});
+  _uploadImage(img64) async {
+    var clientID = '2f7307ddc860abf';
+    var jsonData = json.encode({'image': img64});
 
     var response = await http.post(
         Uri.parse(
@@ -125,8 +129,8 @@ class _AddPetState extends State<AddPet> {
                       height: 100,
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       child: _decideImageView()),
-                  onTap: () {
-                    picBytes = _openGallery();
+                  onTap: () async {
+                    await _openGallery();
                   },
                 ),
               ),
@@ -222,14 +226,18 @@ class _AddPetState extends State<AddPet> {
                   style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
                 ),
                 onPressed: () async {
-                  var imgLink = _uploadImage(picBytes);
-                  await PetRepository.insertPet(Pet(
-                      nameController.text,
-                      animalType,
-                      rationController.text,
-                      sizeController.text,
-                      '',
-                      imgLink));
+                  var imgLink = await _uploadImage(img64);
+                  await PetRepository.insertPet(
+                    this.userEmail,
+                    Pet(nameController.text, animalType, rationController.text,
+                        sizeController.text, '', imgLink),
+                  );
+
+                  var pets =
+                      await PetRepository.findPetsByUserEmail(this.userEmail);
+
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => HomePage(pets, this.userEmail)));
                 },
               ),
             ),

@@ -11,19 +11,21 @@ import 'package:project/pages/add_pet_page.dart';
 
 class HomePage extends StatefulWidget {
   var pets = [];
+  var userEmail;
 
-  HomePage(this.pets);
+  HomePage(this.pets, this.userEmail);
 
   @override
-  _HomePageState createState() => _HomePageState(this.pets);
+  _HomePageState createState() => _HomePageState(this.pets, this.userEmail);
 }
 
 class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0;
   var devices = ['aabecerasd', 'b', 'c'];
   var pets = [];
+  var userEmail;
 
-  _HomePageState(this.pets);
+  _HomePageState(this.pets, this.userEmail);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -115,14 +117,21 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             children: [
                               Container(
+                                  width: double.infinity,
                                   alignment: Alignment.topCenter,
-                                  height: 120,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   margin: const EdgeInsets.only(
-                                      left: 10.0, right: 10.0, top: 30.0),
-                                  child: Image.asset('assets/images/logo.png')),
+                                      left: 10.0,
+                                      right: 10.0,
+                                      top: 20.0,
+                                      bottom: 8),
+                                  child: Image.network(
+                                    this.pets[index].getImg(),
+                                    height: 130,
+                                    width: double.infinity,
+                                  )),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
@@ -147,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context)
                         .push(HeroDialogRoute(builder: (context) {
-                      return AddPet();
+                      return AddPet(this.userEmail);
                     }));
                   },
                   child: Hero(

@@ -24,7 +24,7 @@ dependencies:
   charts_flutter: ^0.10.0
   http: ^0.13.0
   google_fonts: ^2.0.0 
-  image_picker: ^0.7.4
+  image_picker: ^0.7.5
   flutter:
     sdk: flutter
 
