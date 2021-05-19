@@ -8,6 +8,7 @@ import 'package:project/models/hero_dialog_route.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/pages/add_modal.dart';
 import 'package:project/pages/add_pet_page.dart';
+import 'package:project/pages/user_config.dart';
 
 class HomePage extends StatefulWidget {
   var pets = [];
@@ -24,6 +25,8 @@ class _HomePageState extends State<HomePage> {
   var devices = ['aabecerasd', 'b', 'c'];
   var pets = [];
   var userEmail;
+
+  var inputColor = Color.fromRGBO(42, 48, 101, 1);
 
   _HomePageState(this.pets, this.userEmail);
 
@@ -66,14 +69,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   child: Hero(tag: 'addModal', child: Icon(Icons.add)),
-      //   onPressed: () {
-      //     Navigator.of(context).push(HeroDialogRoute(builder: (context) {
-      //       return const AddPetModal();
-      //     }));
-      //   },
-      // ),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -85,9 +80,12 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(
               Icons.settings,
-              color: Colors.black,
+              color: inputColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => UserConfigPage()));
+            },
           )
         ],
       ),
@@ -117,21 +115,24 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             children: [
                               Container(
-                                  width: double.infinity,
-                                  alignment: Alignment.topCenter,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  margin: const EdgeInsets.only(
-                                      left: 10.0,
-                                      right: 10.0,
-                                      top: 20.0,
-                                      bottom: 8),
-                                  child: Image.network(
-                                    this.pets[index].getImg(),
-                                    height: 130,
-                                    width: double.infinity,
-                                  )),
+                                width: 300,
+                                height: 150,
+                                alignment: Alignment.topCenter,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        this.pets[index].getImg(),
+                                      ),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                margin: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                  top: 10.0,
+                                ),
+                              ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
@@ -162,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                   child: Hero(
                     tag: 'addPetPage',
                     child: Material(
-                      color: Colors.blue,
+                      color: inputColor,
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),

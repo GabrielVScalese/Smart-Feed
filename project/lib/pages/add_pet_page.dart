@@ -53,10 +53,17 @@ class _AddPetState extends State<AddPet> {
         size: 50,
       );
     else {
-      return Image.file(
-        imgFile,
-        width: 300,
-        height: 100,
+      return Container(
+        margin: EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+          image: DecorationImage(
+            image: FileImage(imgFile),
+            fit: BoxFit.cover,
+          ),
+        ),
       );
     }
   }
@@ -103,7 +110,7 @@ class _AddPetState extends State<AddPet> {
         body: SingleChildScrollView(
           child: Column(children: [
             Container(
-              margin: EdgeInsets.only(top: 35),
+              margin: EdgeInsets.only(top: 25),
               alignment: Alignment.center,
               child: Text(
                 'Adicione uma imagem',
@@ -125,10 +132,7 @@ class _AddPetState extends State<AddPet> {
                 ),
                 child: InkWell(
                   child: Container(
-                      width: 300,
-                      height: 100,
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
-                      child: _decideImageView()),
+                      width: 300, height: 180, child: _decideImageView()),
                   onTap: () async {
                     await _openGallery();
                   },
@@ -213,12 +217,12 @@ class _AddPetState extends State<AddPet> {
             Container(
               height: 50,
               width: 190,
-              margin: const EdgeInsets.only(top: 40),
+              margin: const EdgeInsets.only(top: 30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),
-                color: Colors.blue,
+                color: Color.fromRGBO(42, 48, 101, 1),
               ),
               child: TextButton(
                 child: Text(

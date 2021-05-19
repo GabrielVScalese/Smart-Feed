@@ -27,44 +27,26 @@ class _RegisterPageState extends State<RegisterPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
+  var inputColor = Color.fromRGBO(42, 48, 101, 1);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromRGBO(177, 219, 235, 1),
-              Color.fromRGBO(5, 76, 252, 1),
-            ],
-          )),
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 60),
-                    child: Text(
-                      'Cadastro',
-                      style: GoogleFonts.lato(
-                          fontSize: 42,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    height: 70,
-                    margin: const EdgeInsets.only(top: 60),
-                    child: Image.asset('assets/images/logo.png'),
-                  ),
-                ],
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(top: 60),
+                child: Text(
+                  'Cadastro',
+                  style: GoogleFonts.lato(
+                      fontSize: 42,
+                      color: inputColor,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               Column(
                 children: [
@@ -78,21 +60,21 @@ class _RegisterPageState extends State<RegisterPage> {
                               name = text;
                             });
                           },
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: inputColor),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide: BorderSide(color: inputColor)),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
+                                borderSide: BorderSide(color: inputColor),
                               ),
                               suffixIcon: Icon(
                                 Icons.account_box,
-                                color: Colors.white,
+                                color: inputColor,
                                 size: 27,
                               ),
                               labelText: 'Digite seu nome',
                               labelStyle: GoogleFonts.lato(
-                                  fontSize: 21.0, color: Colors.white)))),
+                                  fontSize: 21.0, color: inputColor)))),
                   Container(
                       height: 70.0,
                       margin:
@@ -109,28 +91,27 @@ class _RegisterPageState extends State<RegisterPage> {
                               email = text;
                             });
                           },
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: inputColor),
                           controller: emailController,
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                       color: emailError
                                           ? Colors.red
-                                          : Colors.white)),
+                                          : inputColor)),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
+                                borderSide: BorderSide(color: inputColor),
                               ),
                               suffixIcon: Icon(
                                 Icons.email,
-                                color: Colors.white,
+                                color: inputColor,
                                 size: 27,
                               ),
                               labelText: emailPlaceholder,
                               labelStyle: GoogleFonts.lato(
                                   fontSize: 21.0,
-                                  color: emailError
-                                      ? Colors.red
-                                      : Colors.white)))),
+                                  color:
+                                      emailError ? Colors.red : inputColor)))),
                   Container(
                       height: 70.0,
                       margin:
@@ -143,19 +124,19 @@ class _RegisterPageState extends State<RegisterPage> {
                             });
                           },
                           obscureText: isObscure1,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: inputColor),
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
+                                  borderSide: BorderSide(color: inputColor)),
                               focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
+                                borderSide: BorderSide(color: inputColor),
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   isObscure1
                                       ? Icons.visibility_sharp
                                       : Icons.visibility_off_sharp,
-                                  color: Colors.white,
+                                  color: inputColor,
                                   size: 27,
                                 ),
                                 onPressed: () {
@@ -166,112 +147,105 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               labelText: "Digite sua senha",
                               labelStyle: GoogleFonts.lato(
-                                  fontSize: 21.0, color: Colors.white)))),
+                                  fontSize: 21.0, color: inputColor)))),
                   Container(
-                      height: 70.0,
-                      margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 35),
-                      child: TextField(
-                          controller: confirmPasswordController,
-                          onTap: () {
+                    height: 70.0,
+                    margin: const EdgeInsets.only(left: 15, right: 15, top: 35),
+                    child: TextField(
+                      controller: confirmPasswordController,
+                      onTap: () {
+                        setState(() {
+                          confirmPasswordError = false;
+                          confirmPasswordPlaceholder = "Confirme sua senha";
+                        });
+                      },
+                      onChanged: (text) {
+                        setState(() {
+                          confirmPassword = text;
+                        });
+                      },
+                      obscureText: isObscure2,
+                      style: TextStyle(
+                          color:
+                              confirmPasswordError ? Colors.red : inputColor),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: confirmPasswordError
+                                    ? Colors.red
+                                    : inputColor)),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: inputColor),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isObscure2
+                                ? Icons.visibility_sharp
+                                : Icons.visibility_off_sharp,
+                            color: inputColor,
+                            size: 27,
+                          ),
+                          onPressed: () {
                             setState(() {
-                              confirmPasswordError = false;
-                              confirmPasswordPlaceholder = "Confirme sua senha";
+                              isObscure2 = !isObscure2;
                             });
                           },
-                          onChanged: (text) {
-                            setState(() {
-                              confirmPassword = text;
-                            });
-                          },
-                          obscureText: isObscure2,
-                          style: TextStyle(
-                              color: confirmPasswordError
-                                  ? Colors.red
-                                  : Colors.white),
-                          decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: confirmPasswordError
-                                          ? Colors.red
-                                          : Colors.white)),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green),
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  isObscure2
-                                      ? Icons.visibility_sharp
-                                      : Icons.visibility_off_sharp,
-                                  color: Colors.white,
-                                  size: 27,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isObscure2 = !isObscure2;
-                                  });
-                                },
-                              ),
-                              labelText: confirmPasswordPlaceholder,
-                              labelStyle: GoogleFonts.lato(
-                                  fontSize: 21.0,
-                                  color: confirmPasswordError
-                                      ? Colors.red
-                                      : Colors.white)))),
-                  Container(
-                    height: 40,
-                    width: 190,
-                    margin: const EdgeInsets.only(top: 75),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.3, 1],
-                        colors: [
-                          Color.fromRGBO(2, 221, 253, 1),
-                          Color.fromRGBO(2, 197, 253, 1),
-                        ],
+                        ),
+                        labelText: confirmPasswordPlaceholder,
+                        labelStyle: GoogleFonts.lato(
+                            fontSize: 21.0,
+                            color:
+                                confirmPasswordError ? Colors.red : inputColor),
                       ),
                     ),
-                    child: TextButton(
-                      child: Text(
-                        'Criar Conta',
-                        style:
-                            GoogleFonts.lato(color: Colors.white, fontSize: 22),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 75),
+                    height: 50,
+                    width: 190,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      onPressed: () async {
-                        try {
-                          if (password == confirmPassword) {
-                            var statusCode = await UserRepository.insertUser(
-                                new User(name, email, password));
+                      elevation: 5,
+                      child: TextButton(
+                        child: Text(
+                          'Criar Conta',
+                          style:
+                              GoogleFonts.lato(color: inputColor, fontSize: 22),
+                        ),
+                        onPressed: () async {
+                          try {
+                            if (password == confirmPassword) {
+                              var statusCode = await UserRepository.insertUser(
+                                  new User(name, email, password));
 
-                            if (statusCode == 200) {
-                              print('Inserted user!');
-                              Navigator.of(context).pushNamed('/');
+                              if (statusCode == 200) {
+                                print('Inserted user!');
+                                Navigator.of(context).pushNamed('/');
+                              } else {
+                                print('email errado');
+                                setState(() {
+                                  emailError = true;
+                                  emailPlaceholder = 'Digite um email válido';
+                                  emailController.clear();
+                                });
+                              }
                             } else {
-                              print('email errado');
                               setState(() {
-                                emailError = true;
-                                emailPlaceholder = 'Digite um email válido';
-                                emailController.clear();
+                                confirmPasswordError = true;
+                                confirmPasswordPlaceholder =
+                                    'As senhas não são iguais';
+                                passwordController.clear();
+                                confirmPasswordController.clear();
                               });
                             }
-                          } else {
-                            setState(() {
-                              confirmPasswordError = true;
-                              confirmPasswordPlaceholder =
-                                  'As senhas não são iguais';
-                              passwordController.clear();
-                              confirmPasswordController.clear();
-                            });
+                          } catch (error) {
+                            print('Invalid user!');
                           }
-                        } catch (error) {
-                          print('Invalid user!');
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ],
