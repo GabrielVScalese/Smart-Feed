@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UserConfigPage extends StatefulWidget {
+  var _user;
+
+  UserConfigPage(this._user);
+
   @override
   _UserConfigPageState createState() => _UserConfigPageState();
 }
@@ -27,6 +31,16 @@ class _UserConfigPageState extends State<UserConfigPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    print(this.widget._user.getName());
+    emailController.text = this.widget._user.getEmail();
+    nameController.text = this.widget._user.getName();
+    passwordController.text = this.widget._user.getPassword();
+  }
 
   var inputColor = Color.fromRGBO(42, 48, 101, 1);
   @override
@@ -66,6 +80,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                             margin: const EdgeInsets.only(
                                 left: 15, right: 15, top: 10),
                             child: TextField(
+                              readOnly: editing == false ? true : false,
                               onChanged: (text) {
                                 setState(() {
                                   name = text;
@@ -95,6 +110,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                             margin: const EdgeInsets.only(
                                 left: 15, right: 15, top: 10),
                             child: TextField(
+                              readOnly: editing == false ? true : false,
                               onTap: () {
                                 setState(() {
                                   emailError = false;
@@ -135,6 +151,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                             margin: const EdgeInsets.only(
                                 left: 15, right: 15, top: 10),
                             child: TextField(
+                              readOnly: editing == false ? true : false,
                               controller: passwordController,
                               onChanged: (text) {
                                 setState(() {
@@ -260,6 +277,18 @@ class _UserConfigPageState extends State<UserConfigPage> {
                           onTap: () {
                             setState(() {
                               editing = !editing;
+                              if (editing) {
+                                emailController.text = "";
+                                nameController.text = "";
+                                passwordController.text = "";
+                              } else {
+                                emailController.text =
+                                    this.widget._user.getEmail();
+                                nameController.text =
+                                    this.widget._user.getName();
+                                passwordController.text =
+                                    this.widget._user.getPassword();
+                              }
                             });
                           },
                           child: Text(

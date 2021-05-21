@@ -16,6 +16,8 @@ class User {
     this._password = _password;
   }
 
+  User.fromLogin(this._email, this._name);
+
   // setName(String _name) {
   //   if (_name.isEmpty) throw Exception('_name is invalid!');
 
@@ -28,11 +30,11 @@ class User {
   //   this._email = _email;
   // }
 
-  // setPassword(String _password) {
-  //   if (_password.isEmpty) throw Exception('_password is invalid!');
+  setPassword(String _password) {
+    if (_password.isEmpty) throw Exception('_password is invalid!');
 
-  //   this._password = _password;
-  // }
+    this._password = _password;
+  }
 
   getName() {
     return this._name;

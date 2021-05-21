@@ -12,23 +12,23 @@ import 'package:project/pages/user_config.dart';
 
 class HomePage extends StatefulWidget {
   var pets = [];
-  var userEmail;
+  var user;
 
-  HomePage(this.pets, this.userEmail);
+  HomePage(this.pets, this.user);
 
   @override
-  _HomePageState createState() => _HomePageState(this.pets, this.userEmail);
+  _HomePageState createState() => _HomePageState(this.pets, this.user);
 }
 
 class _HomePageState extends State<HomePage> {
   var _selectedIndex = 0;
   var devices = ['aabecerasd', 'b', 'c'];
   var pets = [];
-  var userEmail;
+  var user;
 
   var inputColor = Color.fromRGBO(42, 48, 101, 1);
 
-  _HomePageState(this.pets, this.userEmail);
+  _HomePageState(this.pets, this.user);
 
   void _onItemTapped(int index) {
     setState(() {
@@ -83,8 +83,8 @@ class _HomePageState extends State<HomePage> {
               color: inputColor,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => UserConfigPage()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserConfigPage(this.user)));
             },
           )
         ],
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context)
                         .push(HeroDialogRoute(builder: (context) {
-                      return AddPet(this.userEmail);
+                      return AddPet(this.user.getEmail());
                     }));
                   },
                   child: Hero(

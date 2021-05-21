@@ -142,11 +142,12 @@ class _LoginPageState extends State<LoginPage> {
                           new User.fromUser(email, password));
 
                       var pets = await PetRepository.findPetsByUserEmail(email);
-                      print(pets);
+                      var user = await UserRepository.findUserByEmail(email);
+                      user.setPassword(password);
 
                       if (statusCode == 200)
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => HomePage(pets, email)));
+                            builder: (context) => HomePage(pets, user)));
                       else {
                         print('Invalid user!');
                         setState(() {
