@@ -396,10 +396,8 @@ class _UserConfigPageState extends State<UserConfigPage> {
                       userEmail = emailController.text;
                       modalConfirmPassword.text = "";
                       Navigator.pop(context);
-                      return;
-                    }
-
-                    print('Invalid request');
+                    } else
+                      print('Invalid request');
                   } else
                     print('Invalid user');
                 },
