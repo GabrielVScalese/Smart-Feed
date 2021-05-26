@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/models/user.dart';
+import 'package:project/models/user_repository.dart';
 
 class UserConfigPage extends StatefulWidget {
   var _user;
@@ -14,6 +16,7 @@ class UserConfigPage extends StatefulWidget {
 class _UserConfigPageState extends State<UserConfigPage> {
   var isObscure1 = true;
   var isObscure2 = true;
+  var modalIsObscure = true;
   var editing = false;
 
   var emailError = false;
@@ -22,24 +25,24 @@ class _UserConfigPageState extends State<UserConfigPage> {
   var emailPlaceholder = 'Digite seu email';
   var confirmPasswordPlaceholder = 'Confirme sua senha';
 
-  var name = "";
-  var email = "";
-  var password = "";
-  var confirmPassword = "";
-
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
+  var modalConfirmPassword = TextEditingController();
+
+  var userEmail;
+
   @override
   void initState() {
     super.initState();
 
-    print(this.widget._user.getName());
+    print(this.widget._user.getEmail());
     emailController.text = this.widget._user.getEmail();
     nameController.text = this.widget._user.getName();
     passwordController.text = this.widget._user.getPassword();
+    userEmail = emailController.text;
   }
 
   var inputColor = Color.fromRGBO(42, 48, 101, 1);
@@ -81,11 +84,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                                 left: 15, right: 15, top: 10),
                             child: TextField(
                               readOnly: editing == false ? true : false,
-                              onChanged: (text) {
-                                setState(() {
-                                  name = text;
-                                });
-                              },
+                              onChanged: (text) {},
                               style: TextStyle(color: inputColor),
                               controller: nameController,
                               decoration: InputDecoration(
@@ -117,11 +116,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                                   emailPlaceholder = "Digite seu email";
                                 });
                               },
-                              onChanged: (text) {
-                                setState(() {
-                                  email = text;
-                                });
-                              },
+                              onChanged: (text) {},
                               style: TextStyle(color: inputColor),
                               controller: emailController,
                               decoration: InputDecoration(
@@ -153,11 +148,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                             child: TextField(
                               readOnly: editing == false ? true : false,
                               controller: passwordController,
-                              onChanged: (text) {
-                                setState(() {
-                                  password = text;
-                                });
-                              },
+                              onChanged: (text) {},
                               obscureText: isObscure1,
                               style: TextStyle(color: inputColor),
                               decoration: InputDecoration(
@@ -203,11 +194,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                                         "Confirme sua senha";
                                   });
                                 },
-                                onChanged: (text) {
-                                  setState(() {
-                                    confirmPassword = text;
-                                  });
-                                },
+                                onChanged: (text) {},
                                 obscureText: isObscure2,
                                 style: TextStyle(
                                     color: confirmPasswordError
@@ -263,7 +250,14 @@ class _UserConfigPageState extends State<UserConfigPage> {
                                     style: GoogleFonts.lato(
                                         color: Colors.white, fontSize: 22),
                                   ),
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    if (emailController.text.isNotEmpty &&
+                                        nameController.text.isNotEmpty &&
+                                        passwordController.text
+                                            .isNotEmpty) if (passwordController.text ==
+                                        confirmPasswordController.text)
+                                      showAlertDialog(context);
+                                  },
                                 ),
                               ),
                             ),
@@ -281,6 +275,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
                                 emailController.text = "";
                                 nameController.text = "";
                                 passwordController.text = "";
+                                confirmPasswordController.text = "";
                               } else {
                                 emailController.text =
                                     this.widget._user.getEmail();
@@ -358,6 +353,94 @@ class _UserConfigPageState extends State<UserConfigPage> {
           ),
         ),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+        title: Text("Confirmar Senha"),
+        scrollable: true,
+        actions: [
+          Container(
+            height: 40,
+            width: 90,
+            child: Card(
+              color: inputColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 5,
+              child: TextButton(
+                child: Text(
+                  'Ok',
+                  style: GoogleFonts.inter(color: Colors.white, fontSize: 17),
+                ),
+                onPressed: () async {
+                  var statusCode = await UserRepository.authenticateUser(
+                      User.fromUser(userEmail, modalConfirmPassword.text));
+
+                  if (statusCode == 200) {
+                    var user = User(this.widget._user.getId(),
+                        nameController.text, emailController.text);
+
+                    user.setPassword(passwordController.text);
+
+                    var updateStatusCode =
+                        await UserRepository.updateUserById(user);
+
+                    if (updateStatusCode == 200) {
+                      setState(() {
+                        editing = false;
+                      });
+
+                      userEmail = emailController.text;
+                      modalConfirmPassword.text = "";
+                      Navigator.pop(context);
+                      return;
+                    }
+
+                    print('Invalid request');
+                  } else
+                    print('Invalid user');
+                },
+              ),
+            ),
+          ),
+        ],
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              TextField(
+                controller: modalConfirmPassword,
+                obscureText: modalIsObscure,
+                style: TextStyle(color: inputColor),
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: inputColor)),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: inputColor),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.lock,
+                      color: inputColor,
+                      size: 23,
+                    ),
+                    onPressed: () {},
+                  ),
+                  hintText: "Digite sua senha",
+                  labelStyle:
+                      GoogleFonts.lato(fontSize: 21.0, color: inputColor),
+                ),
+              ),
+            ],
+          ),
+        ));
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
