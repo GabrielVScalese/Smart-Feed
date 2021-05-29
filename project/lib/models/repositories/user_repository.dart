@@ -43,7 +43,6 @@ class UserRepository {
         body: body,
         headers: {"Content-Type": "application/json"});
 
-    print(response.body);
     return response.statusCode;
   }
 
@@ -51,11 +50,18 @@ class UserRepository {
     var body =
         json.encode({'email': user.getEmail(), 'password': user.getPassword()});
 
-    print(body);
-
     var response = await http.post(
         Uri.parse('https://smart-feed-api.herokuapp.com/api/authenticateUser'),
         body: body,
+        headers: {"Content-Type": "application/json"});
+
+    return response.statusCode;
+  }
+
+  static deleteUserById(int id) async {
+    var response = await http.delete(
+        Uri.parse(
+            'https://smart-feed-api.herokuapp.com/api/deleteUserById/$id'),
         headers: {"Content-Type": "application/json"});
 
     return response.statusCode;

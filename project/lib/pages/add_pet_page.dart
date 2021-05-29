@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:project/models/pet.dart';
-import 'package:project/models/pet_repository.dart';
+import 'package:project/models/repositories/pet_repository.dart';
+import 'package:project/models/repositories/user_repository.dart';
 import 'package:project/pages/home_page.dart';
 
 class AddPet extends StatefulWidget {
@@ -240,8 +241,11 @@ class _AddPetState extends State<AddPet> {
                   var pets =
                       await PetRepository.findPetsByUserEmail(this.userEmail);
 
+                  var user =
+                      await UserRepository.findUserByEmail(this.userEmail);
+
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => HomePage(pets, this.userEmail)));
+                      builder: (context) => HomePage(pets, user)));
                 },
               ),
             ),

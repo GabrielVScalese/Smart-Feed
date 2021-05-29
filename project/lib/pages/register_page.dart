@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/models/repositories/user_repository.dart';
 import 'package:project/models/user.dart';
-import 'package:project/models/user_repository.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
