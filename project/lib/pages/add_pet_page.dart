@@ -11,12 +11,12 @@ import 'package:project/models/repositories/user_repository.dart';
 import 'package:project/pages/home_page.dart';
 
 class AddPet extends StatefulWidget {
-  var userEmail;
+  var user;
 
-  AddPet(this.userEmail);
+  AddPet(this.user);
 
   @override
-  _AddPetState createState() => _AddPetState(this.userEmail);
+  _AddPetState createState() => _AddPetState(this.user);
 }
 
 class _AddPetState extends State<AddPet> {
@@ -29,9 +29,9 @@ class _AddPetState extends State<AddPet> {
   var rationController = new TextEditingController();
   var sizeController = new TextEditingController();
 
-  var userEmail;
+  var user;
 
-  _AddPetState(this.userEmail);
+  _AddPetState(this.user);
 
   _openGallery() async {
     try {
@@ -233,19 +233,16 @@ class _AddPetState extends State<AddPet> {
                 onPressed: () async {
                   var imgLink = await _uploadImage(img64);
                   await PetRepository.insertPet(
-                    this.userEmail,
+                    this.user.getEmail(),
                     Pet(nameController.text, animalType, rationController.text,
                         sizeController.text, '', imgLink),
                   );
 
-                  var pets =
-                      await PetRepository.findPetsByUserEmail(this.userEmail);
+                  var pets = await PetRepository.findPetsByUserEmail(
+                      this.user.getEmail());
 
-                  var user =
-                      await UserRepository.findUserByEmail(this.userEmail);
-
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => HomePage(pets, user)));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomePage(pets, this.user)));
                 },
               ),
             ),

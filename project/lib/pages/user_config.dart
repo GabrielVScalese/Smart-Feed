@@ -427,7 +427,9 @@ class _UserConfigPageState extends State<UserConfigPage> {
                       style:
                           GoogleFonts.lato(color: Colors.white, fontSize: 22),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ),

@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context)
                         .push(HeroDialogRoute(builder: (context) {
-                      return AddPet(this.user.getEmail());
+                      return AddPet(this.user);
                     }));
                   },
                   child: Hero(
