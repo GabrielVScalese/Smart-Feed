@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:project/pages/edit_pet_page.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -125,7 +126,10 @@ class _InformationPageState extends State<InformationPage> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          print('ok');
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return EditPet(this.pet);
+                          }));
                         },
                         child: Column(children: [
                           Container(
