@@ -6,17 +6,20 @@ import 'package:project/pages/edit_pet_page.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
+  var user;
 
-  InformationPage(this.pet);
+  InformationPage(this.user, this.pet);
 
   @override
-  _InformationPageState createState() => _InformationPageState(this.pet);
+  _InformationPageState createState() =>
+      _InformationPageState(this.user, this.pet);
 }
 
 class _InformationPageState extends State<InformationPage> {
   var pet;
+  var user;
 
-  _InformationPageState(this.pet);
+  _InformationPageState(this.user, this.pet);
 
   var devices = ['Smart Feed UHG78F'];
 
@@ -128,7 +131,7 @@ class _InformationPageState extends State<InformationPage> {
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
-                            return EditPet(this.pet);
+                            return EditPet(this.user, this.pet);
                           }));
                         },
                         child: Column(children: [

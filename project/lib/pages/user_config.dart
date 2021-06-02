@@ -5,6 +5,8 @@ import 'package:project/models/repositories/user_repository.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/login_page.dart';
 
+import 'loading_page.dart';
+
 class UserConfigPage extends StatefulWidget {
   var _user;
 
@@ -37,6 +39,7 @@ class _UserConfigPageState extends State<UserConfigPage> {
 
   var userEmail;
   var inputColor = Color.fromRGBO(42, 48, 101, 1);
+  var loaded = true;
 
   @override
   void initState() {
@@ -50,528 +53,551 @@ class _UserConfigPageState extends State<UserConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+    if (loaded) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          centerTitle: true,
+          title: Text(
+            'Configurações',
+            style: GoogleFonts.lato(color: Colors.black, fontSize: 25),
+          ),
+          backgroundColor: Colors.white,
         ),
-        centerTitle: true,
-        title: Text(
-          'Configurações',
-          style: GoogleFonts.lato(color: Colors.black, fontSize: 25),
-        ),
-        backgroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                height: 430,
-                width: double.infinity,
-                margin: EdgeInsets.all(15),
-                child: Card(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 70.0,
-                            margin: const EdgeInsets.only(
-                                left: 15, right: 15, top: 10),
-                            child: TextField(
-                              readOnly: editing == false ? true : false,
-                              onChanged: (text) {},
-                              style: TextStyle(color: inputColor),
-                              controller: nameController,
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.account_box,
-                                  color: inputColor,
-                                  size: 27,
-                                ),
-                                hintText: 'Digite seu nome',
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0, color: inputColor),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 70.0,
-                            margin: const EdgeInsets.only(
-                                left: 15, right: 15, top: 10),
-                            child: TextField(
-                              readOnly: editing == false ? true : false,
-                              onTap: () {
-                                setState(() {
-                                  emailError = false;
-                                  emailPlaceholder = "Digite seu email";
-                                });
-                              },
-                              onChanged: (text) {},
-                              style: TextStyle(color: inputColor),
-                              controller: emailController,
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: emailError
-                                            ? Colors.red
-                                            : inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.email,
-                                  color: inputColor,
-                                  size: 27,
-                                ),
-                                hintText: emailPlaceholder,
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0,
-                                    color:
-                                        emailError ? Colors.red : inputColor),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 70.0,
-                            margin: const EdgeInsets.only(
-                                left: 15, right: 15, top: 10),
-                            child: TextField(
-                              readOnly: editing == false ? true : false,
-                              controller: passwordController,
-                              onChanged: (text) {},
-                              obscureText: isObscure1,
-                              style: TextStyle(color: inputColor),
-                              decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    editing
-                                        ? isObscure1
-                                            ? Icons.visibility_sharp
-                                            : Icons.visibility_off_sharp
-                                        : Icons.lock,
-                                    color: inputColor,
-                                    size: 27,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      if (editing) isObscure1 = !isObscure1;
-                                    });
-                                  },
-                                ),
-                                hintText: "Digite sua senha",
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0, color: inputColor),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: editing,
-                            child: Container(
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  height: 430,
+                  width: double.infinity,
+                  margin: EdgeInsets.all(15),
+                  child: Card(
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
                               height: 70.0,
                               margin: const EdgeInsets.only(
                                   left: 15, right: 15, top: 10),
                               child: TextField(
-                                controller: confirmPasswordController,
+                                readOnly: editing == false ? true : false,
+                                onChanged: (text) {},
+                                style: TextStyle(color: inputColor),
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: inputColor)),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: inputColor),
+                                  ),
+                                  suffixIcon: Icon(
+                                    Icons.account_box,
+                                    color: inputColor,
+                                    size: 27,
+                                  ),
+                                  hintText: 'Digite seu nome',
+                                  labelStyle: GoogleFonts.lato(
+                                      fontSize: 21.0, color: inputColor),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 70.0,
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 10),
+                              child: TextField(
+                                readOnly: editing == false ? true : false,
                                 onTap: () {
                                   setState(() {
-                                    confirmPasswordError = false;
-                                    confirmPasswordPlaceholder =
-                                        "Confirme sua senha";
+                                    emailError = false;
+                                    emailPlaceholder = "Digite seu email";
                                   });
                                 },
                                 onChanged: (text) {},
-                                obscureText: isObscure2,
-                                style: TextStyle(
-                                    color: confirmPasswordError
-                                        ? Colors.red
-                                        : inputColor),
+                                style: TextStyle(color: inputColor),
+                                controller: emailController,
                                 decoration: InputDecoration(
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: confirmPasswordError
+                                          color: emailError
                                               ? Colors.red
                                               : inputColor)),
                                   focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: inputColor),
                                   ),
+                                  suffixIcon: Icon(
+                                    Icons.email,
+                                    color: inputColor,
+                                    size: 27,
+                                  ),
+                                  hintText: emailPlaceholder,
+                                  labelStyle: GoogleFonts.lato(
+                                      fontSize: 21.0,
+                                      color:
+                                          emailError ? Colors.red : inputColor),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 70.0,
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 10),
+                              child: TextField(
+                                readOnly: editing == false ? true : false,
+                                controller: passwordController,
+                                onChanged: (text) {},
+                                obscureText: isObscure1,
+                                style: TextStyle(color: inputColor),
+                                decoration: InputDecoration(
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: inputColor)),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: inputColor),
+                                  ),
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      isObscure2
-                                          ? Icons.visibility_sharp
-                                          : Icons.visibility_off_sharp,
+                                      editing
+                                          ? isObscure1
+                                              ? Icons.visibility_sharp
+                                              : Icons.visibility_off_sharp
+                                          : Icons.lock,
                                       color: inputColor,
                                       size: 27,
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        isObscure2 = !isObscure2;
+                                        if (editing) isObscure1 = !isObscure1;
                                       });
                                     },
                                   ),
-                                  hintText: confirmPasswordPlaceholder,
+                                  hintText: "Digite sua senha",
                                   labelStyle: GoogleFonts.lato(
-                                      fontSize: 21.0,
+                                      fontSize: 21.0, color: inputColor),
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: editing,
+                              child: Container(
+                                height: 70.0,
+                                margin: const EdgeInsets.only(
+                                    left: 15, right: 15, top: 10),
+                                child: TextField(
+                                  controller: confirmPasswordController,
+                                  onTap: () {
+                                    setState(() {
+                                      confirmPasswordError = false;
+                                      confirmPasswordPlaceholder =
+                                          "Confirme sua senha";
+                                    });
+                                  },
+                                  onChanged: (text) {},
+                                  obscureText: isObscure2,
+                                  style: TextStyle(
                                       color: confirmPasswordError
                                           ? Colors.red
                                           : inputColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: editing,
-                            child: Container(
-                              height: 50,
-                              width: 190,
-                              child: Card(
-                                color: inputColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                child: TextButton(
-                                  child: Text(
-                                    'Salvar',
-                                    style: GoogleFonts.lato(
-                                        color: Colors.white, fontSize: 22),
-                                  ),
-                                  onPressed: () async {
-                                    if (emailController.text.isNotEmpty &&
-                                        nameController.text.isNotEmpty &&
-                                        passwordController.text
-                                            .isNotEmpty) if (passwordController.text ==
-                                        confirmPasswordController.text) {
-                                      AlertDialog alert = AlertDialog(
-                                          title: Text("Confirmar Senha"),
-                                          scrollable: true,
-                                          actions: [
-                                            Container(
-                                              height: 40,
-                                              width: 90,
-                                              child: Card(
-                                                color: inputColor,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                elevation: 5,
-                                                child: TextButton(
-                                                  child: Text(
-                                                    'Ok',
-                                                    style: GoogleFonts.inter(
-                                                        color: Colors.white,
-                                                        fontSize: 17),
-                                                  ),
-                                                  onPressed: () async {
-                                                    var statusCode =
-                                                        await UserRepository
-                                                            .authenticateUser(
-                                                                User.fromUser(
-                                                                    userEmail,
-                                                                    modalConfirmPassword
-                                                                        .text));
-
-                                                    if (statusCode == 200) {
-                                                      var user = User(
-                                                          this
-                                                              .widget
-                                                              ._user
-                                                              .getId(),
-                                                          nameController.text,
-                                                          emailController.text);
-
-                                                      user.setPassword(
-                                                          passwordController
-                                                              .text);
-
-                                                      var updateStatusCode =
-                                                          await UserRepository
-                                                              .updateUserById(
-                                                                  user);
-
-                                                      if (updateStatusCode ==
-                                                          200) {
-                                                        setState(() {
-                                                          editing = false;
-                                                        });
-
-                                                        userEmail =
-                                                            emailController
-                                                                .text;
-                                                        modalConfirmPassword
-                                                            .text = "";
-                                                        Navigator.pop(context);
-                                                      } else
-                                                        print(
-                                                            'Invalid request');
-                                                    } else
-                                                      print('Invalid user');
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                          content: SingleChildScrollView(
-                                            child: ListBody(
-                                              children: [
-                                                TextField(
-                                                  controller:
-                                                      modalConfirmPassword,
-                                                  obscureText: modalIsObscure,
-                                                  style: TextStyle(
-                                                      color: inputColor),
-                                                  decoration: InputDecoration(
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color:
-                                                                    inputColor)),
-                                                    focusedBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: inputColor),
-                                                    ),
-                                                    suffixIcon: IconButton(
-                                                      icon: Icon(
-                                                        Icons.lock,
-                                                        color: inputColor,
-                                                        size: 23,
-                                                      ),
-                                                      onPressed: () {},
-                                                    ),
-                                                    hintText:
-                                                        "Digite sua senha",
-                                                    labelStyle:
-                                                        GoogleFonts.lato(
-                                                            fontSize: 21.0,
-                                                            color: inputColor),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ));
-
-                                      showAlertDialog(context, alert);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        margin: EdgeInsets.only(top: 15, right: 15, bottom: 15),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              editing = !editing;
-                              if (editing) {
-                                emailController.text = "";
-                                nameController.text = "";
-                                passwordController.text = "";
-                                confirmPasswordController.text = "";
-                              } else {
-                                emailController.text =
-                                    this.widget._user.getEmail();
-                                nameController.text =
-                                    this.widget._user.getName();
-                                passwordController.text =
-                                    this.widget._user.getPassword();
-                              }
-                            });
-                          },
-                          child: Text(
-                            editing ? 'Cancelar' : 'Editar',
-                            style: GoogleFonts.lato(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                height: 55,
-                width: 190,
-                child: Card(
-                  color: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 5,
-                  child: TextButton(
-                    child: Text(
-                      'Sair',
-                      style:
-                          GoogleFonts.lato(color: Colors.white, fontSize: 22),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: 45,
-                  right: 45,
-                  top: 15,
-                ),
-                child: Divider(
-                  thickness: 0.9,
-                  color: inputColor,
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 15),
-                height: 55,
-                width: 190,
-                child: Card(
-                  color: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 5,
-                  child: TextButton(
-                    child: Text(
-                      'Excluir Conta',
-                      style:
-                          GoogleFonts.lato(color: Colors.white, fontSize: 22),
-                    ),
-                    onPressed: () {
-                      AlertDialog alert = AlertDialog(
-                          title: Text("Excluir Conta"),
-                          scrollable: true,
-                          actions: [
-                            Container(
-                              height: 40,
-                              width: 90,
-                              child: Card(
-                                color: inputColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                child: TextButton(
-                                  child: Text(
-                                    'Excluir',
-                                    style: GoogleFonts.inter(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                  onPressed: () async {
-                                    var statusCode =
-                                        await UserRepository.authenticateUser(
-                                            User.fromUser(
-                                                userEmail,
-                                                deleteAccountModalController
-                                                    .text));
-
-                                    if (statusCode == 200) {
-                                      var deleteAccountStatusCode =
-                                          await UserRepository.deleteUserById(
-                                              this.widget._user.getId());
-
-                                      if (deleteAccountStatusCode == 200)
-                                        Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage()));
-                                      else
-                                        print('Error for delete user');
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 40,
-                              width: 90,
-                              child: Card(
-                                color: inputColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                elevation: 5,
-                                child: TextButton(
-                                  child: Text(
-                                    'Cancelar',
-                                    style: GoogleFonts.inter(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                          content: Column(
-                            children: [
-                              Container(
-                                  child: Text(
-                                      'Todos seus dados e sua conta serão excluídos.')),
-                              Container(
-                                margin: EdgeInsets.only(top: 20),
-                                child: TextField(
-                                  controller: deleteAccountModalController,
-                                  obscureText: true,
-                                  style: TextStyle(color: inputColor),
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: inputColor)),
+                                        borderSide: BorderSide(
+                                            color: confirmPasswordError
+                                                ? Colors.red
+                                                : inputColor)),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: inputColor),
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        Icons.lock,
+                                        isObscure2
+                                            ? Icons.visibility_sharp
+                                            : Icons.visibility_off_sharp,
                                         color: inputColor,
-                                        size: 23,
+                                        size: 27,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        setState(() {
+                                          isObscure2 = !isObscure2;
+                                        });
+                                      },
                                     ),
-                                    hintText: "Digite sua senha",
+                                    hintText: confirmPasswordPlaceholder,
                                     labelStyle: GoogleFonts.lato(
-                                        fontSize: 21.0, color: inputColor),
+                                        fontSize: 21.0,
+                                        color: confirmPasswordError
+                                            ? Colors.red
+                                            : inputColor),
                                   ),
                                 ),
-                              )
-                            ],
-                          ));
+                              ),
+                            ),
+                            Visibility(
+                              visible: editing,
+                              child: Container(
+                                height: 50,
+                                width: 190,
+                                child: Card(
+                                  color: inputColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 5,
+                                  child: TextButton(
+                                    child: Text(
+                                      'Salvar',
+                                      style: GoogleFonts.lato(
+                                          color: Colors.white, fontSize: 22),
+                                    ),
+                                    onPressed: () async {
+                                      if (emailController.text.isNotEmpty &&
+                                          nameController.text.isNotEmpty &&
+                                          passwordController.text
+                                              .isNotEmpty) if (passwordController.text ==
+                                          confirmPasswordController.text) {
+                                        AlertDialog alert = AlertDialog(
+                                            title: Text("Confirmar Senha"),
+                                            scrollable: true,
+                                            actions: [
+                                              Container(
+                                                height: 40,
+                                                width: 90,
+                                                child: Card(
+                                                  color: inputColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  elevation: 5,
+                                                  child: TextButton(
+                                                    child: Text(
+                                                      'Ok',
+                                                      style: GoogleFonts.inter(
+                                                          color: Colors.white,
+                                                          fontSize: 17),
+                                                    ),
+                                                    onPressed: () async {
+                                                      var statusCode =
+                                                          await UserRepository
+                                                              .authenticateUser(
+                                                                  User.fromUser(
+                                                                      userEmail,
+                                                                      modalConfirmPassword
+                                                                          .text));
 
-                      showAlertDialog(context, alert);
-                    },
+                                                      if (statusCode == 200) {
+                                                        var user = User(
+                                                            this
+                                                                .widget
+                                                                ._user
+                                                                .getId(),
+                                                            nameController.text,
+                                                            emailController
+                                                                .text);
+
+                                                        user.setPassword(
+                                                            passwordController
+                                                                .text);
+
+                                                        var updateStatusCode =
+                                                            await UserRepository
+                                                                .updateUserById(
+                                                                    user);
+
+                                                        if (updateStatusCode ==
+                                                            200) {
+                                                          setState(() {
+                                                            editing = false;
+                                                          });
+
+                                                          userEmail =
+                                                              emailController
+                                                                  .text;
+                                                          modalConfirmPassword
+                                                              .text = "";
+                                                          Navigator.pop(
+                                                              context);
+                                                        } else
+                                                          print(
+                                                              'Invalid request');
+                                                      } else
+                                                        print('Invalid user');
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: [
+                                                  TextField(
+                                                    controller:
+                                                        modalConfirmPassword,
+                                                    obscureText: modalIsObscure,
+                                                    style: TextStyle(
+                                                        color: inputColor),
+                                                    decoration: InputDecoration(
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          inputColor)),
+                                                      focusedBorder:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: inputColor),
+                                                      ),
+                                                      suffixIcon: IconButton(
+                                                        icon: Icon(
+                                                          Icons.lock,
+                                                          color: inputColor,
+                                                          size: 23,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                      hintText:
+                                                          "Digite sua senha",
+                                                      labelStyle:
+                                                          GoogleFonts.lato(
+                                                              fontSize: 21.0,
+                                                              color:
+                                                                  inputColor),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ));
+
+                                        showAlertDialog(context, alert);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          margin:
+                              EdgeInsets.only(top: 15, right: 15, bottom: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                editing = !editing;
+                                if (editing) {
+                                  emailController.text = "";
+                                  nameController.text = "";
+                                  passwordController.text = "";
+                                  confirmPasswordController.text = "";
+                                } else {
+                                  emailController.text =
+                                      this.widget._user.getEmail();
+                                  nameController.text =
+                                      this.widget._user.getName();
+                                  passwordController.text =
+                                      this.widget._user.getPassword();
+                                }
+                              });
+                            },
+                            child: Text(
+                              editing ? 'Cancelar' : 'Editar',
+                              style: GoogleFonts.lato(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  height: 55,
+                  width: 190,
+                  child: Card(
+                    color: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    child: TextButton(
+                      child: Text(
+                        'Sair',
+                        style:
+                            GoogleFonts.lato(color: Colors.white, fontSize: 22),
+                      ),
+                      onPressed: () {
+                        Navigator.popUntil(context, (route) => false);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 45,
+                    right: 45,
+                    top: 15,
+                  ),
+                  child: Divider(
+                    thickness: 0.9,
+                    color: inputColor,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  height: 55,
+                  width: 190,
+                  child: Card(
+                    color: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    child: TextButton(
+                      child: Text(
+                        'Excluir Conta',
+                        style:
+                            GoogleFonts.lato(color: Colors.white, fontSize: 22),
+                      ),
+                      onPressed: () {
+                        AlertDialog alert = AlertDialog(
+                            title: Text("Excluir Conta"),
+                            scrollable: true,
+                            actions: [
+                              Container(
+                                height: 40,
+                                width: 90,
+                                child: Card(
+                                  color: inputColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 5,
+                                  child: TextButton(
+                                    child: Text(
+                                      'Excluir',
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white, fontSize: 15),
+                                    ),
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+
+                                      setState(() {
+                                        this.loaded = false;
+                                      });
+
+                                      var statusCode =
+                                          await UserRepository.authenticateUser(
+                                              User.fromUser(
+                                                  userEmail,
+                                                  deleteAccountModalController
+                                                      .text));
+
+                                      if (statusCode == 200) {
+                                        var deleteAccountStatusCode =
+                                            await UserRepository.deleteUserById(
+                                                this.widget._user.getId());
+
+                                        this.loaded = true;
+
+                                        if (deleteAccountStatusCode == 200)
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage()));
+                                        else
+                                          print('Error for delete user');
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 40,
+                                width: 90,
+                                child: Card(
+                                  color: inputColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  elevation: 5,
+                                  child: TextButton(
+                                    child: Text(
+                                      'Cancelar',
+                                      style: GoogleFonts.inter(
+                                          color: Colors.white, fontSize: 15),
+                                    ),
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                            content: Column(
+                              children: [
+                                Container(
+                                    child: Text(
+                                        'Todos seus dados e sua conta serão excluídos.')),
+                                Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: TextField(
+                                    controller: deleteAccountModalController,
+                                    obscureText: true,
+                                    style: TextStyle(color: inputColor),
+                                    decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: inputColor)),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: inputColor),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        icon: Icon(
+                                          Icons.lock,
+                                          color: inputColor,
+                                          size: 23,
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                      hintText: "Digite sua senha",
+                                      labelStyle: GoogleFonts.lato(
+                                          fontSize: 21.0, color: inputColor),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ));
+
+                        showAlertDialog(context, alert);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return LoadingPage.Build();
+    }
   }
 
   showAlertDialog(BuildContext context, AlertDialog alert) {

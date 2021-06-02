@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,13 +11,16 @@ import 'package:project/models/repositories/pet_repository.dart';
 import 'package:project/models/repositories/user_repository.dart';
 import 'package:project/pages/home_page.dart';
 
+import 'loading_page.dart';
+
 class EditPet extends StatefulWidget {
   var pet;
+  var user;
 
-  EditPet(this.pet);
+  EditPet(this.user, this.pet);
 
   @override
-  _EditPetState createState() => _EditPetState(this.pet);
+  _EditPetState createState() => _EditPetState(this.user, this.pet);
 }
 
 class _EditPetState extends State<EditPet> {
@@ -30,8 +34,10 @@ class _EditPetState extends State<EditPet> {
   var sizeController = new TextEditingController();
 
   var pet;
+  var user;
+  var loaded = true;
 
-  _EditPetState(this.pet);
+  _EditPetState(this.user, this.pet);
 
   _openGallery() async {
     try {
@@ -48,7 +54,7 @@ class _EditPetState extends State<EditPet> {
   }
 
   Widget _decideImageView() {
-    if (imgFile == null)
+    if (imgFile == null) {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -60,7 +66,7 @@ class _EditPetState extends State<EditPet> {
           ),
         ),
       );
-    else {
+    } else {
       return Container(
         margin: EdgeInsets.all(0),
         decoration: BoxDecoration(
@@ -106,166 +112,230 @@ class _EditPetState extends State<EditPet> {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: 'addPetPage',
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Editando ' + this.pet.getName(),
-            style: GoogleFonts.lato(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 25,
-            ),
-          ),
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              alignment: Alignment.center,
-              child: Text(
-                'Imagem do Pet',
+    if (loaded) {
+      return Hero(
+        tag: 'addPetPage',
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(
+                'Editando ' + this.pet.getName(),
                 style: GoogleFonts.lato(
-                  fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 25,
                 ),
               ),
-            ),
-            Center(
-              child: Card(
-                margin: EdgeInsets.only(top: 20, bottom: 20),
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.black12, width: 1),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-                child: InkWell(
-                  child: Container(
-                      width: 300, height: 180, child: _decideImageView()),
-                  onTap: () async {
-                    await _openGallery();
-                  },
-                ),
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              width: 300,
-              child: TextField(
-                controller: nameController,
-                style: GoogleFonts.lato(color: Colors.black),
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.badge),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  hintText: 'Digite o nome',
-                ),
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 20),
-                width: 300,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+            body: SingleChildScrollView(
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 25),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Imagem do Pet',
+                      style: GoogleFonts.lato(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                      value: animalType,
-                      isExpanded: true,
-                      items: animalTypes
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Center(
-                            child: Text(
-                              value,
-                            ),
+                  ),
+                  Center(
+                    child: Card(
+                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      elevation: 10,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.black12, width: 1),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: InkWell(
+                        child: Container(
+                            width: 300, height: 180, child: _decideImageView()),
+                        onTap: () async {
+                          await _openGallery();
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 300,
+                    child: TextField(
+                      controller: nameController,
+                      style: GoogleFonts.lato(color: Colors.black),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.badge),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        hintText: 'Digite o nome',
+                      ),
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 20),
+                      width: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        setState(() {
-                          animalType = value;
-                        });
-                      }),
-                )),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              width: 300,
-              child: TextField(
-                controller: rationController,
-                style: GoogleFonts.lato(color: Colors.black),
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.restaurant_menu_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                            value: animalType,
+                            isExpanded: true,
+                            items: animalTypes
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(
+                                  child: Text(
+                                    value,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {
+                                animalType = value;
+                              });
+                            }),
+                      )),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 300,
+                    child: TextField(
+                      controller: rationController,
+                      style: GoogleFonts.lato(color: Colors.black),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.restaurant_menu_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        hintText: 'Digite o tipo da ração',
+                      ),
+                    ),
                   ),
-                  hintText: 'Digite o tipo da ração',
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              width: 300,
-              child: TextField(
-                controller: sizeController,
-                style: GoogleFonts.lato(color: Colors.black),
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.aspect_ratio_rounded),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 300,
+                    child: TextField(
+                      controller: sizeController,
+                      style: GoogleFonts.lato(color: Colors.black),
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.aspect_ratio_rounded),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        hintText: 'Digite o porte do pet',
+                      ),
+                    ),
                   ),
-                  hintText: 'Digite o porte do pet',
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 190,
-              margin: const EdgeInsets.only(top: 30),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                color: Color.fromRGBO(42, 48, 101, 1),
-              ),
-              child: TextButton(
-                child: Text(
-                  'Salvar',
-                  style: GoogleFonts.lato(color: Colors.white, fontSize: 22),
-                ),
-                onPressed: () async {
-                  // var imgLink = await _uploadImage(img64);
-                  // await PetRepository.insertPet(
-                  //   this.user.getEmail(),
-                  //   Pet(nameController.text, animalType, rationController.text,
-                  //       sizeController.text, '', imgLink),
-                  // );
+                  Container(
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: [
+                        Container(
+                            height: 50,
+                            width: 190,
+                            margin: const EdgeInsets.only(top: 30, left: 38),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              color: Color.fromRGBO(42, 48, 101, 1),
+                            ),
+                            child: TextButton(
+                              child: Text(
+                                'Salvar',
+                                style: GoogleFonts.lato(
+                                    color: Colors.white, fontSize: 22),
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  loaded = false;
+                                });
 
-                  // var pets = await PetRepository.findPetsByUserEmail(
-                  //     this.user.getEmail());
+                                var imgLink = null;
 
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => HomePage(pets, this.user)));
-                },
+                                if (imgFile == null)
+                                  imgLink = this.pet.getImg();
+                                else
+                                  imgLink = await _uploadImage(img64);
+
+                                await PetRepository.updatePet(
+                                  Pet(
+                                      this.pet.getId(),
+                                      nameController.text,
+                                      animalType,
+                                      rationController.text,
+                                      sizeController.text,
+                                      '',
+                                      imgLink.toString()),
+                                );
+
+                                loaded = true;
+
+                                var pets = null;
+
+                                Navigator.popUntil(context, (route) => false);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomePage(pets, this.user)));
+                              },
+                            )),
+                        Container(
+                            margin: const EdgeInsets.only(top: 30, left: 30),
+                            height: 40,
+                            width: 100,
+                            child: Card(
+                              color: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      loaded = false;
+                                    });
+
+                                    await PetRepository.deletePet(
+                                        this.pet.getId());
+
+                                    loaded = true;
+
+                                    var pets = null;
+
+                                    Navigator.popUntil(
+                                        context, (route) => false);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomePage(pets, this.user)));
+                                  },
+                                  child: Text('Excluir',
+                                      style: GoogleFonts.lato(
+                                          color: Colors.white, fontSize: 12))),
+                            ))
+                      ],
+                    ),
+                  ),
+                ]),
               ),
-            ),
-          ]),
-        ),
-      ),
-    );
+            )),
+      );
+    } else {
+      return LoadingPage.Build();
+    }
   }
 }
