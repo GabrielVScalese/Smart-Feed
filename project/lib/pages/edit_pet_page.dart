@@ -247,7 +247,7 @@ class _EditPetState extends State<EditPet> {
                       children: [
                         Container(
                             height: 50,
-                            width: 190,
+                            width: 150,
                             margin: const EdgeInsets.only(top: 30, left: 38),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
@@ -296,8 +296,8 @@ class _EditPetState extends State<EditPet> {
                             )),
                         Container(
                             margin: const EdgeInsets.only(top: 30, left: 30),
-                            height: 40,
-                            width: 100,
+                            height: 56,
+                            width: 150,
                             child: Card(
                               color: Colors.red,
                               shape: RoundedRectangleBorder(
@@ -325,7 +325,7 @@ class _EditPetState extends State<EditPet> {
                                   },
                                   child: Text('Excluir',
                                       style: GoogleFonts.lato(
-                                          color: Colors.white, fontSize: 12))),
+                                          color: Colors.white, fontSize: 22))),
                             ))
                       ],
                     ),
