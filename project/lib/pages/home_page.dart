@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:project/models/hero_dialog_route.dart';
-import 'package:project/models/repositories/pet_repository.dart';
-import 'package:project/models/repositories/user_repository.dart';
+import 'package:project/components/hero_dialog_route.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/pages/add_modal.dart';
 import 'package:project/pages/add_pet_page.dart';
 import 'package:project/pages/user_config.dart';
+import 'package:project/service/pet_repository.dart';
+import 'package:project/service/user_repository.dart';
 
 import 'loading_page.dart';
 

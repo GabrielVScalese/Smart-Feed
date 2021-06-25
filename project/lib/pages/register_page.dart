@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/models/repositories/user_repository.dart';
-import 'package:project/models/user.dart';
-
-import 'loading_page.dart';
+import 'package:project/components/arrow_back_card.dart';
+import 'package:project/components/rounded_button.dart';
+import 'package:project/components/text_field_container.dart';
+import 'package:project/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -12,267 +12,156 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  var isObscure1 = true;
-  var isObscure2 = true;
-  var loaded = true;
-
-  var emailError = false;
-  var confirmPasswordError = false;
-
-  var emailPlaceholder = 'Digite seu email';
-  var confirmPasswordPlaceholder = 'Confirme sua senha';
-
-  var name = "";
-  var email = "";
-  var password = "";
-  var confirmPassword = "";
-
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
-  var inputColor = Color.fromRGBO(42, 48, 101, 1);
-
   @override
   Widget build(BuildContext context) {
-    if (loaded) {
-      return Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
+    var size = MediaQuery.of(context).size;
+
+    // Cor dos textos do input
+    var inputColor = Color.fromRGBO(186, 184, 184, 1);
+
+    // Labels
+    var labelSize = size.width * 0.035;
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: size.height,
+          width: size.width,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(height: size.height * 0.06),
+            GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+                child: ArrowBackCard(size: size)),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(top: 60),
-                  child: Text(
-                    'Cadastro',
-                    style: GoogleFonts.lato(
-                        fontSize: 42,
-                        color: inputColor,
-                        fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: size.height * 0.09,
+                ),
+                Text('Criar Conta',
+                    style: GoogleFonts.inter(
+                        fontSize: size.width * 0.06,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(height: size.height * 0.05),
+                TextFieldContainer(
+                  size: size,
+                  textField: TextField(
+                    style:
+                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                    decoration: InputDecoration(
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        hintText: 'Nome',
+                        prefixIcon: Icon(
+                          Icons.person,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        border: InputBorder.none),
                   ),
                 ),
-                Column(
+                SizedBox(height: size.height * 0.03),
+                TextFieldContainer(
+                  size: size,
+                  textField: TextField(
+                    style:
+                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                    decoration: InputDecoration(
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        hintText: 'Email',
+                        prefixIcon: Icon(
+                          Icons.email,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        border: InputBorder.none),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                TextFieldContainer(
+                  size: size,
+                  textField: TextField(
+                    style:
+                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                    decoration: InputDecoration(
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        hintText: 'Senha',
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        suffixIcon: Icon(
+                          Icons.visibility,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        border: InputBorder.none),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                TextFieldContainer(
+                  size: size,
+                  textField: TextField(
+                    style:
+                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                    decoration: InputDecoration(
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        hintText: 'Confirmar senha',
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        suffixIcon: Icon(
+                          Icons.visibility,
+                          size: size.width * 0.9 * 0.06,
+                          color: inputColor,
+                        ),
+                        border: InputBorder.none),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.09),
+                RoundedButton(size: size, text: 'CRIAR CONTA'),
+                SizedBox(height: size.height * 0.06),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                        height: 70.0,
-                        margin:
-                            const EdgeInsets.only(left: 15, right: 15, top: 70),
-                        child: TextField(
-                            onChanged: (text) {
-                              setState(() {
-                                name = text;
-                              });
-                            },
-                            style: TextStyle(color: inputColor),
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.account_box,
-                                  color: inputColor,
-                                  size: 27,
-                                ),
-                                labelText: 'Digite seu nome',
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0, color: inputColor)))),
-                    Container(
-                        height: 70.0,
-                        margin:
-                            const EdgeInsets.only(left: 15, right: 15, top: 35),
-                        child: TextField(
-                            onTap: () {
-                              setState(() {
-                                emailError = false;
-                                emailPlaceholder = "Digite seu email";
-                              });
-                            },
-                            onChanged: (text) {
-                              setState(() {
-                                email = text;
-                              });
-                            },
-                            style: TextStyle(color: inputColor),
-                            controller: emailController,
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: emailError
-                                            ? Colors.red
-                                            : inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: Icon(
-                                  Icons.email,
-                                  color: inputColor,
-                                  size: 27,
-                                ),
-                                labelText: emailPlaceholder,
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0,
-                                    color: emailError
-                                        ? Colors.red
-                                        : inputColor)))),
-                    Container(
-                        height: 70.0,
-                        margin:
-                            const EdgeInsets.only(left: 15, right: 15, top: 35),
-                        child: TextField(
-                            controller: passwordController,
-                            onChanged: (text) {
-                              setState(() {
-                                password = text;
-                              });
-                            },
-                            obscureText: isObscure1,
-                            style: TextStyle(color: inputColor),
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: inputColor)),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: inputColor),
-                                ),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    isObscure1
-                                        ? Icons.visibility_sharp
-                                        : Icons.visibility_off_sharp,
-                                    color: inputColor,
-                                    size: 27,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      isObscure1 = !isObscure1;
-                                    });
-                                  },
-                                ),
-                                labelText: "Digite sua senha",
-                                labelStyle: GoogleFonts.lato(
-                                    fontSize: 21.0, color: inputColor)))),
-                    Container(
-                      height: 70.0,
-                      margin:
-                          const EdgeInsets.only(left: 15, right: 15, top: 35),
-                      child: TextField(
-                        controller: confirmPasswordController,
-                        onTap: () {
-                          setState(() {
-                            confirmPasswordError = false;
-                            confirmPasswordPlaceholder = "Confirme sua senha";
-                          });
-                        },
-                        onChanged: (text) {
-                          setState(() {
-                            confirmPassword = text;
-                          });
-                        },
-                        obscureText: isObscure2,
-                        style: TextStyle(
-                            color:
-                                confirmPasswordError ? Colors.red : inputColor),
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: confirmPasswordError
-                                      ? Colors.red
-                                      : inputColor)),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: inputColor),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              isObscure2
-                                  ? Icons.visibility_sharp
-                                  : Icons.visibility_off_sharp,
-                              color: inputColor,
-                              size: 27,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isObscure2 = !isObscure2;
-                              });
-                            },
-                          ),
-                          labelText: confirmPasswordPlaceholder,
-                          labelStyle: GoogleFonts.lato(
-                              fontSize: 21.0,
-                              color: confirmPasswordError
-                                  ? Colors.red
-                                  : inputColor),
-                        ),
+                      child: Text(
+                        'Já possui conta? ',
+                        style: GoogleFonts.inter(
+                            color: Color.fromRGBO(140, 138, 138, 1),
+                            fontSize: labelSize),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 75),
-                      height: 50,
-                      width: 190,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        elevation: 5,
-                        child: TextButton(
-                          child: Text(
-                            'Criar Conta',
-                            style: GoogleFonts.lato(
-                                color: inputColor, fontSize: 22),
-                          ),
-                          onPressed: () async {
-                            try {
-                              if (password == confirmPassword) {
-                                setState(() {
-                                  loaded = false;
-                                });
-
-                                var statusCode =
-                                    await UserRepository.insertUser(
-                                        new User.fromRegister(
-                                            name, email, password));
-
-                                loaded = true;
-
-                                if (statusCode == 200) {
-                                  print('Inserted user!');
-                                  Navigator.popUntil(context, (route) => false);
-                                  Navigator.of(context).pushNamed('/');
-                                } else {
-                                  print('email errado');
-                                  setState(() {
-                                    emailError = true;
-                                    emailPlaceholder = 'Digite um email válido';
-                                    emailController.clear();
-                                  });
-                                }
-                              } else {
-                                setState(() {
-                                  confirmPasswordError = true;
-                                  confirmPasswordPlaceholder =
-                                      'As senhas não são iguais';
-                                  passwordController.clear();
-                                  confirmPasswordController.clear();
-                                });
-                              }
-                            } catch (error) {
-                              print('Invalid user!');
-                            }
-                          },
-                        ),
-                      ),
-                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+                      },
+                      child: Container(
+                          child: Text('Fazer login',
+                              style: GoogleFonts.inter(
+                                color: Color.fromRGBO(0, 119, 199, 1),
+                                fontSize: labelSize,
+                              ))),
+                    )
                   ],
                 )
               ],
             ),
-          ),
+          ]),
         ),
-      );
-    } else {
-      return LoadingPage.Build();
-    }
+      ),
+    );
   }
 }
