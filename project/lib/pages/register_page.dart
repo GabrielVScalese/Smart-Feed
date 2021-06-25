@@ -12,6 +12,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
