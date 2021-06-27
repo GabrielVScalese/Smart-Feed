@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
+import 'package:project/components/page_title.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -41,10 +42,9 @@ class _UserPageState extends State<UserPage> {
             ),
             Container(
               margin: EdgeInsets.only(left: size.width * 0.05),
-              child: Text(
-                'Minha Conta',
-                style: GoogleFonts.inter(
-                    fontSize: size.width * 0.065, fontWeight: FontWeight.bold),
+              child: PageTitle(
+                size: size,
+                title: 'Minha Conta',
               ),
             ),
             SizedBox(

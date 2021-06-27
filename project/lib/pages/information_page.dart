@@ -11,7 +11,7 @@ class InformationPage extends StatefulWidget {
 }
 
 class _InformationPageState extends State<InformationPage> {
-  var devices = ['Smart Feed UHG78F'];
+  var _devices = ['Smart Feed UHG78F'];
 
   // Fazer tamanho máximo e tamanho mínimo; colocar arrow back card
   @override
@@ -95,7 +95,7 @@ class _InformationPageState extends State<InformationPage> {
                     child: DropdownButton(
                         iconDisabledColor: Colors.black,
                         value: 'Smart Feed UHG78F',
-                        items: devices
+                        items: _devices
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -137,15 +137,20 @@ class _InformationPageState extends State<InformationPage> {
                   RectangleCard(
                     size: size,
                     icon: Icons.pets,
+                    scale: size.height * 0.13,
                     content: 'Cão',
                   ),
                   RectangleCard(
                     size: size,
                     icon: Icons.restaurant_menu,
+                    scale: size.height * 0.13,
                     content: 'Ração',
                   ),
                   RectangleCard(
-                      size: size, icon: Icons.aspect_ratio, content: 'Porte'),
+                      size: size,
+                      icon: Icons.aspect_ratio,
+                      scale: size.height * 0.13,
+                      content: 'Porte'),
                 ],
               ),
             ),

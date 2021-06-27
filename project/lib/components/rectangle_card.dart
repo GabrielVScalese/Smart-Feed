@@ -6,11 +6,13 @@ class RectangleCard extends StatelessWidget {
   const RectangleCard({
     Key key,
     @required this.size,
+    @required this.scale,
     @required this.icon,
     @required this.content,
   }) : super(key: key);
 
   final Size size;
+  final double scale;
   final IconData icon;
   final String content;
 
@@ -20,24 +22,24 @@ class RectangleCard extends StatelessWidget {
       elevation: 10,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white, width: 1),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        height: size.height * 0.13,
-        width: size.height * 0.13,
+        height: scale,
+        width: scale,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              size: size.height * 0.05,
+              size: scale * 0.5,
             ),
             SizedBox(
-              height: size.height * 0.013,
+              height: scale * 0.1,
             ),
             Text(content,
                 style: GoogleFonts.inter(
-                    fontSize: size.width * 0.04, fontWeight: FontWeight.w400))
+                    fontSize: scale * 0.13, fontWeight: FontWeight.bold)),
           ],
         ),
       ),

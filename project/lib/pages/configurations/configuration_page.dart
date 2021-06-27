@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
+import 'package:project/components/page_title.dart';
 
 class ConfigurationPage extends StatefulWidget {
   @override
@@ -38,10 +39,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             ),
             Container(
               margin: EdgeInsets.only(left: size.width * 0.05),
-              child: Text(
-                'Configurações',
-                style: GoogleFonts.inter(
-                    fontSize: size.width * 0.065, fontWeight: FontWeight.bold),
+              child: PageTitle(
+                size: size,
+                title: 'Configurações',
               ),
             ),
             SizedBox(
