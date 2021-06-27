@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/pages/login_page.dart';
+import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

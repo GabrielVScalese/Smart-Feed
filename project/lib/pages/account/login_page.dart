@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/pages/register_page.dart';
+import 'package:project/pages/account/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
