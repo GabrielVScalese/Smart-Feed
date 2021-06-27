@@ -1,267 +1,201 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:project/pages/edit_pet_page.dart';
+import 'package:project/components/rectangle_card.dart';
+// import 'package:project/components/arrow_back_card.dart';
 
 class InformationPage extends StatefulWidget {
-  var pet;
-  var user;
-
-  InformationPage(this.user, this.pet);
-
   @override
-  _InformationPageState createState() =>
-      _InformationPageState(this.user, this.pet);
+  _InformationPageState createState() => _InformationPageState();
 }
 
 class _InformationPageState extends State<InformationPage> {
-  var pet;
-  var user;
-
-  _InformationPageState(this.user, this.pet);
-
   var devices = ['Smart Feed UHG78F'];
 
-  List<charts.Series<Consumption, String>> _seriesData;
-
-  _generateData() {
-    var data = [
-      new Consumption('10/03', 16),
-      new Consumption('11/03', 23),
-      new Consumption('12/03', 28),
-      new Consumption('13/03', 14),
-      new Consumption('14/03', 19),
-      new Consumption('15/03', 23),
-    ];
-
-    _seriesData.add(charts.Series<Consumption, String>(
-      id: 'Consumption',
-      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      domainFn: (Consumption sales, _) => sales.date,
-      measureFn: (Consumption sales, _) => sales.value,
-      data: data,
-      fillPatternFn: (_, __) => charts.FillPatternType.solid,
-    ));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // ignore: deprecated_member_use
-    _seriesData = List<charts.Series<Consumption, String>>();
-    _generateData();
-  }
-
+  // Fazer tamanho máximo e tamanho mínimo; colocar arrow back card
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
+    var labelStyle = GoogleFonts.inter(
+        fontSize: size.width * 0.05,
+        color: Colors.black,
+        fontWeight: FontWeight.w500);
+
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: Colors.white,
-        title: Text(
-          this.pet.getName(),
-          style: GoogleFonts.lato(color: Colors.black, fontSize: 25),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
+      body: Container(
+        height: size.height,
+        width: size.width,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: size.height * 0.08,
+            ),
+            // ArrowBackCard(size: size),
+            // SizedBox(
+            //   height: size.height * 0.02,
+            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: size.width * 0.05),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Bella',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.08,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text('Informações',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.05,
+                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ],
+                  ),
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(),
+                  child: Container(
+                    margin: EdgeInsets.only(right: size.width * 0.07),
+                    height: size.height * 0.1,
+                    width: size.height * 0.1,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                                'https://i.imgur.com/BXe3zMK.jpg'))),
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.08,
+            ),
             Container(
-              child: Column(
+              margin: EdgeInsets.only(left: size.width * 0.06),
+              child: Text(
+                'Dispositivo',
+                style: labelStyle,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.white, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                elevation: 10,
+                child: Container(
+                  padding: EdgeInsets.only(
+                      left: size.width * 0.03, right: size.width * 0.02),
+                  width: size.width * 0.9,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        iconDisabledColor: Colors.black,
+                        value: 'Smart Feed UHG78F',
+                        items: devices
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Center(
+                              child: Text(
+                                value,
+                                style: GoogleFonts.inter(
+                                    fontSize: size.width * 0.04,
+                                    color: Color.fromRGBO(125, 125, 125, 1)),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String value) {
+                          setState(() {});
+                        }),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
+            LabelRow(
+              size: size,
+              labelStyle: labelStyle,
+              principalText: 'Características',
+              secondaryText: 'Editar',
+              icon: Icons.edit,
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(top: 20, left: 20),
-                    child: Text(
-                      'Dispositivo',
-                      style: GoogleFonts.lato(fontSize: 23),
-                    ),
+                  RectangleCard(
+                    size: size,
+                    icon: Icons.pets,
+                    content: 'Cão',
                   ),
-                  Container(
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-                    child: Card(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                              value: 'Smart Feed UHG78F',
-                              isExpanded: true,
-                              items: devices.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Center(
-                                    child: Text(
-                                      value,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (String value) {
-                                setState(() {});
-                              }),
-                        )),
+                  RectangleCard(
+                    size: size,
+                    icon: Icons.restaurant_menu,
+                    content: 'Ração',
                   ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(top: 20, left: 20),
-                    child: Text(
-                      'Dados',
-                      style: GoogleFonts.lato(fontSize: 23),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return EditPet(this.user, this.pet);
-                          }));
-                        },
-                        child: Column(children: [
-                          Container(
-                            alignment: Alignment.topCenter,
-                            height: 200,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    this.pet.getImg(),
-                                  ),
-                                  fit: BoxFit.fill,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            margin: const EdgeInsets.all(12),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(bottom: 14),
-                            child: Column(children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child: Icon(Icons.pets, size: 24),
-                                    margin: EdgeInsets.only(left: 20),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      this.pet.getName(),
-                                      style: GoogleFonts.lato(fontSize: 19),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child: Icon(Icons.pets, size: 24),
-                                    margin: EdgeInsets.only(left: 20),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      this.pet.getAnimal(),
-                                      style: GoogleFonts.lato(fontSize: 19),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child:
-                                        Icon(Icons.restaurant_menu, size: 24),
-                                    margin: EdgeInsets.only(left: 20),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      this.pet.getRation(),
-                                      style: GoogleFonts.lato(fontSize: 19),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child: Icon(Icons.aspect_ratio, size: 24),
-                                    margin: EdgeInsets.only(left: 20),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      this.pet.getSize(),
-                                      style: GoogleFonts.lato(fontSize: 19),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                          )
-                        ]),
-                      ),
-                    ),
-                  ),
+                  RectangleCard(
+                      size: size, icon: Icons.aspect_ratio, content: 'Porte'),
                 ],
               ),
             ),
-            Container(
-              alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(left: 20, top: 15),
-              child: Text(
-                'Histórico',
-                style: GoogleFonts.lato(fontSize: 23),
-              ),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+            LabelRow(
+              size: size,
+              labelStyle: labelStyle,
+              principalText: 'Consumo',
+              secondaryText: 'Ver gráfico',
+              icon: null,
+            ),
+            SizedBox(
+              height: size.height * 0.03,
             ),
             Container(
-              height: 200,
-              margin: const EdgeInsets.only(
-                  left: 20, right: 20, top: 15, bottom: 20),
-              child: Card(
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/historic');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    child: AbsorbPointer(
-                      absorbing: true,
-                      child: charts.BarChart(
-                        _seriesData,
-                        animate: true,
-                        animationDuration: Duration(seconds: 2),
-                      ),
-                    ),
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InformationCard(
+                    size: size,
+                    title: 'Média',
+                    content: 'Após 15 dias',
+                    value: 206,
                   ),
-                ),
+                  InformationCard(
+                    size: size,
+                    title: 'Máximo',
+                    content: '24/02/201',
+                    value: 300,
+                  ),
+                  InformationCard(
+                    size: size,
+                    title: 'Mínimo',
+                    content: '14/06/2021',
+                    value: 150,
+                  ),
+                ],
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -269,9 +203,114 @@ class _InformationPageState extends State<InformationPage> {
   }
 }
 
-class Consumption {
-  String date;
-  int value;
+class LabelRow extends StatelessWidget {
+  const LabelRow(
+      {Key key,
+      @required this.size,
+      @required this.labelStyle,
+      @required this.principalText,
+      @required this.icon,
+      @required this.secondaryText})
+      : super(key: key);
 
-  Consumption(this.date, this.value);
+  final Size size;
+  final TextStyle labelStyle;
+  final String principalText;
+  final String secondaryText;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            principalText,
+            style: labelStyle,
+          ),
+          Row(
+            children: [
+              Text(
+                secondaryText,
+                style: GoogleFonts.inter(color: Color.fromRGBO(42, 48, 101, 1)),
+              ),
+              SizedBox(width: size.width * 0.02),
+              Visibility(
+                visible: icon != null ? true : false,
+                child: Icon(icon,
+                    size: size.width * 0.05,
+                    color: Color.fromRGBO(42, 48, 101, 1)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InformationCard extends StatelessWidget {
+  const InformationCard(
+      {Key key,
+      @required this.size,
+      @required this.title,
+      @required this.content,
+      @required this.value})
+      : super(key: key);
+
+  final Size size;
+  final String title;
+  final String content;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.white, width: 1),
+        borderRadius: BorderRadius.only(topRight: Radius.circular(20)),
+      ),
+      child: Container(
+        height: size.height * 0.16,
+        width: size.height * 0.13,
+        padding: EdgeInsets.only(
+          left: size.width * 0.03,
+          top: size.width * 0.04,
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title,
+              style: GoogleFonts.inter(
+                  fontSize: size.width * 0.043, fontWeight: FontWeight.bold)),
+          SizedBox(
+            height: size.height * 0.027,
+          ),
+          Text(content,
+              style: GoogleFonts.inter(
+                fontSize: size.width * 0.03,
+              )),
+          SizedBox(
+            height: size.height * 0.024,
+          ),
+          Row(
+            children: [
+              Text(value.toString(),
+                  style: GoogleFonts.inter(
+                      fontSize: size.width * 0.043,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                width: size.width * 0.02,
+              ),
+              Text('kcal',
+                  style: GoogleFonts.inter(
+                    fontSize: size.width * 0.037,
+                  )),
+            ],
+          ),
+        ]),
+      ),
+    );
+  }
 }
