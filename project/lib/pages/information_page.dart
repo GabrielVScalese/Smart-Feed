@@ -171,7 +171,7 @@ class _InformationPageState extends State<InformationPage> {
               height: size.height * 0.03,
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
