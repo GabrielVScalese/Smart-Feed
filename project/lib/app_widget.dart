@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:project/pages/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/pages/login_page.dart';
 
@@ -9,7 +10,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: InformationPage(),
+      home: ConfigurationPage(),
     );
   }
 }
