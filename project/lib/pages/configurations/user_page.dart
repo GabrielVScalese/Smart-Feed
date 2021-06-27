@@ -10,6 +10,7 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
