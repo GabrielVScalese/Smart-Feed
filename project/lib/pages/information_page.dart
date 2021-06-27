@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/components/circle_image.dart';
 import 'package:project/components/rectangle_card.dart';
 // import 'package:project/components/arrow_back_card.dart';
 
@@ -58,19 +59,10 @@ class _InformationPageState extends State<InformationPage> {
                     ],
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(),
-                  child: Container(
-                    margin: EdgeInsets.only(right: size.width * 0.07),
-                    height: size.height * 0.1,
-                    width: size.height * 0.1,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(
-                                'https://i.imgur.com/BXe3zMK.jpg'))),
-                  ),
+                CircleImage(
+                  scale: size.height * 0.1,
+                  srcImage: 'https://i.imgur.com/BXe3zMK.jpg',
+                  margin: EdgeInsets.only(right: size.width * 0.07),
                 )
               ],
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/components/arrow_back_card.dart';
+import 'package:project/components/circle_card.dart';
 
 class ConfigurationPage extends StatefulWidget {
   @override
@@ -22,7 +22,17 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: size.height * 0.06),
-            GestureDetector(onTap: () {}, child: ArrowBackCard(size: size)),
+            GestureDetector(
+                onTap: () {},
+                child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.05),
+                    child: CircleCard(
+                        size: size,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
+                          size: size.height * 0.03,
+                        )))),
             SizedBox(
               height: size.height * 0.04,
             ),

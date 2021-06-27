@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/components/arrow_back_card.dart';
+import 'package:project/components/circle_card.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/pages/login_page.dart';
@@ -36,7 +36,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
-                child: ArrowBackCard(size: size)),
+                child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.05),
+                    child: CircleCard(
+                        size: size,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
+                          size: size.height * 0.03,
+                        )))),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
