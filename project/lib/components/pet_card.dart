@@ -45,7 +45,7 @@ class PetCard extends StatelessWidget {
                 height: size.width * 0.2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       pet.getName(),

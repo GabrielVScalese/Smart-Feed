@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Container(
-                margin: const EdgeInsets.only(bottom: 6.0),
+                // margin: const EdgeInsets.only(bottom: 6.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: size.height * 0.05),
+                margin: EdgeInsets.symmetric(vertical: size.height * 0.04),
                 height: size.height * 0.06,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   elevation: 5,
                   child: TextField(
                     decoration: InputDecoration(
-                      labelText: "Buscar",
+                      hintText: "Buscar",
                       prefixIcon: Icon(Icons.search),
                       border: InputBorder.none,
                     ),
