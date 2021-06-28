@@ -28,10 +28,13 @@ class _SizeAddPetState extends State<SizeAddPet> {
         .toList();
 
     return AddPetStructure(
-        size: size,
-        title: 'Porte',
-        subTitle: 'Pequeno, médio ou grande',
-        page: 3,
-        cardSliders: cardSliders);
+      size: size,
+      title: 'Porte',
+      subTitle: 'Pequeno, médio ou grande',
+      page: 3,
+      cardSliders: cardSliders,
+      child: null,
+      buttonText: 'Próximo',
+    );
   }
 }

@@ -30,9 +30,11 @@ class _TypeAddPetState extends State<TypeAddPet> {
     return AddPetStructure(
       size: size,
       title: 'Novo Pet',
-      subTitle: 'Cão ou gato',
+      subTitle: 'Cão ou gato.',
       page: 1,
       cardSliders: cardSliders,
+      child: null,
+      buttonText: 'Próximo',
     );
   }
 }

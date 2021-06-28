@@ -28,10 +28,13 @@ class _RationAddPetState extends State<RationAddPet> {
         .toList();
 
     return AddPetStructure(
-        size: size,
-        title: 'Ração',
-        subTitle: 'Premium, Super Premium ou uso clínico.',
-        page: 2,
-        cardSliders: cardSliders);
+      size: size,
+      title: 'Ração',
+      subTitle: 'Premium, Super Premium ou uso clínico.',
+      page: 2,
+      cardSliders: cardSliders,
+      child: null,
+      buttonText: 'Próximo',
+    );
   }
 }
