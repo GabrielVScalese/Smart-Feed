@@ -5,13 +5,10 @@ import 'package:project/models/pet.dart';
 
 class PetRepository {
   static findPetsByUserEmail(String userEmail) async {
-    print(userEmail);
-
     var response = await http.get(
         Uri.parse('https://smart-feed-api.herokuapp.com/api/pets/$userEmail'),
         headers: {"Content-Type": "application/json"});
 
-    print(response.body);
     var map = jsonDecode(response.body);
     var pets = [];
     for (var item in map)

@@ -6,6 +6,8 @@ import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/pages/account/register_page.dart';
 
+import '../home_page.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -100,7 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                     height: size.height * 0.1,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    },
                     child: RoundedButton(size: size, text: 'LOGIN'),
                   )
                 ],

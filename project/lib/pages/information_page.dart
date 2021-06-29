@@ -6,6 +6,10 @@ import 'package:project/components/rectangle_card.dart';
 // import 'package:project/components/arrow_back_card.dart';
 
 class InformationPage extends StatefulWidget {
+  var pet;
+
+  InformationPage({this.pet});
+
   @override
   _InformationPageState createState() => _InformationPageState();
 }
@@ -45,7 +49,7 @@ class _InformationPageState extends State<InformationPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Bella',
+                      Text(this.widget.pet.getName(),
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.08,
                               fontWeight: FontWeight.bold)),
@@ -61,7 +65,7 @@ class _InformationPageState extends State<InformationPage> {
                 ),
                 CircleImage(
                   scale: size.height * 0.1,
-                  srcImage: 'https://i.imgur.com/BXe3zMK.jpg',
+                  srcImage: this.widget.pet.getImg(),
                   margin: EdgeInsets.only(right: size.width * 0.07),
                 )
               ],
@@ -84,7 +88,7 @@ class _InformationPageState extends State<InformationPage> {
               child: Card(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(7.5),
                 ),
                 elevation: 10,
                 child: Container(
@@ -135,22 +139,21 @@ class _InformationPageState extends State<InformationPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   RectangleCard(
-                    size: size,
-                    icon: Icons.pets,
-                    scale: size.height * 0.13,
-                    content: 'Cão',
-                  ),
+                      size: size,
+                      icon: Icons.pets,
+                      scale: size.height * 0.13,
+                      content: this.widget.pet.getAnimal()),
                   RectangleCard(
                     size: size,
                     icon: Icons.restaurant_menu,
                     scale: size.height * 0.13,
-                    content: 'Ração',
+                    content: this.widget.pet.getRation(),
                   ),
                   RectangleCard(
                       size: size,
                       icon: Icons.aspect_ratio,
                       scale: size.height * 0.13,
-                      content: 'Porte'),
+                      content: this.widget.pet.getSize()),
                 ],
               ),
             ),

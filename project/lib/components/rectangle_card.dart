@@ -39,7 +39,7 @@ class RectangleCard extends StatelessWidget {
             ),
             Text(content,
                 style: GoogleFonts.inter(
-                    fontSize: scale * 0.13, fontWeight: FontWeight.bold)),
+                    fontSize: scale * 0.14, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
