@@ -136,11 +136,10 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (BuildContext context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
-                                        builder: (context) => InformationPage(
-                                              pet: _petList[index],
-                                            )));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => InformationPage(
+                                          pet: _petList[index],
+                                        )));
                               },
                               child: PetCard(
                                 size: size,

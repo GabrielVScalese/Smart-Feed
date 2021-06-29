@@ -4,7 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/controllers/auth_controller.dart';
+import 'package:project/models/user.dart';
 import 'package:project/pages/account/register_page.dart';
+import 'package:project/service/user_repository.dart';
 
 import '../home_page.dart';
 
@@ -18,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    bool visible = true;
 
     // Cor dos textos do input
     var inputColor = Color.fromRGBO(186, 184, 184, 1);
@@ -25,6 +29,11 @@ class _LoginPageState extends State<LoginPage> {
     // Labels
     var labelColor = Color.fromRGBO(140, 138, 138, 1);
     var labelSize = size.width * 0.035;
+
+    //controllers
+    // var emailController = TextEditingController();
+    // var passwordController = TextEditingController();
+    var authController = AuthController();
 
     return Scaffold(
       body: Align(
@@ -53,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFieldContainer(
                     size: size,
                     textField: TextField(
+                      // controller: emailController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -70,6 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFieldContainer(
                     size: size,
                     textField: TextField(
+                      obscureText: visible,
+                      // controller: passwordController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -81,10 +93,21 @@ class _LoginPageState extends State<LoginPage> {
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                          suffixIcon: Icon(
-                            Icons.visibility,
-                            size: size.width * 0.9 * 0.06,
-                            color: inputColor,
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              setState(() {
+                                if (visible == true)
+                                  visible = false;
+                                else
+                                  visible = true;
+                                print(visible);
+                              });
+                            },
+                            child: Icon(
+                              visible ? Icons.visibility : Icons.visibility_off,
+                              size: size.width * 0.9 * 0.06,
+                              color: inputColor,
+                            ),
                           ),
                           border: InputBorder.none),
                     ),
@@ -102,9 +125,18 @@ class _LoginPageState extends State<LoginPage> {
                     height: size.height * 0.1,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                    onTap: () async {
+                      User user =
+                          User.fromUser("gabriel.scalese@hotmail.com", "1234");
+                      var statusCode =
+                          await UserRepository.authenticateUser(user);
+                      if (statusCode == 200) {
+                        authController.setUser(context, user);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => HomePage()));
+                      } else {
+                        print('Invalid user!');
+                      }
                     },
                     child: RoundedButton(size: size, text: 'LOGIN'),
                   )
