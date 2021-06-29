@@ -13,7 +13,7 @@ class RectangleCard extends StatelessWidget {
 
   final Size size;
   final double scale;
-  final IconData icon;
+  final Icon icon;
   final String content;
 
   @override
@@ -30,10 +30,7 @@ class RectangleCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: scale * 0.5,
-            ),
+            icon,
             SizedBox(
               height: scale * 0.1,
             ),

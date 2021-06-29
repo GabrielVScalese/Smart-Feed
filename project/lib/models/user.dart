@@ -1,70 +1,62 @@
 import 'dart:convert';
 
 class User {
-  int id;
-  String name;
-  String email;
-  String password;
+  int _id;
+  String _name;
+  String _email;
+  String _password;
 
-  User(this.id, this.name, this.email);
+  User(this._name, this._email, this._password);
 
-  // User(String name, String email, String password) {
-  //   setName(name);
-  //   setEmail(email);
-  //   setPassword(password);
-  // }
+  User.fromAuth(this._email, this._password);
 
-  User.fromAuth({this.email, this.password});
-
-  User.fromUser(String email, String password) {
-    this.email = email;
-    this.password = password;
+  User.fromUser(String _email, String password) {
+    this._email = _email;
+    this._password = password;
   }
 
-  User.fromRegister(this.name, this.email, this.password);
+  // set_name(String _name) {
+  //   if (_name.isEmpty) throw Exception('_name is inval_id!');
 
-  // setName(String name) {
-  //   if (name.isEmpty) throw Exception('name is invalid!');
-
-  //   this.name = name;
+  //   this._name = _name;
   // }
 
-  // setEmail(String email) {
-  //   if (email.isEmpty) throw Exception('email is invalid!');
+  // set_email(String _email) {
+  //   if (_email.isEmpty) throw Exception('_email is inval_id!');
 
-  //   this.email = email;
+  //   this._email = _email;
   // }
 
-  setPassword(String password) {
-    this.password = password;
-  }
+  // setPassword(String password) {
+  //   this.password = password;
+  // }
 
   getId() {
-    return this.id;
+    return this._id;
   }
 
   getName() {
-    return this.name;
+    return this._name;
   }
 
   getEmail() {
-    return this.email;
+    return this._email;
   }
 
   getPassword() {
-    return this.password;
+    return this._password;
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
-    return User.fromAuth(email: map["email"], password: map["password"]);
+    return User.fromAuth(map["_email"], map["password"]);
   }
 
   factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
 
   Map<String, dynamic> toMap() => {
-        "id": id,
-        "name": name,
-        "email": email,
+        "_id": _id,
+        "_name": _name,
+        "_email": _email,
       };
 
   String toJson() => jsonEncode(toMap());

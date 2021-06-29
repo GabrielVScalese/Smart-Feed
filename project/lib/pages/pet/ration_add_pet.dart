@@ -5,6 +5,7 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/pet/name_add_pet.dart';
 
 class RationAddPet extends StatefulWidget {
   @override
@@ -17,9 +18,27 @@ class _RationAddPetState extends State<RationAddPet> {
     var size = MediaQuery.of(context).size;
 
     var cardList = [
-      {'name': 'Premium', 'icon': Icons.restaurant_menu},
-      {'name': 'S. Premium', 'icon': Icons.restaurant_menu},
-      {'name': 'Uso Clínico', 'icon': Icons.restaurant_menu}
+      {
+        'name': 'Premium',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+        )
+      },
+      {
+        'name': 'S. Premium',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+        )
+      },
+      {
+        'name': 'Uso Clínico',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+        )
+      }
     ];
 
     CardChangerController cardChangerController = CardChangerController();
@@ -58,7 +77,7 @@ class _RationAddPetState extends State<RationAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('2/5',
+                            child: Text('3/5',
                                 style: GoogleFonts.inter(
                                     fontSize: size.width * 0.04,
                                     fontWeight: FontWeight.bold)),
@@ -107,11 +126,17 @@ class _RationAddPetState extends State<RationAddPet> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(width: size.width * 0.02),
-                Container(
-                  margin: EdgeInsets.only(right: size.width * 0.05),
-                  child: CircleCard(
-                    icon: Icon(Icons.arrow_forward),
-                    size: size,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => NameAddPet()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: size.width * 0.05),
+                    child: CircleCard(
+                      icon: Icon(Icons.arrow_forward),
+                      size: size,
+                    ),
                   ),
                 ),
               ],

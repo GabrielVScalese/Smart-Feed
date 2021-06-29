@@ -140,18 +140,22 @@ class _InformationPageState extends State<InformationPage> {
                 children: [
                   RectangleCard(
                       size: size,
-                      icon: Icons.pets,
+                      icon: Icon(
+                        Icons.pets,
+                        size: size.height * 0.053,
+                      ),
                       scale: size.height * 0.13,
                       content: this.widget.pet.getAnimal()),
                   RectangleCard(
                     size: size,
-                    icon: Icons.restaurant_menu,
+                    icon:
+                        Icon(Icons.restaurant_menu, size: size.height * 0.053),
                     scale: size.height * 0.13,
                     content: this.widget.pet.getRation(),
                   ),
                   RectangleCard(
                       size: size,
-                      icon: Icons.aspect_ratio,
+                      icon: Icon(Icons.aspect_ratio, size: size.height * 0.053),
                       scale: size.height * 0.13,
                       content: this.widget.pet.getSize()),
                 ],

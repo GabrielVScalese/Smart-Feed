@@ -13,7 +13,7 @@ class PageTitle extends StatelessWidget {
     return Text(
       title,
       style: GoogleFonts.inter(
-          fontSize: size.width * 0.065, fontWeight: FontWeight.bold),
+          fontSize: size.width * 0.07, fontWeight: FontWeight.bold),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/pet/ration_add_pet.dart';
+import 'package:project/pages/pet/size_add_pet.dart';
 
 class TypeAddPet extends StatefulWidget {
   @override
@@ -18,8 +20,20 @@ class _TypeAddPetState extends State<TypeAddPet> {
     var size = MediaQuery.of(context).size;
 
     var cardList = [
-      {'name': 'Cão', 'icon': Icons.pets},
-      {'name': 'Gato', 'icon': Icons.pets}
+      {
+        'name': 'Cão',
+        'icon': Icon(
+          Icons.pets,
+          size: size.height * 0.12,
+        )
+      },
+      {
+        'name': 'Gato',
+        'icon': Icon(
+          Icons.pets,
+          size: size.height * 0.12,
+        )
+      }
     ];
 
     CardChangerController cardChangerController = CardChangerController();
@@ -107,11 +121,17 @@ class _TypeAddPetState extends State<TypeAddPet> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(width: size.width * 0.02),
-                Container(
-                  margin: EdgeInsets.only(right: size.width * 0.05),
-                  child: CircleCard(
-                    icon: Icon(Icons.arrow_forward),
-                    size: size,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => SizeAddPet()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: size.width * 0.05),
+                    child: CircleCard(
+                      icon: Icon(Icons.arrow_forward),
+                      size: size,
+                    ),
                   ),
                 ),
               ],

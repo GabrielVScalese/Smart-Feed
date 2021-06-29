@@ -16,12 +16,14 @@ class PetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 15),
+      margin: EdgeInsets.only(
+          left: size.width * 0.03,
+          right: size.width * 0.03,
+          bottom: size.height * 0.015),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
         elevation: 5,
         child: Row(
           children: [

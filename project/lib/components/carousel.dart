@@ -32,7 +32,7 @@ class Carousel extends StatelessWidget {
               },
               enlargeCenterPage: true,
               enableInfiniteScroll: true,
-              initialPage: 1,
+              initialPage: 0,
               autoPlay: false,
             ),
             items: cardSliders,

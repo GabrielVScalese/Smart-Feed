@@ -45,7 +45,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               ),
             ),
             SizedBox(
-              height: size.height * 0.1,
+              height: size.height * 0.08,
             ),
             ConfigurationCard(
               size: size,

@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  shimmer: ^2.0.0
   progress_indicators: ^1.0.0
   carousel_slider: ^4.0.0
   charts_flutter: ^0.10.0

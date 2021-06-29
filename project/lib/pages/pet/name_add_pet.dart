@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/pages/pet/photo_add_pet.dart';
 
 class NameAddPet extends StatefulWidget {
   @override
@@ -115,11 +116,17 @@ class _NameAddPetState extends State<NameAddPet> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(width: size.width * 0.02),
-                Container(
-                  margin: EdgeInsets.only(right: size.width * 0.05),
-                  child: CircleCard(
-                    icon: Icon(Icons.arrow_forward),
-                    size: size,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => PhotoAddPet()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: size.width * 0.05),
+                    child: CircleCard(
+                      icon: Icon(Icons.arrow_forward),
+                      size: size,
+                    ),
                   ),
                 ),
               ],
