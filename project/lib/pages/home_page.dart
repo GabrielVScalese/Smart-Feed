@@ -4,10 +4,8 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
-import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
-import 'package:project/pages/loader/loader_page.dart';
 import 'package:project/pages/pet/type_add_pet.dart';
 import 'package:project/service/pet_repository.dart';
 
@@ -26,17 +24,17 @@ class _HomePageState extends State<HomePage> {
   loadData() async {
     this._petList =
         await PetRepository.findPetsByUserEmail('gabriel.scalese@hotmail.com');
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    loadData();
+    loadData().then((data) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -189,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                     child: ListView.builder(
                         padding:
                             EdgeInsets.symmetric(vertical: size.height * 0.02),
-                        itemCount: _isLoading ? 3 : _petList.length,
+                        itemCount: _isLoading ? 1 : _petList.length,
                         itemBuilder: (BuildContext context, index) {
                           if (_isLoading)
                             return buildPetCardShimmer();
