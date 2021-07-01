@@ -71,7 +71,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                     ),
                     Text('Escolha uma foto.',
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.04,
+                            fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))
                   ],
                 ),

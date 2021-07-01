@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
-import 'package:project/components/page_title.dart';
 import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/pages/pet/type_add_pet.dart';
 import 'package:project/service/pet_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -24,6 +25,8 @@ class _HomePageState extends State<HomePage> {
   loadData() async {
     this._petList =
         await PetRepository.findPetsByUserEmail('gabriel.scalese@hotmail.com');
+
+    var instance = await SharedPreferences.getInstance();
   }
 
   @override
@@ -129,7 +132,10 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          PageTitle(size: size, title: "Seus Pets"),
+                          Text('Seus Pets',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.067,
+                                  fontWeight: FontWeight.bold)),
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).pushReplacement(

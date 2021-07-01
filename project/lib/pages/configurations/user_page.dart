@@ -11,6 +11,8 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  loadData() {}
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {

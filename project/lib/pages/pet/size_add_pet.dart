@@ -101,7 +101,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
                     ),
                     Text('Pequeno, médio ou grande.',
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.04,
+                            fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))
                   ],
                 ),

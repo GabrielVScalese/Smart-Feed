@@ -101,7 +101,7 @@ class _RationAddPetState extends State<RationAddPet> {
                     ),
                     Text('Premium, Super Premium ou uso clínico.',
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.04,
+                            fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))
                   ],
                 ),

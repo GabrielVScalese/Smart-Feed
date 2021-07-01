@@ -96,7 +96,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
                     ),
                     Text('Cão ou gato.',
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.04,
+                            fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))
                   ],
                 ),
