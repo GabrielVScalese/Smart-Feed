@@ -5,7 +5,7 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
-import 'package:project/pages/pet/ration_add_pet.dart';
+import 'package:project/pages/home_page.dart';
 import 'package:project/pages/pet/size_add_pet.dart';
 
 class TypeAddPet extends StatefulWidget {
@@ -37,6 +37,8 @@ class _TypeAddPetState extends State<TypeAddPet> {
     ];
 
     CardChangerController cardChangerController = CardChangerController();
+    cardChangerController
+        .setValue({'value': cardList[0]['name']}); // default value
 
     return Scaffold(
       body: Container(
@@ -55,7 +57,9 @@ class _TypeAddPetState extends State<TypeAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print(cardChangerController.value);
+                        print(cardChangerController.getValue());
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => HomePage()));
                       },
                       child: CircleCard(
                           size: size,
@@ -123,8 +127,8 @@ class _TypeAddPetState extends State<TypeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => SizeAddPet()));
+                    Navigator.of(context).pushReplacementNamed('/size',
+                        arguments: [cardChangerController.getValue()]);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

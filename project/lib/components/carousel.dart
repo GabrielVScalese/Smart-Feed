@@ -28,7 +28,7 @@ class Carousel extends StatelessWidget {
           child: CarouselSlider(
             options: CarouselOptions(
               onPageChanged: (int index, CarouselPageChangedReason c) {
-                controller.setValue(cardList[index]);
+                controller.setValue({'value': cardList[index]['name']});
               },
               enlargeCenterPage: true,
               enableInfiniteScroll: true,

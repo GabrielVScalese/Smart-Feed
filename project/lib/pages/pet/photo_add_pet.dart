@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/pages/home_page.dart';
@@ -11,6 +13,21 @@ class PhotoAddPet extends StatefulWidget {
 }
 
 class _PhotoAddPetState extends State<PhotoAddPet> {
+  var imgFile;
+
+  _openGallery() async {
+    try {
+      var imgPicker = ImagePicker();
+      var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
+
+      setState(() {
+        imgFile = File(pickedFile.path);
+      });
+    } catch (error) {}
+  }
+
+  _decideView() {}
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -31,7 +48,10 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        var a = ModalRoute.of(context).settings.arguments;
+                        print(a);
+                      },
                       child: CircleCard(
                           size: size,
                           icon: Icon(
@@ -97,20 +117,26 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
-                                child: Card(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(150),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    var imgFile = await _openGallery();
+                                    print(imgFile);
+                                  },
+                                  child: Card(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(150),
+                                    ),
+                                    child: Container(
+                                        child: Icon(Icons.photo_camera,
+                                            size: (size.width * 0.15) * 0.5,
+                                            color: Color.fromRGBO(
+                                                144, 143, 143, 1)),
+                                        width: size.width * 0.15,
+                                        height: size.width * 0.15,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle)),
                                   ),
-                                  child: Container(
-                                      child: Icon(Icons.photo_camera,
-                                          size: (size.width * 0.15) * 0.5,
-                                          color:
-                                              Color.fromRGBO(144, 143, 143, 1)),
-                                      width: size.width * 0.15,
-                                      height: size.width * 0.15,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle)),
                                 ),
                               )
                             ],

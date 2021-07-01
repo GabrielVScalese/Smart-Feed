@@ -17,6 +17,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,8 @@ class _LoginPageState extends State<LoginPage> {
     var labelColor = Color.fromRGBO(140, 138, 138, 1);
     var labelSize = size.width * 0.035;
 
-    //controllers
-    // var emailController = TextEditingController();
-    // var passwordController = TextEditingController();
+    // Controllers
+
     var authController = AuthController();
 
     return Scaffold(
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFieldContainer(
                     size: size,
                     textField: TextField(
-                      // controller: emailController,
+                      controller: emailController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -81,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     size: size,
                     textField: TextField(
                       obscureText: visible,
-                      // controller: passwordController,
+                      controller: passwordController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -127,8 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () async {
                       DialogBuilder(context).showLoadingIndicator();
-                      User user =
-                          User.fromUser("gabriel.scalese@hotmail.com", "1234");
+                      User user = User.fromLogin(
+                          emailController.text, passwordController.text);
                       var statusCode =
                           await UserRepository.authenticateUser(user);
                       if (statusCode == 200) {

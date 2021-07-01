@@ -42,6 +42,7 @@ class _RationAddPetState extends State<RationAddPet> {
     ];
 
     CardChangerController cardChangerController = CardChangerController();
+    cardChangerController.setValue({'value': cardList[0]['name']});
 
     return Scaffold(
       body: Container(
@@ -60,7 +61,9 @@ class _RationAddPetState extends State<RationAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print(cardChangerController.value);
+                        print(cardChangerController.getValue());
+                        var a = ModalRoute.of(context).settings.arguments;
+                        print(a);
                       },
                       child: CircleCard(
                           size: size,
@@ -128,8 +131,11 @@ class _RationAddPetState extends State<RationAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => NameAddPet()));
+                    var arguments =
+                        ModalRoute.of(context).settings.arguments as List;
+                    arguments.add(cardChangerController.getValue());
+                    Navigator.of(context)
+                        .pushReplacementNamed('/photo', arguments: arguments);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

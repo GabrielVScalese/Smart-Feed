@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,10 +25,9 @@ class _HomePageState extends State<HomePage> {
   var _isLoading = true;
 
   loadData() async {
-    this._petList =
-        await PetRepository.findPetsByUserEmail('gabriel.scalese@hotmail.com');
-
     var instance = await SharedPreferences.getInstance();
+    var user = jsonDecode(instance.get('user'));
+    this._petList = await PetRepository.findPetsByUserEmail(user['_email']);
   }
 
   @override

@@ -10,7 +10,7 @@ class User {
 
   User.fromAuth(this._email, this._password);
 
-  User.fromUser(String _email, String password) {
+  User.fromLogin(String _email, String password) {
     this._email = _email;
     this._password = password;
   }

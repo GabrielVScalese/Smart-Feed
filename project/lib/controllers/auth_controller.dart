@@ -14,7 +14,6 @@ class AuthController {
 
   Future<void> setUser(BuildContext context, User user) async {
     if (user != null) {
-      print("entrou");
       saveUser(user);
       this._user = user;
       Navigator.of(context)
@@ -26,26 +25,19 @@ class AuthController {
   }
 
   Future<void> saveUser(User user) async {
-    final instance = await SharedPreferences
-        .getInstance(); // acessa as informações do sharedPreferences
-    await instance.setString(
-        "user", user.toJson()); // coloca um Json do user na key "user"
+    final instance = await SharedPreferences.getInstance();
+    await instance.setString("user", user.toJson());
   }
 
   Future<void> currentUser(BuildContext context) async {
-    final instance = await SharedPreferences
-        .getInstance(); // acessa as informações do sharedPreferences
+    final instance = await SharedPreferences.getInstance();
     await Future.delayed(Duration(seconds: 2));
     if (instance.containsKey("user")) {
-      // se tem algum user
-      final json = instance.get("user") as String; //loga novamente
+      final json = instance.get("user") as String;
 
-      setUser(context, User.fromJson(json)); //
-      return;
+      setUser(context, User.fromJson(json));
     } else {
-      // se não
-      setUser(context,
-          null); // passa um user null para o saveUser ir para a tela de login
+      setUser(context, null);
     }
   }
 }
