@@ -16,7 +16,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
   var imgFile;
 
   getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments as List;
+    var arguments = ModalRoute.of(context).settings.arguments;
 
     return arguments;
   }

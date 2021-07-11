@@ -13,7 +13,7 @@ class SizeAddPet extends StatefulWidget {
 
 class _SizeAddPetState extends State<SizeAddPet> {
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments as List;
+    var arguments = ModalRoute.of(context).settings.arguments;
 
     return arguments;
   }
@@ -26,7 +26,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
 
   _getInitialPage(cardList) {
     try {
-      var arguments = _getArguments();
+      var arguments = _getArguments() as List;
 
       return _findIndexOf(cardList, arguments[1]['value']);
     } catch (err) {
@@ -35,7 +35,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
   }
 
   setCardChangerController(cardList) {
-    var arguments = _getArguments();
+    var arguments = _getArguments() as List;
 
     var cardChangerController = new CardChangerController();
     cardChangerController.setValue({'value': cardList[0]['name']});

@@ -15,7 +15,7 @@ class TypeAddPet extends StatefulWidget {
 
 class _TypeAddPetState extends State<TypeAddPet> {
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments as List;
+    var arguments = ModalRoute.of(context).settings.arguments;
 
     return arguments;
   }
@@ -27,7 +27,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
 
   _getInitialPage(cardList) {
     try {
-      var arguments = _getArguments();
+      var arguments = _getArguments() as List;
 
       return _findIndexOf(cardList, arguments[0]['value']);
     } catch (err) {
@@ -147,7 +147,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    var arguments = _getArguments();
+                    var arguments = _getArguments() as List;
 
                     if (arguments != null)
                       arguments[0] = cardChangerController.getValue();
