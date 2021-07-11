@@ -6,16 +6,16 @@ import 'package:project/controllers/card_changer_controller.dart';
 
 class Carousel extends StatelessWidget {
   Carousel(
-      {Key key, this.size, this.cardList, this.initialPage, this.controller});
+      {Key key, this.size, this.optionlist, this.initialPage, this.controller});
 
   final Size size;
-  final List<Map> cardList;
+  final List<Map> optionlist;
   final int initialPage;
   CardChangerController controller;
 
   @override
   Widget build(BuildContext context) {
-    var cardSliders = cardList
+    var cardSliders = optionlist
         .map((item) => RectangleCard(
             size: size,
             scale: size.height * 0.25,
@@ -30,7 +30,7 @@ class Carousel extends StatelessWidget {
           child: CarouselSlider(
             options: CarouselOptions(
               onPageChanged: (int index, CarouselPageChangedReason c) {
-                controller.setValue({'value': cardList[index]['name']});
+                controller.setValue({'value': optionlist[index]['name']});
               },
               enlargeCenterPage: true,
               enableInfiniteScroll: true,

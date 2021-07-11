@@ -15,6 +15,12 @@ class PhotoAddPet extends StatefulWidget {
 class _PhotoAddPetState extends State<PhotoAddPet> {
   var imgFile;
 
+  getArguments() {
+    var arguments = ModalRoute.of(context).settings.arguments as List;
+
+    return arguments;
+  }
+
   _openGallery() async {
     try {
       var imgPicker = ImagePicker();
@@ -49,8 +55,8 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        var a = ModalRoute.of(context).settings.arguments;
-                        print(a);
+                        Navigator.of(context).pushReplacementNamed('/ration',
+                            arguments: getArguments());
                       },
                       child: CircleCard(
                           size: size,

@@ -13,6 +13,39 @@ class RationAddPet extends StatefulWidget {
 }
 
 class _RationAddPetState extends State<RationAddPet> {
+  _getArguments() {
+    var arguments = ModalRoute.of(context).settings.arguments as List;
+
+    return arguments;
+  }
+
+  _findIndexOf(cardList, value) {
+    for (var item in cardList)
+      if (item['name'] == value) return cardList.indexOf(item);
+  }
+
+  _getInitialPage(cardList) {
+    try {
+      var arguments = _getArguments();
+
+      return _findIndexOf(cardList, arguments[2]['value']);
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  _setCardChangerController(cardList) {
+    var arguments = _getArguments();
+
+    var cardChangerController = new CardChangerController();
+    cardChangerController.setValue({'value': cardList[0]['name']});
+
+    if (arguments.length > 2)
+      cardChangerController.setValue({'value': arguments[2]['value']});
+
+    return cardChangerController;
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -41,8 +74,7 @@ class _RationAddPetState extends State<RationAddPet> {
       }
     ];
 
-    CardChangerController cardChangerController = CardChangerController();
-    cardChangerController.setValue({'value': cardList[0]['name']});
+    var cardChangerController = _setCardChangerController(cardList);
 
     return Scaffold(
       body: Container(
@@ -61,9 +93,8 @@ class _RationAddPetState extends State<RationAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print(cardChangerController.getValue());
-                        var a = ModalRoute.of(context).settings.arguments;
-                        print(a);
+                        Navigator.of(context).pushReplacementNamed('/size',
+                            arguments: _getArguments());
                       },
                       child: CircleCard(
                           size: size,
@@ -114,7 +145,8 @@ class _RationAddPetState extends State<RationAddPet> {
               ),
               Carousel(
                   size: size,
-                  cardList: cardList,
+                  optionlist: cardList,
+                  initialPage: _getInitialPage(cardList),
                   controller: cardChangerController),
             ],
           ),
@@ -131,9 +163,13 @@ class _RationAddPetState extends State<RationAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    var arguments =
-                        ModalRoute.of(context).settings.arguments as List;
-                    arguments.add(cardChangerController.getValue());
+                    var arguments = _getArguments() as List;
+
+                    if (arguments.length > 2)
+                      arguments[2] = cardChangerController.getValue();
+                    else
+                      arguments.add(cardChangerController.getValue());
+
                     Navigator.of(context)
                         .pushReplacementNamed('/photo', arguments: arguments);
                   },

@@ -150,17 +150,6 @@ class _LoginPageState extends State<LoginPage> {
                           DialogBuilder(context).hideOpenDialog();
                         }
                       } catch (err) {}
-
-                      // if (statusCode == 200) {
-                      //   authController.setUser(context, user);
-                      //   DialogBuilder(context).hideOpenDialog();
-
-                      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //       builder: (context) => HomePage()));
-                      // } else {
-                      //   print('Invalid user!');
-                      //   DialogBuilder(context).hideOpenDialog();
-                      // }
                     },
                     child: RoundedButton(size: size, text: 'LOGIN'),
                   )

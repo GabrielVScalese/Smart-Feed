@@ -14,24 +14,24 @@ class TypeAddPet extends StatefulWidget {
 }
 
 class _TypeAddPetState extends State<TypeAddPet> {
-  var _arguments;
+  _getArguments() {
+    var arguments = ModalRoute.of(context).settings.arguments as List;
 
-  @override
-  void initState() {
-    super.initState();
-
-    try {
-      _arguments = ModalRoute.of(context).settings.arguments as List;
-    } catch (err) {
-      _arguments = null;
-    }
+    return arguments;
   }
 
-  getInitialPage() {
-    if (_arguments == null)
+  _findIndexOf(optionList, value) {
+    for (var item in optionList)
+      if (item['name'] == value) return optionList.indexOf(item);
+  }
+
+  _getInitialPage(cardList) {
+    try {
+      var arguments = _getArguments();
+
+      return _findIndexOf(cardList, arguments[0]['value']);
+    } catch (err) {
       return 0;
-    else {
-      print(_arguments);
     }
   }
 
@@ -40,7 +40,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    var cardList = [
+    var optionList = [
       {
         'name': 'Cão',
         'icon': Icon(
@@ -58,8 +58,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
     ];
 
     CardChangerController cardChangerController = CardChangerController();
-    cardChangerController
-        .setValue({'value': cardList[0]['name']}); // default value
+    cardChangerController.setValue({'value': optionList[0]['name']});
 
     return Scaffold(
       body: Container(
@@ -78,7 +77,6 @@ class _TypeAddPetState extends State<TypeAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print(cardChangerController.getValue());
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => HomePage()));
                       },
@@ -131,8 +129,8 @@ class _TypeAddPetState extends State<TypeAddPet> {
               ),
               Carousel(
                   size: size,
-                  cardList: cardList,
-                  initialPage: getInitialPage(),
+                  optionlist: optionList,
+                  initialPage: _getInitialPage(optionList),
                   controller: cardChangerController),
             ],
           ),
@@ -149,9 +147,17 @@ class _TypeAddPetState extends State<TypeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    print(cardChangerController.getValue());
-                    Navigator.of(context).pushReplacementNamed('/size',
-                        arguments: [cardChangerController.getValue()]);
+                    var arguments = _getArguments();
+
+                    if (arguments != null)
+                      arguments[0] = cardChangerController.getValue();
+                    else {
+                      arguments = [];
+                      arguments.add(cardChangerController.getValue());
+                    }
+
+                    Navigator.of(context)
+                        .pushReplacementNamed('/size', arguments: arguments);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,8 +5,6 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
-import 'package:project/pages/pet/ration_add_pet.dart';
-import 'package:project/pages/pet/type_add_pet.dart';
 
 class SizeAddPet extends StatefulWidget {
   @override
@@ -16,21 +12,38 @@ class SizeAddPet extends StatefulWidget {
 }
 
 class _SizeAddPetState extends State<SizeAddPet> {
-  var _arguments;
+  _getArguments() {
+    var arguments = ModalRoute.of(context).settings.arguments as List;
 
-  @override
-  void initState() {
-    super.initState();
+    return arguments;
   }
 
-  getInitialPage() {
-    _arguments = ModalRoute.of(context).settings.arguments as List;
-    print(_arguments);
-    if (_arguments == null)
-      return 0;
-    else {
-      print(_arguments);
+  _findIndexOf(cardList, value) {
+    for (var item in cardList) {
+      if (item['name'] == value) return cardList.indexOf(item);
     }
+  }
+
+  _getInitialPage(cardList) {
+    try {
+      var arguments = _getArguments();
+
+      return _findIndexOf(cardList, arguments[1]['value']);
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  setCardChangerController(cardList) {
+    var arguments = _getArguments();
+
+    var cardChangerController = new CardChangerController();
+    cardChangerController.setValue({'value': cardList[0]['name']});
+
+    if (arguments.length > 1)
+      cardChangerController.setValue({'value': arguments[1]['value']});
+
+    return cardChangerController;
   }
 
   @override
@@ -61,8 +74,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
       },
     ];
 
-    CardChangerController cardChangerController = CardChangerController();
-    cardChangerController.setValue({'value': cardList[0]['name']});
+    var cardChangerController = setCardChangerController(cardList);
 
     return Scaffold(
       body: Container(
@@ -82,7 +94,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacementNamed('/type',
-                            arguments: _arguments);
+                            arguments: _getArguments());
                       },
                       child: CircleCard(
                           size: size,
@@ -133,7 +145,8 @@ class _SizeAddPetState extends State<SizeAddPet> {
               ),
               Carousel(
                   size: size,
-                  cardList: cardList,
+                  optionlist: cardList,
+                  initialPage: _getInitialPage(cardList),
                   controller: cardChangerController),
             ],
           ),
@@ -150,10 +163,15 @@ class _SizeAddPetState extends State<SizeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    _arguments.add(cardChangerController.getValue());
+                    var arguments = _getArguments() as List;
+
+                    if (arguments.length > 1)
+                      arguments[1] = cardChangerController.getValue();
+                    else
+                      arguments.add(cardChangerController.getValue());
 
                     Navigator.of(context)
-                        .pushReplacementNamed('/ration', arguments: _arguments);
+                        .pushReplacementNamed('/ration', arguments: arguments);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),
