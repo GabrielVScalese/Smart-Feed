@@ -6,7 +6,6 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
 import 'package:project/pages/home_page.dart';
-import 'package:project/pages/pet/size_add_pet.dart';
 
 class TypeAddPet extends StatefulWidget {
   @override

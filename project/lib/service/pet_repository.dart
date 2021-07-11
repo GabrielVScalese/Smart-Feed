@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:project/models/pet.dart';
 
@@ -23,9 +22,9 @@ class PetRepository {
     return pets;
   }
 
-  static insertPet(String userEmail, Pet pet) async {
+  static createPet(Pet pet, String token) async {
     var body = json.encode({
-      'userEmail': userEmail,
+      'user_id': pet.getUserId(),
       'name': pet.getName(),
       'animal': pet.getAnimal(),
       'ration': pet.getRation(),
@@ -35,8 +34,11 @@ class PetRepository {
     });
 
     var response = await http.post(
-        Uri.parse('https://smart-feed-api.herokuapp.com/api/insertPet'),
-        headers: {"Content-Type": "application/json"},
+        Uri.parse('https://smart-feed-app.herokuapp.com/pets'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: body);
 
     return response.statusCode;

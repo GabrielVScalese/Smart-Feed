@@ -27,10 +27,10 @@ class _HomePageState extends State<HomePage> {
     try {
       var instance = await SharedPreferences.getInstance();
       var user = await jsonDecode(instance.get('user'));
-      var token = await jsonDecode(instance.get('authorization'));
+      var authorization = await jsonDecode(instance.get('authorization'));
 
-      this._petList =
-          await PetRepository.findPetsByOwner(user['id'], token['token']);
+      this._petList = await PetRepository.findPetsByOwner(
+          user['id'], authorization['token']);
 
       setState(() {
         _isLoading = false;

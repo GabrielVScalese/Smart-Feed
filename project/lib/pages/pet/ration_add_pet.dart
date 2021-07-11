@@ -46,6 +46,17 @@ class _RationAddPetState extends State<RationAddPet> {
     return cardChangerController;
   }
 
+  _insertArgument(cardChangerController) {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 2)
+      arguments[2] = cardChangerController.getValue();
+    else
+      arguments.add(cardChangerController.getValue());
+
+    return arguments;
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -93,8 +104,10 @@ class _RationAddPetState extends State<RationAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        var arguments = _insertArgument(cardChangerController);
+
                         Navigator.of(context).pushReplacementNamed('/size',
-                            arguments: _getArguments());
+                            arguments: arguments);
                       },
                       child: CircleCard(
                           size: size,
@@ -163,12 +176,7 @@ class _RationAddPetState extends State<RationAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    var arguments = _getArguments() as List;
-
-                    if (arguments.length > 2)
-                      arguments[2] = cardChangerController.getValue();
-                    else
-                      arguments.add(cardChangerController.getValue());
+                    var arguments = _insertArgument(cardChangerController);
 
                     Navigator.of(context)
                         .pushReplacementNamed('/photo', arguments: arguments);

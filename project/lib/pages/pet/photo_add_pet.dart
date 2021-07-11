@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
-import 'package:project/pages/home_page.dart';
 
 class PhotoAddPet extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class PhotoAddPet extends StatefulWidget {
 class _PhotoAddPetState extends State<PhotoAddPet> {
   var imgFile;
 
-  getArguments() {
+  _getArguments() {
     var arguments = ModalRoute.of(context).settings.arguments;
 
     return arguments;
@@ -32,10 +31,47 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
     } catch (error) {}
   }
 
-  _decideView() {}
+  _decideView(size) {
+    if (imgFile != null)
+      return ClipOval(
+        child: Image.file(
+          imgFile,
+          fit: BoxFit.cover,
+          // scale: size.height * 0.2,
+        ),
+      );
+    else
+      return Align(
+        child: Icon(Icons.person,
+            size: (size.width * 0.5) * 0.55,
+            color: Color.fromRGBO(186, 184, 184, 1)),
+      );
+  }
+
+  _insertArgument() {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 3)
+      arguments[3] = {'value': imgFile};
+    else
+      arguments.add({'value': imgFile});
+
+    return arguments;
+  }
+
+  _setImgFile() {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 3)
+      setState(() {
+        imgFile = arguments[3]['value'];
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _setImgFile();
+
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -55,8 +91,10 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        var arguments = _insertArgument();
+
                         Navigator.of(context).pushReplacementNamed('/ration',
-                            arguments: getArguments());
+                            arguments: arguments);
                       },
                       child: CircleCard(
                           size: size,
@@ -73,7 +111,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('5/5',
+                            child: Text('4/5',
                                 style: GoogleFonts.inter(
                                     fontSize: size.width * 0.04,
                                     fontWeight: FontWeight.bold)),
@@ -116,17 +154,12 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                       child: Container(
                           child: Stack(
                             children: [
-                              Align(
-                                child: Icon(Icons.person,
-                                    size: (size.width * 0.5) * 0.55,
-                                    color: Color.fromRGBO(186, 184, 184, 1)),
-                              ),
+                              _decideView(size),
                               Align(
                                 alignment: Alignment.bottomRight,
                                 child: GestureDetector(
                                   onTap: () async {
-                                    var imgFile = await _openGallery();
-                                    print(imgFile);
+                                    await _openGallery();
                                   },
                                   child: Card(
                                     elevation: 10,
@@ -163,7 +196,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Finalizar',
+                Text('Próximo',
                     style: GoogleFonts.inter(
                       fontSize: size.width * 0.045,
                       fontWeight: FontWeight.bold,
@@ -171,8 +204,10 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    var arguments = _insertArgument();
+
+                    Navigator.of(context)
+                        .pushReplacementNamed('/name', arguments: arguments);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

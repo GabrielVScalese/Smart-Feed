@@ -19,9 +19,8 @@ class _SizeAddPetState extends State<SizeAddPet> {
   }
 
   _findIndexOf(cardList, value) {
-    for (var item in cardList) {
+    for (var item in cardList)
       if (item['name'] == value) return cardList.indexOf(item);
-    }
   }
 
   _getInitialPage(cardList) {
@@ -44,6 +43,17 @@ class _SizeAddPetState extends State<SizeAddPet> {
       cardChangerController.setValue({'value': arguments[1]['value']});
 
     return cardChangerController;
+  }
+
+  _insertArgument(cardChangerController) {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 1)
+      arguments[1] = cardChangerController.getValue();
+    else
+      arguments.add(cardChangerController.getValue());
+
+    return arguments;
   }
 
   @override
@@ -93,8 +103,10 @@ class _SizeAddPetState extends State<SizeAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        var arguments = _insertArgument(cardChangerController);
+
                         Navigator.of(context).pushReplacementNamed('/type',
-                            arguments: _getArguments());
+                            arguments: arguments);
                       },
                       child: CircleCard(
                           size: size,
@@ -163,12 +175,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    var arguments = _getArguments() as List;
-
-                    if (arguments.length > 1)
-                      arguments[1] = cardChangerController.getValue();
-                    else
-                      arguments.add(cardChangerController.getValue());
+                    var arguments = _insertArgument(cardChangerController);
 
                     Navigator.of(context)
                         .pushReplacementNamed('/ration', arguments: arguments);

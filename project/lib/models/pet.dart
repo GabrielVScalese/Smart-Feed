@@ -1,5 +1,6 @@
 class Pet {
   int _id;
+  int _userId;
   String _name;
   String _animal;
   String _ration;
@@ -10,11 +11,15 @@ class Pet {
   Pet(this._id, this._name, this._animal, this._ration, this._size,
       this._device, this._image);
 
-  Pet.SemIdConstr(this._name, this._animal, this._ration, this._size,
-      this._device, this._image);
+  Pet.fromRegister(this._userId, this._name, this._animal, this._ration,
+      this._size, this._device, this._image);
 
   getId() {
     return this._id;
+  }
+
+  getUserId() {
+    return this._userId;
   }
 
   getName() {

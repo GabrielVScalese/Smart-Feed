@@ -1,10 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
+import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/models/pet.dart';
+import 'package:project/pages/home_page.dart';
 import 'package:project/pages/pet/photo_add_pet.dart';
+import 'package:project/service/pet_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NameAddPet extends StatefulWidget {
   @override
@@ -12,6 +21,43 @@ class NameAddPet extends StatefulWidget {
 }
 
 class _NameAddPetState extends State<NameAddPet> {
+  _getArguments() {
+    var arguments = ModalRoute.of(context).settings.arguments;
+
+    return arguments;
+  }
+
+  _insertArgument() {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 4)
+      arguments[4] = {'value': _nameController.text};
+    else
+      arguments.add({'value': _nameController.text});
+
+    return arguments;
+  }
+
+  _uploadImage(image64) async {
+    var clientID = '2f7307ddc860abf'; // your client id
+    var jsonData = json.encode({'image': image64});
+
+    var response = await http.post(
+        Uri.parse(
+          'https://api.imgur.com/3/image',
+        ),
+        body: jsonData,
+        headers: {
+          "Authorization": 'Client-ID $clientID',
+          "Content-Type": "application/json"
+        });
+
+    var map = json.decode(response.body);
+    return map['data']['link'];
+  }
+
+  var _nameController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -32,7 +78,12 @@ class _NameAddPetState extends State<NameAddPet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        var arguments = _insertArgument();
+
+                        Navigator.of(context).pushReplacementNamed('/photo',
+                            arguments: arguments);
+                      },
                       child: CircleCard(
                           size: size,
                           icon: Icon(
@@ -48,7 +99,7 @@ class _NameAddPetState extends State<NameAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('4/5',
+                            child: Text('5/5',
                                 style: GoogleFonts.inter(
                                     fontSize: size.width * 0.04,
                                     fontWeight: FontWeight.bold)),
@@ -89,6 +140,7 @@ class _NameAddPetState extends State<NameAddPet> {
                     child: new TextFieldContainer(
                       size: size,
                       textField: TextField(
+                        controller: _nameController,
                         style: GoogleFonts.inter(
                             fontSize: size.width * 0.9 * 0.045),
                         decoration: InputDecoration(
@@ -110,16 +162,52 @@ class _NameAddPetState extends State<NameAddPet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Próximo',
+                Text('Finalizar',
                     style: GoogleFonts.inter(
                       fontSize: size.width * 0.045,
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => PhotoAddPet()));
+                  onTap: () async {
+                    if (!_nameController.text.isEmpty)
+                      try {
+                        DialogBuilder(context).showLoadingIndicator();
+
+                        var arguments = _insertArgument();
+
+                        var instance = await SharedPreferences.getInstance();
+                        var user = await jsonDecode(instance.get('user'));
+                        var authorization =
+                            await jsonDecode(instance.get('authorization'));
+
+                        var image64 = base64Encode(
+                            await arguments[3]['value'].readAsBytes());
+
+                        var imageLink = await _uploadImage(image64);
+                        var pet = Pet.fromRegister(
+                            user['id'],
+                            arguments[4]['value'],
+                            arguments[0]['value'],
+                            arguments[2]['value'],
+                            arguments[1]['value'],
+                            "Smart Feed UHG78F",
+                            imageLink);
+
+                        var statusCode = await PetRepository.createPet(
+                            pet, authorization['token']);
+
+                        if (statusCode == 200)
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        else {
+                          DialogBuilder(context).showLoadingIndicator();
+                          print('Error');
+                        }
+                      } catch (err) {
+                        print(err.toString());
+                      }
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),
