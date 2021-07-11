@@ -8,6 +8,7 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
 import 'package:project/pages/pet/ration_add_pet.dart';
+import 'package:project/pages/pet/type_add_pet.dart';
 
 class SizeAddPet extends StatefulWidget {
   @override
@@ -15,6 +16,23 @@ class SizeAddPet extends StatefulWidget {
 }
 
 class _SizeAddPetState extends State<SizeAddPet> {
+  var _arguments;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  getInitialPage() {
+    _arguments = ModalRoute.of(context).settings.arguments as List;
+    print(_arguments);
+    if (_arguments == null)
+      return 0;
+    else {
+      print(_arguments);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -62,7 +80,10 @@ class _SizeAddPetState extends State<SizeAddPet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushReplacementNamed('/type',
+                            arguments: _arguments);
+                      },
                       child: CircleCard(
                           size: size,
                           icon: Icon(
@@ -129,13 +150,10 @@ class _SizeAddPetState extends State<SizeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
-                    var arguments =
-                        ModalRoute.of(context).settings.arguments as List;
-
-                    arguments.add(cardChangerController.getValue());
+                    _arguments.add(cardChangerController.getValue());
 
                     Navigator.of(context)
-                        .pushReplacementNamed('/ration', arguments: arguments);
+                        .pushReplacementNamed('/ration', arguments: _arguments);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

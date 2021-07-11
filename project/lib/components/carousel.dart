@@ -5,10 +5,12 @@ import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/card_changer_controller.dart';
 
 class Carousel extends StatelessWidget {
-  Carousel({Key key, this.size, this.cardList, this.controller});
+  Carousel(
+      {Key key, this.size, this.cardList, this.initialPage, this.controller});
 
   final Size size;
   final List<Map> cardList;
+  final int initialPage;
   CardChangerController controller;
 
   @override
@@ -32,7 +34,7 @@ class Carousel extends StatelessWidget {
               },
               enlargeCenterPage: true,
               enableInfiniteScroll: true,
-              initialPage: 0,
+              initialPage: initialPage,
               autoPlay: false,
             ),
             items: cardSliders,

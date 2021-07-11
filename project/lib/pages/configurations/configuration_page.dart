@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/pages/home_page.dart';
 
 class ConfigurationPage extends StatefulWidget {
   @override
@@ -24,7 +25,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           children: [
             SizedBox(height: size.height * 0.06),
             GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomePage()));
+                },
                 child: Container(
                     margin: EdgeInsets.only(left: size.width * 0.05),
                     child: CircleCard(

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/rectangle_card.dart';
-// import 'package:project/components/arrow_back_card.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -65,7 +64,7 @@ class _InformationPageState extends State<InformationPage> {
                 ),
                 CircleImage(
                   scale: size.height * 0.1,
-                  srcImage: this.widget.pet.getImg(),
+                  srcImage: this.widget.pet.getImage(),
                   margin: EdgeInsets.only(right: size.width * 0.07),
                 )
               ],

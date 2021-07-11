@@ -6,7 +6,7 @@ class User {
   String _email;
   String _password;
 
-  User(this._name, this._email, this._password);
+  User(this._id, this._name, this._email);
 
   User.fromAuth(this._email, this._password);
 
@@ -54,9 +54,9 @@ class User {
   factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
 
   Map<String, dynamic> toMap() => {
-        "_id": _id,
-        "_name": _name,
-        "_email": _email,
+        "id": _id,
+        "name": _name,
+        "email": _email,
       };
 
   String toJson() => jsonEncode(toMap());

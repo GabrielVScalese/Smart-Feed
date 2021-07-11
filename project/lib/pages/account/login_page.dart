@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
     var labelSize = size.width * 0.035;
 
     // Controllers
-
     var authController = AuthController();
 
     return Scaffold(
@@ -127,20 +126,41 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      DialogBuilder(context).showLoadingIndicator();
-                      User user = User.fromLogin(
-                          emailController.text, passwordController.text);
-                      var statusCode =
-                          await UserRepository.authenticateUser(user);
-                      if (statusCode == 200) {
-                        authController.setUser(context, user);
-                        DialogBuilder(context).hideOpenDialog();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => HomePage()));
-                      } else {
-                        print('Invalid user!');
-                        DialogBuilder(context).hideOpenDialog();
-                      }
+                      try {
+                        DialogBuilder(context).showLoadingIndicator();
+
+                        var response = await UserRepository.authenticateUser(
+                            User.fromLogin(
+                                emailController.text, passwordController.text));
+
+                        if (response['statusCode'] == 200) {
+                          var user = User(
+                              response['user']['id'],
+                              response['user']['name'],
+                              response['user']['email']);
+
+                          await authController.setCredentials(
+                              context, user, response['token']);
+
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        } else {
+                          print('Invalid user');
+                          DialogBuilder(context).hideOpenDialog();
+                        }
+                      } catch (err) {}
+
+                      // if (statusCode == 200) {
+                      //   authController.setUser(context, user);
+                      //   DialogBuilder(context).hideOpenDialog();
+
+                      //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      //       builder: (context) => HomePage()));
+                      // } else {
+                      //   print('Invalid user!');
+                      //   DialogBuilder(context).hideOpenDialog();
+                      // }
                     },
                     child: RoundedButton(size: size, text: 'LOGIN'),
                   )

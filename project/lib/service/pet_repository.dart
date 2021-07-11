@@ -4,16 +4,21 @@ import 'package:http/http.dart' as http;
 import 'package:project/models/pet.dart';
 
 class PetRepository {
-  static findPetsByUserEmail(String userEmail) async {
+  static findPetsByOwner(int userId, String token) async {
     var response = await http.get(
-        Uri.parse('https://smart-feed-api.herokuapp.com/api/pets/$userEmail'),
-        headers: {"Content-Type": "application/json"});
+        Uri.parse(
+            'https://smart-feed-app.herokuapp.com/pets/findByOwner/$userId'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        });
 
-    var map = jsonDecode(response.body);
+    var map = await jsonDecode(response.body);
+
     var pets = [];
     for (var item in map)
       pets.add(Pet(item["id"], item["name"], item["animal"], item["ration"],
-          item["size"], item["device"], item["img"]));
+          item["size"], item["device"], item["image"]));
 
     return pets;
   }
@@ -26,7 +31,7 @@ class PetRepository {
       'ration': pet.getRation(),
       'size': pet.getSize(),
       'device': pet.getDevice(),
-      'img': pet.getImg(),
+      'image': pet.getImage(),
     });
 
     var response = await http.post(
@@ -45,7 +50,7 @@ class PetRepository {
       'ration': pet.getRation(),
       'size': pet.getSize(),
       'device': pet.getDevice(),
-      'img': pet.getImg(),
+      'image': pet.getImage(),
     });
 
     var response = await http.put(

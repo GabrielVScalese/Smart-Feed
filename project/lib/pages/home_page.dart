@@ -21,24 +21,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _petList = [];
-
   var _isLoading = true;
 
   loadData() async {
-    var instance = await SharedPreferences.getInstance();
-    var user = jsonDecode(instance.get('user'));
-    this._petList = await PetRepository.findPetsByUserEmail(user['_email']);
+    try {
+      var instance = await SharedPreferences.getInstance();
+      var user = await jsonDecode(instance.get('user'));
+      var token = await jsonDecode(instance.get('authorization'));
+
+      this._petList =
+          await PetRepository.findPetsByOwner(user['id'], token['token']);
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (err) {}
   }
 
   @override
   void initState() {
     super.initState();
 
-    loadData().then((data) {
-      setState(() {
-        _isLoading = false;
-      });
-    });
+    loadData().then((data) {});
   }
 
   @override

@@ -14,6 +14,27 @@ class TypeAddPet extends StatefulWidget {
 }
 
 class _TypeAddPetState extends State<TypeAddPet> {
+  var _arguments;
+
+  @override
+  void initState() {
+    super.initState();
+
+    try {
+      _arguments = ModalRoute.of(context).settings.arguments as List;
+    } catch (err) {
+      _arguments = null;
+    }
+  }
+
+  getInitialPage() {
+    if (_arguments == null)
+      return 0;
+    else {
+      print(_arguments);
+    }
+  }
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
@@ -111,6 +132,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
               Carousel(
                   size: size,
                   cardList: cardList,
+                  initialPage: getInitialPage(),
                   controller: cardChangerController),
             ],
           ),
@@ -127,6 +149,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () {
+                    print(cardChangerController.getValue());
                     Navigator.of(context).pushReplacementNamed('/size',
                         arguments: [cardChangerController.getValue()]);
                   },

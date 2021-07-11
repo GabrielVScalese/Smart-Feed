@@ -5,13 +5,13 @@ class Pet {
   String _ration;
   String _size;
   String _device;
-  String _img;
+  String _image;
 
   Pet(this._id, this._name, this._animal, this._ration, this._size,
-      this._device, this._img);
+      this._device, this._image);
 
   Pet.SemIdConstr(this._name, this._animal, this._ration, this._size,
-      this._device, this._img);
+      this._device, this._image);
 
   getId() {
     return this._id;
@@ -37,7 +37,7 @@ class Pet {
     return this._device;
   }
 
-  getImg() {
-    return this._img;
+  getImage() {
+    return this._image;
   }
 }
