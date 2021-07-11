@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +9,6 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
-import 'package:project/pages/pet/photo_add_pet.dart';
 import 'package:project/service/pet_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,7 +36,7 @@ class _NameAddPetState extends State<NameAddPet> {
   }
 
   _uploadImage(image64) async {
-    var clientID = '2f7307ddc860abf'; // your client id
+    var clientID = '2f7307ddc860abf';
     var jsonData = json.encode({'image': image64});
 
     var response = await http.post(
