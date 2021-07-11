@@ -5,7 +5,6 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
-import 'package:project/pages/pet/name_add_pet.dart';
 
 class RationAddPet extends StatefulWidget {
   @override

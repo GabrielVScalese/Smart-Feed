@@ -8,9 +8,10 @@ import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
-import 'package:project/pages/pet/type_add_pet.dart';
 import 'package:project/service/pet_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'addPet/type_add_pet.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
