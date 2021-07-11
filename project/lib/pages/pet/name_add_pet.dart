@@ -18,6 +18,8 @@ class NameAddPet extends StatefulWidget {
 }
 
 class _NameAddPetState extends State<NameAddPet> {
+  var _nameController = new TextEditingController();
+
   _getArguments() {
     var arguments = ModalRoute.of(context).settings.arguments;
 
@@ -52,8 +54,6 @@ class _NameAddPetState extends State<NameAddPet> {
     var map = json.decode(response.body);
     return map['data']['link'];
   }
-
-  var _nameController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
