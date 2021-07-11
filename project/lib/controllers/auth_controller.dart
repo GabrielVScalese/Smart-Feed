@@ -8,17 +8,10 @@ import 'package:project/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
-  User _user;
-
-  getUser() {
-    return this._user;
-  }
-
   setCredentials(BuildContext context, User user, String token) async {
     if (user != null) {
       _saveUser(user);
       _saveToken(token);
-      this._user = user;
 
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
