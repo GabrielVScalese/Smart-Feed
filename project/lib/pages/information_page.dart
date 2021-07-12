@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
+import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rectangle_card.dart';
+import 'package:project/pages/home_page.dart';
+import 'package:project/service/pet_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -30,175 +37,224 @@ class _InformationPageState extends State<InformationPage> {
       body: Container(
         height: size.height,
         width: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            SizedBox(
-              height: size.height * 0.08,
-            ),
-            // ArrowBackCard(size: size),
-            // SizedBox(
-            //   height: size.height * 0.02,
-            // ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: EdgeInsets.only(left: size.width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(this.widget.pet.getName(),
-                          style: GoogleFonts.inter(
-                              fontSize: size.width * 0.08,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        height: size.height * 0.01,
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+                // ArrowBackCard(size: size),
+                // SizedBox(
+                //   height: size.height * 0.02,
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: size.width * 0.05),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(this.widget.pet.getName(),
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.08,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          Text('Informações',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.05,
+                                  color: Color.fromRGBO(125, 125, 125, 1)))
+                        ],
                       ),
-                      Text('Informações',
-                          style: GoogleFonts.inter(
-                              fontSize: size.width * 0.05,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ),
+                    CircleImage(
+                      scale: size.height * 0.1,
+                      srcImage: this.widget.pet.getImage(),
+                      margin: EdgeInsets.only(right: size.width * 0.07),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.036,
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Text(
+                    'Dispositivo',
+                    style: labelStyle,
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.circular(7.5),
+                    ),
+                    elevation: 10,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: size.width * 0.03, right: size.width * 0.02),
+                      width: size.width * 0.9,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                            iconDisabledColor: Colors.black,
+                            value: 'Smart Feed UHG78F',
+                            items: _devices
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(
+                                  child: Text(
+                                    value,
+                                    style: GoogleFonts.inter(
+                                        fontSize: size.width * 0.04,
+                                        color:
+                                            Color.fromRGBO(125, 125, 125, 1)),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {});
+                            }),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.04,
+                ),
+                LabelRow(
+                  size: size,
+                  labelStyle: labelStyle,
+                  principalText: 'Características',
+                  secondaryText: 'Editar',
+                  icon: Icons.edit,
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      RectangleCard(
+                          size: size,
+                          icon: Icon(
+                            Icons.pets,
+                            size: size.height * 0.053,
+                          ),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getAnimal()),
+                      RectangleCard(
+                        size: size,
+                        icon: Icon(Icons.restaurant_menu,
+                            size: size.height * 0.053),
+                        scale: size.height * 0.13,
+                        content: this.widget.pet.getRation(),
+                      ),
+                      RectangleCard(
+                          size: size,
+                          icon: Icon(Icons.aspect_ratio,
+                              size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getSize()),
                     ],
                   ),
                 ),
-                CircleImage(
-                  scale: size.height * 0.1,
-                  srcImage: this.widget.pet.getImage(),
-                  margin: EdgeInsets.only(right: size.width * 0.07),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
+                LabelRow(
+                  size: size,
+                  labelStyle: labelStyle,
+                  principalText: 'Consumo',
+                  secondaryText: 'Ver gráfico',
+                  icon: null,
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InformationCard(
+                        size: size,
+                        title: 'Média',
+                        content: 'Após 15 dias',
+                        value: 206,
+                      ),
+                      InformationCard(
+                        size: size,
+                        title: 'Máximo',
+                        content: '24/02/201',
+                        value: 300,
+                      ),
+                      InformationCard(
+                        size: size,
+                        title: 'Mínimo',
+                        content: '14/06/2021',
+                        value: 150,
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
-            SizedBox(
-              height: size.height * 0.08,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: size.width * 0.06),
-              child: Text(
-                'Dispositivo',
-                style: labelStyle,
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white, width: 1),
-                  borderRadius: BorderRadius.circular(7.5),
-                ),
-                elevation: 10,
-                child: Container(
-                  padding: EdgeInsets.only(
-                      left: size.width * 0.03, right: size.width * 0.02),
-                  width: size.width * 0.9,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                        iconDisabledColor: Colors.black,
-                        value: 'Smart Feed UHG78F',
-                        items: _devices
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Center(
-                              child: Text(
-                                value,
-                                style: GoogleFonts.inter(
-                                    fontSize: size.width * 0.04,
-                                    color: Color.fromRGBO(125, 125, 125, 1)),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String value) {
-                          setState(() {});
-                        }),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            LabelRow(
-              size: size,
-              labelStyle: labelStyle,
-              principalText: 'Características',
-              secondaryText: 'Editar',
-              icon: Icons.edit,
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            Align(
+              alignment: Alignment(0.92, 0.95),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RectangleCard(
-                      size: size,
-                      icon: Icon(
-                        Icons.pets,
-                        size: size.height * 0.053,
+                  Text('Excluir',
+                      style: GoogleFonts.inter(
+                          fontSize: size.width * 0.042,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red)),
+                  SizedBox(width: size.width * 0.02),
+                  GestureDetector(
+                    onTap: () async {
+                      try {
+                        DialogBuilder(context).showLoadingIndicator();
+
+                        var instance = await SharedPreferences.getInstance();
+
+                        var authorization =
+                            await jsonDecode(instance.get('authorization'));
+
+                        var statusCode = await PetRepository.destroy(
+                            this.widget.pet.getId(), authorization['token']);
+
+                        if (statusCode == 200)
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        else
+                          print('Error');
+                      } catch (err) {}
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: size.width * 0.05),
+                      child: CircleCard(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        size: size,
                       ),
-                      scale: size.height * 0.13,
-                      content: this.widget.pet.getAnimal()),
-                  RectangleCard(
-                    size: size,
-                    icon:
-                        Icon(Icons.restaurant_menu, size: size.height * 0.053),
-                    scale: size.height * 0.13,
-                    content: this.widget.pet.getRation(),
-                  ),
-                  RectangleCard(
-                      size: size,
-                      icon: Icon(Icons.aspect_ratio, size: size.height * 0.053),
-                      scale: size.height * 0.13,
-                      content: this.widget.pet.getSize()),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            LabelRow(
-              size: size,
-              labelStyle: labelStyle,
-              principalText: 'Consumo',
-              secondaryText: 'Ver gráfico',
-              icon: null,
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InformationCard(
-                    size: size,
-                    title: 'Média',
-                    content: 'Após 15 dias',
-                    value: 206,
-                  ),
-                  InformationCard(
-                    size: size,
-                    title: 'Máximo',
-                    content: '24/02/201',
-                    value: 300,
-                  ),
-                  InformationCard(
-                    size: size,
-                    title: 'Mínimo',
-                    content: '14/06/2021',
-                    value: 150,
+                    ),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

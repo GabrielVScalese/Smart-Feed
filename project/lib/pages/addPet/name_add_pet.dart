@@ -191,7 +191,7 @@ class _NameAddPetState extends State<NameAddPet> {
                             "Smart Feed UHG78F",
                             imageLink);
 
-                        var statusCode = await PetRepository.createPet(
+                        var statusCode = await PetRepository.create(
                             pet, authorization['token']);
 
                         if (statusCode == 200)

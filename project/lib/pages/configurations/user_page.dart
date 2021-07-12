@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/components/shimmer_widget.dart';
+import 'package:project/controllers/auth_controller.dart';
+import 'package:project/pages/account/login_page.dart';
+import 'package:project/pages/configurations/configuration_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -11,7 +18,77 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  loadData() {}
+  var _isLoading = true;
+  var _user;
+
+  _loadData() async {
+    try {
+      var instance = await SharedPreferences.getInstance();
+      _user = await jsonDecode(instance.get('user'));
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (err) {}
+  }
+
+  _decideView(size) {
+    if (this._isLoading)
+      return Align(
+        alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ShimmerWidget.circular(
+                width: size.height * 0.03, height: size.height * 0.03),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            ShimmerWidget.rectangular(
+                width: size.width * 0.15, height: size.height * 0.015),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            ShimmerWidget.rectangular(
+                width: size.width * 0.15, height: size.height * 0.015),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+          ],
+        ),
+      );
+
+    return Column(
+      children: [
+        CircleImage(
+          scale: size.height * 0.2,
+          srcImage:
+              'https://lh3.google.com/u/0/ogw/ADea4I4W4LOMQSuR-ScGQ5ir_-xWRMF4vs7aliXbOQ6q=s83-c-mo',
+        ),
+        SizedBox(
+          height: size.height * 0.03,
+        ),
+        Text(_user['name'],
+            style: GoogleFonts.inter(
+                fontSize: size.width * 0.045, fontWeight: FontWeight.bold)),
+        SizedBox(
+          height: size.height * 0.01,
+        ),
+        Text(_user['email'],
+            style: GoogleFonts.inter(
+                fontSize: size.width * 0.035,
+                color: Color.fromRGBO(125, 125, 125, 1)))
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadData().then((data) {});
+  }
 
   // Fazer tamanho máximo e tamanho mínimo
   @override
@@ -22,85 +99,72 @@ class _UserPageState extends State<UserPage> {
       body: Container(
         height: size.height,
         width: size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: size.height * 0.06,
-            ),
-            GestureDetector(
-                onTap: () {},
-                child: Container(
-                    margin: EdgeInsets.only(left: size.width * 0.05),
-                    child: CircleCard(
-                        size: size,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                          size: size.height * 0.03,
-                        )))),
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: size.width * 0.05),
-              child: PageTitle(
-                size: size,
-                title: 'Minha Conta',
+        child: Stack(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: size.height * 0.06,
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.08,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleImage(
-                    scale: size.height * 0.2,
-                    srcImage:
-                        'https://lh3.google.com/u/0/ogw/ADea4I4W4LOMQSuR-ScGQ5ir_-xWRMF4vs7aliXbOQ6q=s83-c-mo',
-                    margin: null,
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  Text('Guilherme Augusto',
-                      style: GoogleFonts.inter(
-                          fontSize: size.width * 0.045,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Text('guilherme.augusto@hotmail.com',
-                      style: GoogleFonts.inter(
-                          fontSize: size.width * 0.035,
-                          color: Color.fromRGBO(125, 125, 125, 1))),
-                  SizedBox(
-                    height: size.height * 0.05,
-                  ),
-                  DataCard(
-                    size: size,
-                    icon: Icons.email,
-                    title: 'Trocar Email',
-                  ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
-                  DataCard(
-                    size: size,
-                    icon: Icons.lock,
-                    title: 'Mudar Senha',
-                  ),
-                ],
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ConfigurationPage()));
+                  },
+                  child: Container(
+                      margin: EdgeInsets.only(left: size.width * 0.05),
+                      child: CircleCard(
+                          size: size,
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                            size: size.height * 0.03,
+                          )))),
+              SizedBox(
+                height: size.height * 0.04,
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            Row(
+              Container(
+                margin: EdgeInsets.only(left: size.width * 0.05),
+                child: PageTitle(
+                  size: size,
+                  title: 'Minha Conta',
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.08,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    _decideView(size),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    DataCard(
+                      size: size,
+                      icon: Icons.email,
+                      title: 'Trocar Email',
+                    ),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
+                    DataCard(
+                      size: size,
+                      icon: Icons.lock,
+                      title: 'Mudar Senha',
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment(0.92, 0.95),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text('Logout',
@@ -109,22 +173,33 @@ class _UserPageState extends State<UserPage> {
                         fontWeight: FontWeight.bold,
                         color: Colors.red)),
                 SizedBox(width: size.width * 0.02),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      margin: EdgeInsets.only(right: size.width * 0.05),
-                      child: CircleCard(
-                        icon: Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
-                        size: size,
+                GestureDetector(
+                  onTap: () async {
+                    try {
+                      var instance = await SharedPreferences.getInstance();
+
+                      instance.remove('user');
+                      instance.remove('token');
+
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    } catch (err) {}
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: size.width * 0.05),
+                    child: CircleCard(
+                      icon: Icon(
+                        Icons.logout,
+                        color: Colors.red,
                       ),
-                    )),
+                      size: size,
+                    ),
+                  ),
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          )
+        ]),
       ),
     );
   }

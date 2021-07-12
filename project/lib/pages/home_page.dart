@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
+import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/service/pet_repository.dart';
@@ -22,9 +23,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var _petList = [];
+  var _dynamicPetList = [];
   var _isLoading = true;
 
-  loadData() async {
+  var namePetController = new TextEditingController();
+
+  _loadData() async {
     try {
       var instance = await SharedPreferences.getInstance();
       var user = await jsonDecode(instance.get('user'));
@@ -33,17 +37,29 @@ class _HomePageState extends State<HomePage> {
       this._petList = await PetRepository.findPetsByOwner(
           user['id'], authorization['token']);
 
+      this._dynamicPetList = this._petList;
+
       setState(() {
         _isLoading = false;
       });
     } catch (err) {}
   }
 
+  _findPetsByValue(String value) {
+    var pets = [];
+    for (Pet pet in _petList) {
+      if (pet.getName().toLowerCase().contains(value.toLowerCase()))
+        pets.add(pet);
+    }
+
+    return pets;
+  }
+
   @override
   void initState() {
     super.initState();
 
-    loadData().then((data) {});
+    _loadData().then((data) {});
   }
 
   @override
@@ -168,6 +184,16 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   elevation: 5,
                   child: TextField(
+                    controller: namePetController,
+                    onChanged: (value) {
+                      print(value);
+                      setState(() {
+                        if (value.isEmpty)
+                          this._dynamicPetList = this._petList;
+                        else
+                          this._dynamicPetList = _findPetsByValue(value);
+                      });
+                    },
                     decoration: InputDecoration(
                       hintText: "Buscar",
                       prefixIcon: Icon(
@@ -199,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                     child: ListView.builder(
                         padding:
                             EdgeInsets.symmetric(vertical: size.height * 0.02),
-                        itemCount: _isLoading ? 1 : _petList.length,
+                        itemCount: _isLoading ? 1 : _dynamicPetList.length,
                         itemBuilder: (BuildContext context, index) {
                           if (_isLoading)
                             return buildPetCardShimmer();
@@ -213,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: PetCard(
                                 size: size,
-                                pet: _petList[index],
+                                pet: _dynamicPetList[index],
                               ),
                             );
                         }),

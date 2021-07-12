@@ -11,7 +11,6 @@ class PetRepository {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $token'
         });
-
     var map = await jsonDecode(response.body);
 
     var pets = [];
@@ -22,7 +21,7 @@ class PetRepository {
     return pets;
   }
 
-  static createPet(Pet pet, String token) async {
+  static create(Pet pet, String token) async {
     var body = json.encode({
       'user_id': pet.getUserId(),
       'name': pet.getName(),
@@ -44,7 +43,7 @@ class PetRepository {
     return response.statusCode;
   }
 
-  static updatePet(Pet pet) async {
+  static update(Pet pet, String token) async {
     var body = json.encode({
       'id': pet.getId(),
       'name': pet.getName(),
@@ -56,18 +55,23 @@ class PetRepository {
     });
 
     var response = await http.put(
-        Uri.parse('https://smart-feed-api.herokuapp.com/api/updatePetById'),
-        headers: {"Content-Type": "application/json"},
+        Uri.parse('https://smart-feed-app.herokuapp.com/pets/${pet.getId()}'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: body);
 
     return response.statusCode;
   }
 
-  static deletePet(var id) async {
+  static destroy(int id, String token) async {
     var response = await http.delete(
-        Uri.parse('https://smart-feed-api.herokuapp.com/api/deletePetById/' +
-            id.toString()),
-        headers: {"Content-Type": "application/json"});
+        Uri.parse('https://smart-feed-app.herokuapp.com/pets/$id'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
 
     return response.statusCode;
   }

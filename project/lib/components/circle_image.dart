@@ -2,10 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class CircleImage extends StatelessWidget {
   const CircleImage(
-      {Key key,
-      @required this.margin,
-      @required this.scale,
-      @required this.srcImage})
+      {Key key, this.margin, @required this.scale, @required this.srcImage})
       : super(key: key);
 
   final EdgeInsetsGeometry margin;

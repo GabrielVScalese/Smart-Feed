@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/pages/home_page.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -51,14 +52,20 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             SizedBox(
               height: size.height * 0.08,
             ),
-            ConfigurationCard(
-              size: size,
-              icon: Icon(
-                Icons.person,
-                size: size.height * 0.04,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => UserPage()));
+              },
+              child: ConfigurationCard(
+                size: size,
+                icon: Icon(
+                  Icons.person,
+                  size: size.height * 0.04,
+                ),
+                title: 'Minha Conta',
+                content: 'Informações e editar conta',
               ),
-              title: 'Minha Conta',
-              content: 'Informações e editar conta',
             ),
             SizedBox(
               height: size.height * 0.05,

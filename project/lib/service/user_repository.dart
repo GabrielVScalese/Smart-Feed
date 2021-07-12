@@ -52,11 +52,13 @@ class UserRepository {
     } catch (err) {}
   }
 
-  static deleteUserById(int id) async {
+  static destroy(int id, String token) async {
     var response = await http.delete(
-        Uri.parse(
-            'https://smart-feed-api.herokuapp.com/api/deleteUserById/$id'),
-        headers: {"Content-Type": "application/json"});
+        Uri.parse('https://smart-feed-app.herokuapp.com/users/$id'),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
 
     return response.statusCode;
   }

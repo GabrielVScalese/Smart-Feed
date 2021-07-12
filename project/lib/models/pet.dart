@@ -22,7 +22,7 @@ class Pet {
     return this._userId;
   }
 
-  getName() {
+  String getName() {
     return this._name;
   }
 
