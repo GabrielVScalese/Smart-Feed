@@ -19,21 +19,23 @@ class UserRepository {
     return response.statusCode;
   }
 
-  // static updateUserById(User user) async {
-  //   var body = jsonEncode({
-  //     'id': user.getId(),
-  //     'name': user.getName(),
-  //     'email': user.getEmail(),
-  //     'password': user.getPassword()
-  //   });
+  static update(User user, String token) async {
+    var body = jsonEncode({
+      'name': user.getName(),
+      'email': user.getEmail(),
+      'password': user.getPassword()
+    });
 
-  //   var response = await http.put(
-  //       Uri.parse('https://smart-feed-api.herokuapp.com/api/updateUserById'),
-  //       body: body,
-  //       headers: {"Content-Type": "application/json"});
+    var response = await http.put(
+        Uri.parse('https://smart-feed-app.herokuapp.com/users/${user.getId()}'),
+        body: body,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        });
 
-  //   return response.statusCode;
-  // }
+    return response.statusCode;
+  }
 
   static authenticateUser(User user) async {
     try {

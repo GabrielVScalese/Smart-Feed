@@ -21,6 +21,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+// IMPORTANTE: CORRIGIR ERRO HOME PAGE -> INFORMATION PAGE
 class _HomePageState extends State<HomePage> {
   var _petList = [];
   var _dynamicPetList = [];

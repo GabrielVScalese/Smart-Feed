@@ -128,29 +128,25 @@ class _NameAddPetState extends State<NameAddPet> {
               SizedBox(
                 height: size.height * 0.13,
               ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.13,
+              SizedBox(
+                height: size.height * 0.13,
+              ),
+              Align(
+                child: new TextFieldContainer(
+                  size: size,
+                  textField: TextField(
+                    controller: _nameController,
+                    style:
+                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                    decoration: InputDecoration(
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        hintText: 'Nome',
+                        prefixIcon:
+                            Icon(Icons.person, size: size.width * 0.9 * 0.06),
+                        border: InputBorder.none),
                   ),
-                  Align(
-                    child: new TextFieldContainer(
-                      size: size,
-                      textField: TextField(
-                        controller: _nameController,
-                        style: GoogleFonts.inter(
-                            fontSize: size.width * 0.9 * 0.045),
-                        decoration: InputDecoration(
-                            hintStyle: GoogleFonts.inter(
-                                color: Color.fromRGBO(186, 184, 184, 1)),
-                            hintText: 'Nome',
-                            prefixIcon: Icon(Icons.person,
-                                size: size.width * 0.9 * 0.06),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),

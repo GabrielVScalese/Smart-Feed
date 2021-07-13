@@ -6,6 +6,7 @@ import 'package:project/pages/addPet/photo_add_pet.dart';
 import 'package:project/pages/addPet/ration_add_pet.dart';
 import 'package:project/pages/addPet/size_add_pet.dart';
 import 'package:project/pages/addPet/type_add_pet.dart';
+import 'package:project/pages/configurations/change_password_page.dart';
 import 'package:project/pages/splash_page.dart';
 
 class AppWidget extends StatelessWidget {

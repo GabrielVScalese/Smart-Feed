@@ -6,12 +6,12 @@ class User {
   String _email;
   String _password;
 
-  User(this._id, this._name, this._email);
+  User(this._id, this._name, this._email, this._password);
 
-  User.fromAuth(this._email, this._password);
+  User.fromAuth(this._id, this._name, this._email);
 
-  User.fromLogin(String _email, String password) {
-    this._email = _email;
+  User.fromLogin(String email, String password) {
+    this._email = email;
     this._password = password;
   }
 
@@ -48,7 +48,7 @@ class User {
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
-    return User.fromAuth(map["_email"], map["password"]);
+    return User.fromAuth(map['id'], map["name"], map["email"]);
   }
 
   factory User.fromJson(String json) => User.fromMap(jsonDecode(json));

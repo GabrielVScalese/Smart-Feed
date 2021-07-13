@@ -12,6 +12,8 @@ import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'change_password_page.dart';
+
 class UserPage extends StatefulWidget {
   @override
   _UserPageState createState() => _UserPageState();
@@ -149,10 +151,16 @@ class _UserPageState extends State<UserPage> {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    DataCard(
-                      size: size,
-                      icon: Icons.lock,
-                      title: 'Mudar Senha',
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ChangePasswordPage()));
+                      },
+                      child: DataCard(
+                        size: size,
+                        icon: Icons.lock,
+                        title: 'Mudar Senha',
+                      ),
                     ),
                   ],
                 ),

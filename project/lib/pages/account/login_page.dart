@@ -134,14 +134,19 @@ class _LoginPageState extends State<LoginPage> {
                             User.fromLogin(
                                 emailController.text, passwordController.text));
 
+                        print(response['refreshToken']);
+
                         if (response['statusCode'] == 200) {
-                          var user = User(
+                          var user = User.fromAuth(
                               response['user']['id'],
                               response['user']['name'],
                               response['user']['email']);
 
                           await authController.setCredentials(
-                              context, user, response['token']);
+                              context,
+                              user,
+                              response['token'],
+                              response['refreshToken']['id']);
 
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
