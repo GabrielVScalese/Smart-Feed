@@ -15,22 +15,6 @@ class User {
     this._password = password;
   }
 
-  // set_name(String _name) {
-  //   if (_name.isEmpty) throw Exception('_name is inval_id!');
-
-  //   this._name = _name;
-  // }
-
-  // set_email(String _email) {
-  //   if (_email.isEmpty) throw Exception('_email is inval_id!');
-
-  //   this._email = _email;
-  // }
-
-  // setPassword(String password) {
-  //   this.password = password;
-  // }
-
   getId() {
     return this._id;
   }

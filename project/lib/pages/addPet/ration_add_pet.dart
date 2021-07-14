@@ -145,7 +145,7 @@ class _RationAddPetState extends State<RationAddPet> {
                     SizedBox(
                       height: size.height * 0.01,
                     ),
-                    Text('Premium, Super Premium ou uso clínico.',
+                    Text('Premium, Super Premium ou Uso Clínico.',
                         style: GoogleFonts.inter(
                             fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))

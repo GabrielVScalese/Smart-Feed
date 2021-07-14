@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/home_page.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
@@ -43,7 +41,7 @@ class AuthController {
       final userJson = instance.get("user") as String;
 
       final authorizationJson = instance.get('authorization') as String;
-      var authorization = jsonDecode(authorizationJson);
+      var authorization = await jsonDecode(authorizationJson);
 
       setCredentials(context, User.fromJson(userJson), authorization['token'],
           authorization['refreshToken']);

@@ -1,18 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
-import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/models/user.dart';
+import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
-import 'package:project/service/user_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'configuration_page.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   @override
@@ -20,15 +13,18 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  // Cor dos textos do input
-  var inputColor = Color.fromRGBO(186, 184, 184, 1);
-
   var newPasswordController = new TextEditingController();
-  var currentPasswordController = new TextEditingController();
+  var reapeatPasswordController = new TextEditingController();
+
+  var newPasswordObscure = true;
+  var repeatPasswordObscure = true;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    // Cor dos textos do input
+    var inputColor = Color.fromRGBO(186, 184, 184, 1);
 
     return Scaffold(
       body: Container(
@@ -60,19 +56,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   height: size.height * 0.04,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: size.width * 0.05),
-                  child: PageTitle(
-                    size: size,
-                    title: 'Mudar Senha',
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageTitle(size: size, title: 'Mudar Senha'),
+                      SizedBox(
+                        height: size.height * 0.015,
+                      ),
+                      Text('Digite e repita a nova senha.',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.045,
+                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ],
                   ),
                 ),
-                SizedBox(height: size.height * 0.25),
+                SizedBox(height: size.height * 0.21),
                 Align(
                   child: TextFieldContainer(
                     size: size,
                     textField: TextField(
                       controller: newPasswordController,
-                      obscureText: true,
+                      obscureText: newPasswordObscure,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -84,10 +89,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                          suffixIcon: InkWell(
-                            onTap: () {},
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                newPasswordObscure = !newPasswordObscure;
+                              });
+                            },
                             child: Icon(
-                              Icons.visibility,
+                              newPasswordObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               size: size.width * 0.9 * 0.06,
                               color: inputColor,
                             ),
@@ -103,23 +114,29 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   child: TextFieldContainer(
                     size: size,
                     textField: TextField(
-                      controller: currentPasswordController,
-                      obscureText: true,
+                      controller: reapeatPasswordController,
+                      obscureText: repeatPasswordObscure,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
                           hintStyle: GoogleFonts.inter(
                               color: Color.fromRGBO(186, 184, 184, 1)),
-                          hintText: 'Senha Atual',
+                          hintText: 'Repita a Senha',
                           prefixIcon: Icon(
                             Icons.lock,
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                          suffixIcon: InkWell(
-                            onTap: () {},
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                repeatPasswordObscure = !repeatPasswordObscure;
+                              });
+                            },
                             child: Icon(
-                              Icons.visibility,
+                              repeatPasswordObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               size: size.width * 0.9 * 0.06,
                               color: inputColor,
                             ),
@@ -128,6 +145,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
               ],
             ),
             Align(
@@ -135,7 +155,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text('Salvar',
+                  Text('Próximo',
                       style: GoogleFonts.inter(
                           fontSize: size.width * 0.042,
                           fontWeight: FontWeight.w600,
@@ -143,49 +163,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () async {
-                      try {
-                        DialogBuilder(context).showLoadingIndicator();
-                        var instance = await SharedPreferences.getInstance();
-                        var userFromInstance =
-                            await jsonDecode(instance.get('user'));
-
-                        var authenticationResponse =
-                            await UserRepository.authenticateUser(
-                                User.fromLogin(userFromInstance['email'],
-                                    currentPasswordController.text));
-
-                        if (authenticationResponse['statusCode'] == 200) {
-                          var user = User(
-                              userFromInstance['id'],
-                              userFromInstance['name'],
-                              userFromInstance['email'],
-                              newPasswordController.text);
-
-                          var authorization =
-                              await jsonDecode(instance.get('authorization'));
-
-                          var updateStatusCode = await UserRepository.update(
-                              user, authorization['token']);
-
-                          if (updateStatusCode == 200)
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => UserPage()));
-                          else {
-                            DialogBuilder(context).hideOpenDialog();
-                          }
-                          print('Error');
-                        }
-                      } catch (err) {
-                        print(err.toString());
-                        DialogBuilder(context).hideOpenDialog();
-                      }
+                      if (newPasswordController.text ==
+                              reapeatPasswordController.text &&
+                          newPasswordController.text.isNotEmpty)
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ConfirmPasswordPage(
+                                newPasswordController.text)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
                         icon: Icon(
-                          Icons.done,
+                          Icons.arrow_forward,
                           color: Colors.black,
                         ),
                         size: size,

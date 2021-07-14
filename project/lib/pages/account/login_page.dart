@@ -20,11 +20,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var visible = true;
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    bool visible = true;
 
     // Cor dos textos do input
     var inputColor = Color.fromRGBO(186, 184, 184, 1);
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                          suffixIcon: InkWell(
+                          suffixIcon: GestureDetector(
                             onTap: () {
                               setState(() {
                                 if (visible == true)

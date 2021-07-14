@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:project/models/pet.dart';
+import 'package:project/providers/authorization_provider.dart';
 
 class PetRepository {
-  static findPetsByOwner(int userId, String token) async {
+  static findPetsByOwner(int userId) async {
+    var authorization = await AuthorizationProvider.execute();
     var response = await http.get(
         Uri.parse(
             'https://smart-feed-app.herokuapp.com/pets/findByOwner/$userId'),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": 'Bearer $token'
+          "Authorization": 'Bearer ${authorization["token"]}'
         });
     var map = await jsonDecode(response.body);
 
@@ -21,7 +23,7 @@ class PetRepository {
     return pets;
   }
 
-  static create(Pet pet, String token) async {
+  static create(Pet pet) async {
     var body = json.encode({
       'user_id': pet.getUserId(),
       'name': pet.getName(),
@@ -32,13 +34,14 @@ class PetRepository {
       'image': pet.getImage(),
     });
 
-    var response = await http.post(
-        Uri.parse('https://smart-feed-app.herokuapp.com/pets'),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $token"
-        },
-        body: body);
+    var authorization = await AuthorizationProvider.execute();
+    var response =
+        await http.post(Uri.parse('https://smart-feed-app.herokuapp.com/pets'),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer ${authorization["token"]}"
+            },
+            body: body);
 
     return response.statusCode;
   }
@@ -54,23 +57,25 @@ class PetRepository {
       'image': pet.getImage(),
     });
 
+    var authorization = await AuthorizationProvider.execute();
     var response = await http.put(
         Uri.parse('https://smart-feed-app.herokuapp.com/pets/${pet.getId()}'),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token"
+          "Authorization": "Bearer ${authorization["token"]}"
         },
         body: body);
 
     return response.statusCode;
   }
 
-  static destroy(int id, String token) async {
+  static destroy(int id) async {
+    var authorization = await AuthorizationProvider.execute();
     var response = await http.delete(
         Uri.parse('https://smart-feed-app.herokuapp.com/pets/$id'),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token"
+          "Authorization": "Bearer ${authorization["token"]}"
         });
 
     return response.statusCode;

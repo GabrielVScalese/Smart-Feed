@@ -234,7 +234,7 @@ class _InformationPageState extends State<InformationPage> {
                             await jsonDecode(instance.get('authorization'));
 
                         var statusCode = await PetRepository.destroy(
-                            this.widget.pet.getId(), authorization['token']);
+                            this.widget.pet.getId());
 
                         if (statusCode == 200)
                           Navigator.of(context).pushReplacement(
