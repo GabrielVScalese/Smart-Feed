@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   _findPetsByValue(String value) {
     var pets = [];
     for (Pet pet in _petList) {
-      if (pet.getName().toLowerCase().contains(value.toLowerCase()))
+      if (pet.getName().toLowerCase().startsWith(value.toLowerCase()))
         pets.add(pet);
     }
 
@@ -184,7 +184,6 @@ class _HomePageState extends State<HomePage> {
                   child: TextField(
                     controller: namePetController,
                     onChanged: (value) {
-                      print(value);
                       setState(() {
                         if (value.isEmpty)
                           this._dynamicPetList = this._petList;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,11 +6,9 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/shimmer_widget.dart';
-import 'package:project/controllers/auth_controller.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'change_password_page.dart';
 
 class UserPage extends StatefulWidget {
@@ -73,13 +70,13 @@ class _UserPageState extends State<UserPage> {
         ),
         Text(_user['name'],
             style: GoogleFonts.inter(
-                fontSize: size.width * 0.045, fontWeight: FontWeight.bold)),
+                fontSize: size.width * 0.048, fontWeight: FontWeight.bold)),
         SizedBox(
           height: size.height * 0.01,
         ),
         Text(_user['email'],
             style: GoogleFonts.inter(
-                fontSize: size.width * 0.035,
+                fontSize: size.width * 0.038,
                 color: Color.fromRGBO(125, 125, 125, 1)))
       ],
     );

@@ -33,11 +33,17 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
   _decideView(size) {
     if (imgFile != null)
-      return ClipOval(
-        child: Image.file(
-          imgFile,
-          fit: BoxFit.cover,
-          // scale: size.height * 0.2,
+      return Center(
+        child: Container(
+          width: size.width * 0.5,
+          height: size.width * 0.5,
+          child: ClipOval(
+            child: Image.file(
+              imgFile,
+              fit: BoxFit.cover,
+              // scale: size.height * 0.2,
+            ),
+          ),
         ),
       );
     else

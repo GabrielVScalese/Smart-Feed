@@ -194,11 +194,12 @@ class _NameAddPetState extends State<NameAddPet> {
                               MaterialPageRoute(
                                   builder: (context) => HomePage()));
                         else {
-                          DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context).hideOpenDialog();
                           print('Error');
                         }
                       } catch (err) {
                         print(err.toString());
+                        DialogBuilder(context).hideOpenDialog();
                       }
                   },
                   child: Container(
