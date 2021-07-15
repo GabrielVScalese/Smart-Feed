@@ -142,8 +142,9 @@ class _NameAddPetState extends State<NameAddPet> {
                         hintStyle: GoogleFonts.inter(
                             color: Color.fromRGBO(186, 184, 184, 1)),
                         hintText: 'Nome',
-                        prefixIcon:
-                            Icon(Icons.person, size: size.width * 0.9 * 0.06),
+                        prefixIcon: Icon(Icons.person,
+                            size: size.width * 0.9 * 0.06,
+                            color: Color.fromRGBO(186, 184, 184, 1)),
                         border: InputBorder.none),
                   ),
                 ),

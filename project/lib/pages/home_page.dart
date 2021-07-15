@@ -64,6 +64,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
+    // Cor dos textos do input
+    var inputColor = Color.fromRGBO(186, 184, 184, 1);
+
     buildPetCardShimmer() => Container(
           margin: EdgeInsets.only(
               left: size.width * 0.03,
@@ -181,23 +184,27 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(15)),
                   margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   elevation: 5,
-                  child: TextField(
-                    controller: namePetController,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty)
-                          this._dynamicPetList = this._petList;
-                        else
-                          this._dynamicPetList = _findPetsByValue(value);
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: "Buscar",
-                      prefixIcon: Icon(
-                        Icons.search,
-                        size: size.width * 0.05,
+                  child: Container(
+                    padding: EdgeInsets.only(top: size.width * 0.9 * 0.0066),
+                    child: TextField(
+                      controller: namePetController,
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+                          if (value.isEmpty)
+                            this._dynamicPetList = this._petList;
+                          else
+                            this._dynamicPetList = _findPetsByValue(value);
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Buscar",
+                        hintStyle: GoogleFonts.inter(
+                            color: Color.fromRGBO(186, 184, 184, 1)),
+                        prefixIcon: Icon(Icons.search,
+                            size: size.width * 0.05, color: inputColor),
+                        border: InputBorder.none,
                       ),
-                      border: InputBorder.none,
                     ),
                   ),
                 ),
