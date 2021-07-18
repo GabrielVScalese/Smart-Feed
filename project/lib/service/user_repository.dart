@@ -26,7 +26,7 @@ class UserRepository {
       'password': user.getPassword()
     });
 
-    var authorization = await AuthorizationProvider.execute();
+    var authorization = await AuthorizationProvider.getAuthorization();
     var response = await http.put(
         Uri.parse('https://smart-feed-app.herokuapp.com/users/${user.getId()}'),
         body: body,
@@ -34,6 +34,11 @@ class UserRepository {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${authorization['token']}"
         });
+
+    if (response.statusCode == 401) {
+      await AuthorizationProvider.generateToken();
+      await update(user);
+    }
 
     return response.statusCode;
   }
@@ -56,13 +61,18 @@ class UserRepository {
   }
 
   static destroy(int id) async {
-    var authorization = await AuthorizationProvider.execute();
+    var authorization = await AuthorizationProvider.getAuthorization();
     var response = await http.delete(
         Uri.parse('https://smart-feed-app.herokuapp.com/users/$id'),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${authorization['token']}"
         });
+
+    if (response.statusCode == 401) {
+      await AuthorizationProvider.generateToken();
+      await destroy(id);
+    }
 
     return response.statusCode;
   }
