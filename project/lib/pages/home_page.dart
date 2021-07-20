@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +8,7 @@ import 'package:project/components/shimmer_widget.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
-import 'package:project/service/pet_repository.dart';
+import 'package:project/repositories/pets_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'addPet/type_add_pet.dart';
@@ -31,16 +30,20 @@ class _HomePageState extends State<HomePage> {
 
   _loadData() async {
     try {
-      var instance = await SharedPreferences.getInstance();
-      var user = await jsonDecode(instance.get('user'));
+      var petsRepository = PetsRepository();
+      var prefs = await SharedPreferences.getInstance();
 
-      this._petList = await PetRepository.findPetsByOwner(user['id']);
-      this._dynamicPetList = this._petList;
+      var user = jsonDecode(prefs.getString('user'));
+      print(user);
+      _petList = await petsRepository.findByOwner(user['id']);
+      _dynamicPetList = _petList;
 
       setState(() {
         _isLoading = false;
       });
-    } catch (err) {}
+    } catch (err) {
+      print(err.toString());
+    }
   }
 
   _findPetsByValue(String value) {
@@ -189,7 +192,6 @@ class _HomePageState extends State<HomePage> {
                     child: TextField(
                       controller: namePetController,
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           if (value.isEmpty)
                             this._dynamicPetList = this._petList;

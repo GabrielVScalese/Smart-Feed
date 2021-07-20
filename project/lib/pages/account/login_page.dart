@@ -5,10 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/controllers/auth_controller.dart';
+// import 'package:project/controllers/auth_controller.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/register_page.dart';
-import 'package:project/service/user_repository.dart';
+import 'package:project/repositories/login_repository.dart';
 
 import '../home_page.dart';
 
@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     var labelSize = size.width * 0.035;
 
     // Controllers
-    var authController = AuthController();
+    // var authController = AuthController();
 
     return Scaffold(
       body: Align(
@@ -131,24 +131,12 @@ class _LoginPageState extends State<LoginPage> {
                       try {
                         DialogBuilder(context).showLoadingIndicator();
 
-                        var response = await UserRepository.authenticateUser(
+                        var loginRepository = LoginRepository();
+                        var statusCode = await loginRepository.login(
                             User.fromLogin(
                                 emailController.text, passwordController.text));
 
-                        print(response['refreshToken']);
-
-                        if (response['statusCode'] == 200) {
-                          var user = User.fromAuth(
-                              response['user']['id'],
-                              response['user']['name'],
-                              response['user']['email']);
-
-                          await authController.setCredentials(
-                              context,
-                              user,
-                              response['token'],
-                              response['refreshToken']['id']);
-
+                        if (statusCode == 200) {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => HomePage()));
@@ -156,7 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                           print('Invalid user');
                           DialogBuilder(context).hideOpenDialog();
                         }
-                      } catch (err) {}
+                      } catch (err) {
+                        print(err.toString());
+                        DialogBuilder(context).hideOpenDialog();
+                      }
                     },
                     child: RoundedButton(size: size, text: 'LOGIN'),
                   )

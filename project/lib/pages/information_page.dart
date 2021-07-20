@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,6 @@ import 'package:project/components/circle_image.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/pages/home_page.dart';
-import 'package:project/service/pet_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InformationPage extends StatefulWidget {
@@ -226,22 +224,22 @@ class _InformationPageState extends State<InformationPage> {
                   GestureDetector(
                     onTap: () async {
                       try {
-                        DialogBuilder(context).showLoadingIndicator();
+                        // DialogBuilder(context).showLoadingIndicator();
 
-                        var instance = await SharedPreferences.getInstance();
+                        // var instance = await SharedPreferences.getInstance();
 
-                        var authorization =
-                            await jsonDecode(instance.get('authorization'));
+                        // var authorization =
+                        //     await jsonDecode(instance.get('authorization'));
 
-                        var statusCode = await PetRepository.destroy(
-                            this.widget.pet.getId());
+                        // var statusCode = await PetRepository.destroy(
+                        //     this.widget.pet.getId());
 
-                        if (statusCode == 200)
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-                        else
-                          print('Error');
+                        // if (statusCode == 200)
+                        //   Navigator.of(context).pushReplacement(
+                        //       MaterialPageRoute(
+                        //           builder: (context) => HomePage()));
+                        // else
+                        //   print('Error');
                       } catch (err) {}
                     },
                     child: Container(

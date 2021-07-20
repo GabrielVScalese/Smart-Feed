@@ -8,8 +8,8 @@ class Pet {
   String _device;
   String _image;
 
-  Pet(this._id, this._name, this._animal, this._ration, this._size,
-      this._device, this._image);
+  Pet(this._id, this._userId, this._name, this._animal, this._ration,
+      this._size, this._device, this._image);
 
   Pet.fromRegister(this._userId, this._name, this._animal, this._ration,
       this._size, this._device, this._image);
@@ -44,5 +44,10 @@ class Pet {
 
   getImage() {
     return this._image;
+  }
+
+  static Pet fromMap(Map map) {
+    return Pet(map['id'], map['user_id'], map['name'], map['animal'],
+        map['ration'], map['size'], map['device'], map['image']);
   }
 }
