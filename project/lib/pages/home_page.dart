@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
       var prefs = await SharedPreferences.getInstance();
 
       var user = jsonDecode(prefs.getString('user'));
-      print(user);
       _petList = await petsRepository.findByOwner(user['id']);
       _dynamicPetList = _petList;
 

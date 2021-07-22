@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:project/repositories/refresh_token_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDio {
-  var _dio;
+  Dio _dio;
 
   CustomDio() {
     _dio = Dio();
@@ -11,8 +10,13 @@ class CustomDio {
 
   CustomDio.withAuthentication() {
     _dio = Dio();
-    _dio.interceptors.add(InterceptorsWrapper(
-        onRequest: _onRequest, onResponse: _onResponse, onError: _onError));
+    _dio.options.followRedirects = false;
+    _dio.options.validateStatus = (status) {
+      return status < 500;
+    };
+
+    _dio.interceptors.add(
+        InterceptorsWrapper(onRequest: _onRequest, onResponse: _onResponse));
   }
 
   Dio get instance => _dio;
@@ -22,33 +26,12 @@ class CustomDio {
     var token = prefs.get('token');
 
     options.headers['Authorization'] = 'Bearer $token';
+    options.followRedirects = false;
 
     return handler.next(options);
   }
 
-  _onError(DioError e, ErrorInterceptorHandler handler) async {
-    if (e.response.statusCode == 401) {
-      _dio.interceptors.requestLock.lock();
-      _dio.interceptors.responseLock.lock();
-
-      var refreshTokenRepository = new RefreshTokenRepository();
-      var token = await refreshTokenRepository.createToken();
-
-      RequestOptions options = e.response.requestOptions;
-      options.headers["Authorization"] = "Bearer $token";
-
-      _dio.interceptors.requestLock.unlock();
-      _dio.interceptors.responseLock.unlock();
-
-      return _dio.request(options.path, options: options);
-    }
-  }
-
-  _onResponse(Response e, ResponseInterceptorHandler handler) {
-    print('############### Dio');
-    print(e.data);
-    print('############### Finish');
-
+  _onResponse(Response e, ResponseInterceptorHandler handler) async {
     return handler.next(e);
   }
 }

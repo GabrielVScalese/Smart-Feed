@@ -21,12 +21,12 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_modular: ^3.3.1
   carousel_slider: ^4.0.0
   charts_flutter: ^0.10.0
   cupertino_icons: ^1.0.0
   dio: ^4.0.0
   google_fonts: ^2.0.0
-  http: ^0.13.0
   image_picker: ^0.7.5
   progress_indicators: ^1.0.0
   shared_preferences: ^2.0.6
