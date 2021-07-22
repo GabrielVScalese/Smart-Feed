@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/login_page.dart';
@@ -29,8 +28,8 @@ class AuthController {
   _saveAuthorization(String token, String refreshToken) async {
     final instance = await SharedPreferences.getInstance();
 
-    await instance.setString("authorization",
-        jsonEncode({'token': token, 'refreshToken': refreshToken}));
+    await instance.setString('token', token);
+    await instance.setString('refreshToken', refreshToken);
   }
 
   currentUser(BuildContext context) async {
@@ -38,13 +37,12 @@ class AuthController {
     await Future.delayed(Duration(seconds: 2));
 
     if (instance.containsKey("user")) {
-      final userJson = instance.get("user") as String;
+      var userJson = instance.get("user") as String;
 
-      final authorizationJson = instance.get('authorization') as String;
-      var authorization = await jsonDecode(authorizationJson);
+      var token = instance.getString('token');
+      var refreshToken = instance.getString('refreshToken');
 
-      setCredentials(context, User.fromJson(userJson), authorization['token'],
-          authorization['refreshToken']);
+      setCredentials(context, User.fromJson(userJson), token, refreshToken);
     } else {
       setCredentials(context, null, null, null);
     }

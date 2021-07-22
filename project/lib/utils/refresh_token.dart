@@ -5,6 +5,7 @@ class RefreshToken {
   execute(Dio dio, RequestOptions options) async {
     var refreshTokenRepository = new RefreshTokenRepository();
     await refreshTokenRepository.createToken();
+
     var response = await dio.request(options.path,
         data: options.data,
         queryParameters: options.queryParameters,
