@@ -50,4 +50,17 @@ class Pet {
     return Pet(map['id'], map['user_id'], map['name'], map['animal'],
         map['ration'], map['size'], map['device'], map['image']);
   }
+
+  static Map toMap(Pet pet) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = pet.getId();
+    data['name'] = pet.getName();
+    data['animal'] = pet.getAnimal();
+    data['ration'] = pet.getRation();
+    data['size'] = pet.getSize();
+    data['device'] = pet.getDevice();
+    data['image'] = pet.getImage();
+
+    return data;
+  }
 }
