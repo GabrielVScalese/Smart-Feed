@@ -53,7 +53,7 @@ class Pet {
 
   static Map toMap(Pet pet) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = pet.getId();
+    data['user_id'] = pet.getUserId();
     data['name'] = pet.getName();
     data['animal'] = pet.getAnimal();
     data['ration'] = pet.getRation();

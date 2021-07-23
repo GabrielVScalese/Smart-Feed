@@ -9,6 +9,8 @@ import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/configurations/change_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
+import 'package:project/repositories/login_repository.dart';
+import 'package:project/repositories/users_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmPasswordPage extends StatefulWidget {
@@ -128,43 +130,39 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                     try {
                       DialogBuilder(context).showLoadingIndicator();
 
-                      // var instance = await SharedPreferences.getInstance();
-                      // var userFromInstance =
-                      //     await jsonDecode(instance.get('user'));
+                      var instance = await SharedPreferences.getInstance();
+                      var userFromInstance = jsonDecode(instance.get('user'));
 
-                      // var authenticationResponse =
-                      //     await UserRepository.authenticateUser(User.fromLogin(
-                      //         userFromInstance['email'],
-                      //         _currentPasswordController.text));
+                      var loginRepository = new LoginRepository();
+                      var authenticationStatusCode =
+                          await loginRepository.login(User.fromLogin(
+                              userFromInstance['email'],
+                              _currentPasswordController.text));
 
-                      // if (authenticationResponse['statusCode'] == 200) {
-                      //   var user = User(
-                      //       userFromInstance['id'],
-                      //       userFromInstance['name'],
-                      //       userFromInstance['email'],
-                      //       this.widget.newPassword);
+                      if (authenticationStatusCode == 200) {
+                        var user = User(
+                            userFromInstance['id'],
+                            userFromInstance['name'],
+                            userFromInstance['email'],
+                            this.widget.newPassword);
 
-                      //   var authorization =
-                      //       await jsonDecode(instance.get('authorization'));
+                        var usersRepository = new UsersRepository();
+                        var updateStatusCode =
+                            await usersRepository.update(user);
 
-                      //   var updateStatusCode =
-                      //       await UserRepository.update(user);
-
-                      //   if (updateStatusCode == 200)
-                      //     Navigator.of(context).pushReplacement(
-                      //         MaterialPageRoute(
-                      //             builder: (context) => UserPage()));
-                      //   else {
-                      //     DialogBuilder(context).hideOpenDialog();
-                      //   }
-                      //   print('Error');
-                      // }
+                        if (updateStatusCode == 200)
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => UserPage()));
+                        else {
+                          DialogBuilder(context).hideOpenDialog();
+                        }
+                      } else
+                        print('Error');
                     } catch (err) {
                       print(err.toString());
                       DialogBuilder(context).hideOpenDialog();
                     }
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => UserPage()));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: size.width * 0.05),

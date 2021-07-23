@@ -11,6 +11,8 @@ class CustomDio {
   CustomDio.withAuthentication() {
     _dio = Dio();
     _dio.options.baseUrl = 'https://smart-feed-app.herokuapp.com';
+
+    // Ignore bad requests
     _dio.options.followRedirects = false;
     _dio.options.validateStatus = (status) {
       return status < 500;

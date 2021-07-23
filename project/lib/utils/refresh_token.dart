@@ -1,16 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:project/repositories/refresh_token_repository.dart';
+import 'custom_dio.dart';
 
 class RefreshToken {
-  execute(Dio dio, RequestOptions options) async {
+  Future<Response> execute(RequestOptions options) async {
     var refreshTokenRepository = new RefreshTokenRepository();
-    await refreshTokenRepository.createToken();
+    await refreshTokenRepository.createToken(); // Update token
 
-    var response = await dio.request(options.path,
+    var dio = CustomDio.withAuthentication().instance;
+    var url = '${options.baseUrl}${options.path}';
+
+    var response = await dio.request(url,
         data: options.data,
         queryParameters: options.queryParameters,
-        options: Options(headers: options.headers));
+        options: Options(method: options.method));
 
-    return response.data;
+    return response;
   }
 }

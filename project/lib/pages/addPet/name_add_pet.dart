@@ -9,6 +9,7 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/repositories/pets_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameAddPet extends StatefulWidget {
@@ -169,34 +170,34 @@ class _NameAddPetState extends State<NameAddPet> {
 
                         var arguments = _insertArgument();
 
-                        // var instance = await SharedPreferences.getInstance();
-                        // var user = await jsonDecode(instance.get('user'));
-                        // var authorization =
-                        //     await jsonDecode(instance.get('authorization'));
+                        var instance = await SharedPreferences.getInstance();
+                        var user = jsonDecode(instance.getString('user'));
 
-                        // var image64 = base64Encode(
-                        //     await arguments[3]['value'].readAsBytes());
+                        var image64 = base64Encode(
+                            await arguments[3]['value'].readAsBytes());
 
-                        // var imageLink = await _uploadImage(image64);
-                        // var pet = Pet.fromRegister(
-                        //     user['id'],
-                        //     arguments[4]['value'],
-                        //     arguments[0]['value'],
-                        //     arguments[2]['value'],
-                        //     arguments[1]['value'],
-                        //     "Smart Feed UHG78F",
-                        //     imageLink);
+                        var imageLink = await _uploadImage(image64);
 
-                        // var statusCode = await PetRepository.create(pet);
+                        var pet = Pet.fromRegister(
+                            user['id'],
+                            arguments[4]['value'],
+                            arguments[0]['value'],
+                            arguments[2]['value'],
+                            arguments[1]['value'],
+                            "Smart Feed UHG78F",
+                            imageLink);
 
-                        // if (statusCode == 200)
-                        //   Navigator.of(context).pushReplacement(
-                        //       MaterialPageRoute(
-                        //           builder: (context) => HomePage()));
-                        // else {
-                        //   DialogBuilder(context).hideOpenDialog();
-                        //   print('Error');
-                        // }
+                        var petsRepository = new PetsRepository();
+                        var statusCode = await petsRepository.create(pet);
+
+                        if (statusCode == 200)
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        else {
+                          DialogBuilder(context).hideOpenDialog();
+                          print('Error');
+                        }
                       } catch (err) {
                         print(err.toString());
                         DialogBuilder(context).hideOpenDialog();

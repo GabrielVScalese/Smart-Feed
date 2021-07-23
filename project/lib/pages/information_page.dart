@@ -7,6 +7,7 @@ import 'package:project/components/circle_image.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/repositories/pets_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InformationPage extends StatefulWidget {
@@ -224,23 +225,26 @@ class _InformationPageState extends State<InformationPage> {
                   GestureDetector(
                     onTap: () async {
                       try {
-                        // DialogBuilder(context).showLoadingIndicator();
+                        DialogBuilder(context).showLoadingIndicator();
 
-                        // var instance = await SharedPreferences.getInstance();
+                        var petsRepository = new PetsRepository();
+                        var statusCode = await petsRepository
+                            .destroy(this.widget.pet.getId());
 
-                        // var authorization =
-                        //     await jsonDecode(instance.get('authorization'));
+                        print(statusCode);
 
-                        // var statusCode = await PetRepository.destroy(
-                        //     this.widget.pet.getId());
-
-                        // if (statusCode == 200)
-                        //   Navigator.of(context).pushReplacement(
-                        //       MaterialPageRoute(
-                        //           builder: (context) => HomePage()));
-                        // else
-                        //   print('Error');
-                      } catch (err) {}
+                        if (statusCode == 200)
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
+                        else {
+                          print('Error');
+                          DialogBuilder(context).hideOpenDialog();
+                        }
+                      } catch (err) {
+                        print(err.toString());
+                        DialogBuilder(context).hideOpenDialog();
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),

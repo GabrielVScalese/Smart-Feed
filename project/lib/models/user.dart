@@ -35,13 +35,13 @@ class User {
     return User.fromAuth(map['id'], map["name"], map["email"]);
   }
 
-  factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
-
-  Map<String, dynamic> toMap() => {
-        "id": _id,
-        "name": _name,
-        "email": _email,
+  static Map<String, dynamic> toMap(User user) => {
+        "name": user.getName(),
+        "email": user.getEmail(),
+        "password": user.getPassword()
       };
 
-  String toJson() => jsonEncode(toMap());
+  // String toJson() => jsonEncode(toMap());
+
+  factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
 }

@@ -22,7 +22,7 @@ class AuthController {
   _saveUser(User user) async {
     final instance = await SharedPreferences.getInstance();
 
-    await instance.setString("user", user.toJson());
+    // await instance.setString("user", user.toJson());
   }
 
   _saveAuthorization(String token, String refreshToken) async {

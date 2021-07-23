@@ -10,37 +10,46 @@ class PetsRepository {
     this._dio = CustomDio.withAuthentication().instance;
   }
 
-  Future findByOwner(userId) async {
+  Future<List<Pet>> findByOwner(userId) async {
     var response = await this._dio.get(
           '/pets/findByOwner/$userId',
         );
 
     var data = response.data;
+
+    // Token is invalid
     if (response.statusCode == 401) {
       var refreshToken = new RefreshToken();
-      data = await refreshToken.execute(this._dio, response.requestOptions);
+      var newResponse = await refreshToken.execute(response.requestOptions);
+      data = newResponse.data;
     }
 
     return data.map<Pet>((p) => Pet.fromMap(p)).toList() as List<Pet>;
   }
 
-  Future create(Pet pet) async {
+  Future<int> create(Pet pet) async {
     var response = await this._dio.post('/pets', data: Pet.toMap(pet));
 
+    // Token is invalid
     if (response.statusCode == 401) {
       var refreshToken = new RefreshToken();
-      await refreshToken.execute(this._dio, response.requestOptions);
+      var newResponse = await refreshToken.execute(response.requestOptions);
+
+      return newResponse.statusCode;
     }
 
     return response.statusCode;
   }
 
-  Future destroy(id) async {
-    var response = await this._dio.delete('/pets', data: {'id': id});
+  Future<int> destroy(id) async {
+    var response = await this._dio.delete('/pets/$id');
 
+    // Token is invalid
     if (response.statusCode == 401) {
       var refreshToken = new RefreshToken();
-      await refreshToken.execute(this._dio, response.requestOptions);
+      var newResponse = await refreshToken.execute(response.requestOptions);
+
+      return newResponse.statusCode;
     }
 
     return response.statusCode;
