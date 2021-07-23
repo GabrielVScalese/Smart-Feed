@@ -3,15 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDio {
   Dio _dio;
+  String baseUrl = 'https://smart-feed-app.herokuapp.com';
 
   CustomDio() {
     _dio = Dio();
-    _dio.options.baseUrl = 'https://smart-feed-app.herokuapp.com';
+    _dio.options.baseUrl = baseUrl;
   }
 
   CustomDio.withAuthentication() {
     _dio = Dio();
-    _dio.options.baseUrl = 'https://smart-feed-app.herokuapp.com';
+    _dio.options.baseUrl = baseUrl;
 
     // Ignore bad requests
     _dio.options.followRedirects = false;

@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
-// import 'package:project/controllers/auth_controller.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/register_page.dart';
 import 'package:project/repositories/login_repository.dart';

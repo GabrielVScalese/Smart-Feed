@@ -70,7 +70,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
     if (arguments.length > 3)
       setState(() {
-        imgFile = arguments[3]['value'];
+        if (imgFile == null) imgFile = arguments[3]['value'];
       });
   }
 
