@@ -6,6 +6,7 @@ class CustomDio {
 
   CustomDio() {
     _dio = Dio();
+    _dio.options.baseUrl = 'https://smart-feed-app.herokuapp.com';
   }
 
   CustomDio.withAuthentication() {

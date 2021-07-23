@@ -8,9 +8,7 @@ class RefreshTokenRepository {
     var prefs = await SharedPreferences.getInstance();
     var refreshToken = prefs.getString('refreshToken');
 
-    var response = await dio.post(
-        'https://smart-feed-app.herokuapp.com/refreshToken',
-        data: {'id': refreshToken});
+    var response = await dio.post('/refreshToken', data: {'id': refreshToken});
 
     await prefs.setString('token', response.data['token']);
 

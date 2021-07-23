@@ -15,19 +15,19 @@ class User {
     this._password = password;
   }
 
-  getId() {
+  int getId() {
     return this._id;
   }
 
-  getName() {
+  String getName() {
     return this._name;
   }
 
-  getEmail() {
+  String getEmail() {
     return this._email;
   }
 
-  getPassword() {
+  String getPassword() {
     return this._password;
   }
 
@@ -41,7 +41,7 @@ class User {
         "password": user.getPassword()
       };
 
-  // String toJson() => jsonEncode(toMap());
-
   factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
+
+  String toJson(User user) => jsonEncode(toMap(user));
 }

@@ -14,39 +14,39 @@ class Pet {
   Pet.fromRegister(this._userId, this._name, this._animal, this._ration,
       this._size, this._device, this._image);
 
-  getId() {
+  int getId() {
     return this._id;
   }
 
-  getUserId() {
+  int getUserId() {
     return this._userId;
   }
 
-  getName() {
+  String getName() {
     return this._name;
   }
 
-  getAnimal() {
+  String getAnimal() {
     return this._animal;
   }
 
-  getRation() {
+  String getRation() {
     return this._ration;
   }
 
-  getSize() {
+  String getSize() {
     return this._size;
   }
 
-  getDevice() {
+  String getDevice() {
     return this._device;
   }
 
-  getImage() {
+  String getImage() {
     return this._image;
   }
 
-  static Pet fromMap(Map map) {
+  static Pet fromMap(Map<String, dynamic> map) {
     return Pet(map['id'], map['user_id'], map['name'], map['animal'],
         map['ration'], map['size'], map['device'], map['image']);
   }
