@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 
 class CardChangerController extends ChangeNotifier {
-  Map _value;
+  Map<String, dynamic> _value;
 
-  getValue() {
+  Map<String, dynamic> getValue() {
     return this._value;
   }
 
-  setValue(value) {
+  void setValue(value) {
     this._value = value;
   }
 
-  changeValue() {
+  void changeValue() {
     notifyListeners();
   }
 }
