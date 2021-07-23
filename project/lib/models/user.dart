@@ -6,7 +6,7 @@ class User {
   String _email;
   String _password;
 
-  User(this._id, this._name, this._email, this._password);
+  User(this._id, this._name, this._email, [this._password = '']);
 
   User.fromAuth(this._id, this._name, this._email);
 
@@ -31,8 +31,8 @@ class User {
     return this._password;
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User.fromAuth(map['id'], map["name"], map["email"]);
+  static User fromMap(Map<String, dynamic> map) {
+    User(map['id'], map['name'], map['email']);
   }
 
   static Map<String, dynamic> toMap(User user) => {

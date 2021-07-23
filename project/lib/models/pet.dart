@@ -22,7 +22,7 @@ class Pet {
     return this._userId;
   }
 
-  String getName() {
+  getName() {
     return this._name;
   }
 
@@ -51,7 +51,7 @@ class Pet {
         map['ration'], map['size'], map['device'], map['image']);
   }
 
-  static Map toMap(Pet pet) {
+  static Map<String, dynamic> toMap(Pet pet) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['user_id'] = pet.getUserId();
     data['name'] = pet.getName();
