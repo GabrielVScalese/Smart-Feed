@@ -14,6 +14,9 @@ class RefreshTokenRepository {
 
     await prefs.setString('token', response.data['token']);
 
+    if (response.data.containsKey('refreshToken'))
+      await prefs.setString('refreshToken', response.data['refreshToken']);
+
     return response.data['token'];
   }
 }
