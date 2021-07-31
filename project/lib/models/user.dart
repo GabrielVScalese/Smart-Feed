@@ -15,6 +15,8 @@ class User {
     this._password = password;
   }
 
+  factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
+
   int getId() {
     return this._id;
   }
@@ -40,8 +42,6 @@ class User {
         "email": user.getEmail(),
         "password": user.getPassword()
       };
-
-  factory User.fromJson(String json) => User.fromMap(jsonDecode(json));
 
   String toJson(User user) => jsonEncode(toMap(user));
 }

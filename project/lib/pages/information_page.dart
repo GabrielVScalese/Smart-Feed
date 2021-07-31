@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,6 @@ import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/repositories/pets_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -178,7 +176,6 @@ class _InformationPageState extends State<InformationPage> {
                   labelStyle: labelStyle,
                   principalText: 'Consumo',
                   secondaryText: 'Ver gráfico',
-                  icon: null,
                 ),
                 SizedBox(
                   height: size.height * 0.03,
@@ -231,8 +228,6 @@ class _InformationPageState extends State<InformationPage> {
                         var statusCode = await petsRepository
                             .destroy(this.widget.pet.getId());
 
-                        print(statusCode);
-
                         if (statusCode == 200)
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -270,7 +265,7 @@ class LabelRow extends StatelessWidget {
       @required this.size,
       @required this.labelStyle,
       @required this.principalText,
-      @required this.icon,
+      this.icon,
       @required this.secondaryText})
       : super(key: key);
 
@@ -312,6 +307,7 @@ class LabelRow extends StatelessWidget {
   }
 }
 
+// Para dados de consumo
 class InformationCard extends StatelessWidget {
   const InformationCard(
       {Key key,
