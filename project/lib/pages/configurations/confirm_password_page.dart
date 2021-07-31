@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,13 +11,13 @@ import 'package:project/models/user.dart';
 import 'package:project/pages/configurations/change_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/repositories/login_repository.dart';
-import 'package:project/repositories/users_repository.dart';
+import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmPasswordPage extends StatefulWidget {
-  String newPassword;
+  RequestOptions requestOptions;
 
-  ConfirmPasswordPage(this.newPassword);
+  ConfirmPasswordPage(this.requestOptions);
 
   @override
   _ConfirmPasswordPageState createState() => _ConfirmPasswordPageState();
@@ -131,35 +132,33 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                       DialogBuilder(context).showLoadingIndicator();
 
                       var instance = await SharedPreferences.getInstance();
-                      var userFromInstance = jsonDecode(instance.get('user'));
+                      var user = jsonDecode(instance.get('user'));
 
                       var loginRepository = new LoginRepository();
                       var authenticationStatusCode =
                           await loginRepository.login(User.fromLogin(
-                              userFromInstance['email'],
-                              _currentPasswordController.text));
+                              user['email'], _currentPasswordController.text));
 
                       if (authenticationStatusCode == 200) {
-                        var user = User(
-                            userFromInstance['id'],
-                            userFromInstance['name'],
-                            userFromInstance['email'],
-                            this.widget.newPassword);
+                        DialogBuilder(context).showLoadingIndicator();
 
-                        var usersRepository = new UsersRepository();
-                        var updateStatusCode =
-                            await usersRepository.update(user);
+                        var dio = CustomDio.withAuthentication().instance;
+                        var options = this.widget.requestOptions;
 
-                        if (updateStatusCode == 200)
+                        var response = await dio.request(options.path,
+                            queryParameters: options.queryParameters,
+                            data: options.data,
+                            options: Options(method: options.method));
+
+                        if (response.statusCode == 200)
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => UserPage()));
-                        else {
+                        else
                           DialogBuilder(context).hideOpenDialog();
-                        }
                       } else
                         print('Error');
-                    } catch (err) {
+                    } on DioError catch (err) {
                       print(err.toString());
                       DialogBuilder(context).hideOpenDialog();
                     }

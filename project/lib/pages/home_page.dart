@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-// IMPORTANTE: CORRIGIR ERRO HOME PAGE -> INFORMATION PAGE
+// IMPORTANTE: CORRIGIR ERRO HOME PAGE -> INFORMATION PAGE (DEPOIS DE INPUT)
 class _HomePageState extends State<HomePage> {
   var _petList = [];
   var _dynamicPetList = [];
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                   margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   elevation: 5,
                   child: Container(
-                    padding: EdgeInsets.only(top: size.width * 0.9 * 0.0066),
+                    // padding: EdgeInsets.only(top: size.width * 0.9 * 0.0066),
                     child: TextField(
                       controller: namePetController,
                       onChanged: (value) {

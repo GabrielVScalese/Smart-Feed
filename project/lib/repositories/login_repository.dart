@@ -10,10 +10,13 @@ class LoginRepository {
     var response = await dio.post('/users/authenticate',
         data: {'email': user.getEmail(), 'password': user.getPassword()});
 
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user', jsonEncode(response.data['user']));
-    await prefs.setString('token', response.data['token']);
-    await prefs.setString('refreshToken', response.data['refreshToken']['id']);
+    if (response.statusCode == 200) {
+      var prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user', jsonEncode(response.data['user']));
+      await prefs.setString('token', response.data['token']);
+      await prefs.setString(
+          'refreshToken', response.data['refreshToken']['id']);
+    }
 
     return response.statusCode;
   }

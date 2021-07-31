@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +9,7 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   @override
@@ -165,10 +169,24 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     onTap: () async {
                       if (newPasswordController.text ==
                               reapeatPasswordController.text &&
-                          newPasswordController.text.isNotEmpty)
+                          newPasswordController.text.isNotEmpty) {
+                        var instance = await SharedPreferences.getInstance();
+                        Map user = jsonDecode(instance.getString('user'));
+
+                        RequestOptions requestOptions = new RequestOptions(
+                            path:
+                                'https://smart-feed-app.herokuapp.com/users/${user['id']}',
+                            data: {
+                              'name': user['name'],
+                              'email': user['email'],
+                              'password': newPasswordController.text
+                            },
+                            method: 'PUT');
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ConfirmPasswordPage(
-                                newPasswordController.text)));
+                            builder: (context) =>
+                                ConfirmPasswordPage(requestOptions)));
+                      }
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
