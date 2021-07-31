@@ -10,7 +10,6 @@ import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'addPet/type_add_pet.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,10 +29,10 @@ class _HomePageState extends State<HomePage> {
 
   _loadData() async {
     try {
-      var petsRepository = PetsRepository();
       var prefs = await SharedPreferences.getInstance();
-
       var user = jsonDecode(prefs.getString('user'));
+
+      var petsRepository = PetsRepository();
       _petList = await petsRepository.findByOwner(user['id']);
       _dynamicPetList = _petList;
 
@@ -66,9 +65,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    // Cor dos textos do input
+    // Cor do texto do input
     var inputColor = Color.fromRGBO(186, 184, 184, 1);
 
+    // Shimmer Effect para o carregamento de cards dos pets
     buildPetCardShimmer() => Container(
           margin: EdgeInsets.only(
               left: size.width * 0.03,

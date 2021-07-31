@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,20 +39,16 @@ class _NameAddPetState extends State<NameAddPet> {
 
   _uploadImage(image64) async {
     var clientID = '2f7307ddc860abf';
-    var jsonData = json.encode({'image': image64});
 
-    var response = await http.post(
-        Uri.parse(
-          'https://api.imgur.com/3/image',
-        ),
-        body: jsonData,
-        headers: {
-          "Authorization": 'Client-ID $clientID',
-          "Content-Type": "application/json"
-        });
+    var dio = Dio();
+    var response = await dio.post('https://api.imgur.com/3/image',
+        data: {'image': image64},
+        options: Options(headers: {
+          'Authorization': 'Client-ID $clientID',
+          'Content-Type': "application/json"
+        }));
 
-    var map = json.decode(response.body);
-    return map['data']['link'];
+    return response.data['data']['link'];
   }
 
   @override

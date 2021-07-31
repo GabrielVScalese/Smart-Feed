@@ -33,7 +33,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
     }
   }
 
-  setCardChangerController(cardList) {
+  _setCardChangerController(cardList) {
     var arguments = _getArguments() as List;
 
     var cardChangerController = new CardChangerController();
@@ -84,7 +84,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
       },
     ];
 
-    var cardChangerController = setCardChangerController(cardList);
+    var cardChangerController = _setCardChangerController(cardList);
 
     return Scaffold(
       body: Container(

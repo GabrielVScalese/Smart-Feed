@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,9 +17,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var visible = true;
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+  var _visible = true;
 
   // Fazer tamanho máximo e tamanho mínimo
   @override
@@ -33,9 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     // Labels
     var labelColor = Color.fromRGBO(140, 138, 138, 1);
     var labelSize = size.width * 0.035;
-
-    // Controllers
-    // var authController = AuthController();
 
     return Scaffold(
       body: Align(
@@ -64,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextFieldContainer(
                     size: size,
                     textField: TextField(
-                      controller: emailController,
+                      controller: _emailController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -82,8 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFieldContainer(
                     size: size,
                     textField: TextField(
-                      obscureText: visible,
-                      controller: passwordController,
+                      obscureText: _visible,
+                      controller: _passwordController,
                       style:
                           GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                       decoration: InputDecoration(
@@ -98,15 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                           suffixIcon: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (visible == true)
-                                  visible = false;
-                                else
-                                  visible = true;
-                                print(visible);
+                                _visible = !_visible;
                               });
                             },
                             child: Icon(
-                              visible ? Icons.visibility : Icons.visibility_off,
+                              _visible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               size: size.width * 0.9 * 0.06,
                               color: inputColor,
                             ),
@@ -133,15 +127,15 @@ class _LoginPageState extends State<LoginPage> {
 
                         var loginRepository = LoginRepository();
                         var statusCode = await loginRepository.login(
-                            User.fromLogin(
-                                emailController.text, passwordController.text));
+                            User.fromLogin(_emailController.text,
+                                _passwordController.text));
 
                         if (statusCode == 200) {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => HomePage()));
                         } else {
-                          print('Invalid user');
+                          print('Invalid credentials');
                           DialogBuilder(context).hideOpenDialog();
                         }
                       } catch (err) {

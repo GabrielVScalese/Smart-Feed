@@ -12,7 +12,7 @@ class PhotoAddPet extends StatefulWidget {
 }
 
 class _PhotoAddPetState extends State<PhotoAddPet> {
-  var imgFile;
+  File _imgFile;
 
   _getArguments() {
     var arguments = ModalRoute.of(context).settings.arguments;
@@ -26,20 +26,20 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
       var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
 
       setState(() {
-        imgFile = File(pickedFile.path);
+        _imgFile = File(pickedFile.path);
       });
     } catch (error) {}
   }
 
   _decideView(size) {
-    if (imgFile != null)
+    if (_imgFile != null)
       return Center(
         child: Container(
           width: size.width * 0.5,
           height: size.width * 0.5,
           child: ClipOval(
             child: Image.file(
-              imgFile,
+              _imgFile,
               fit: BoxFit.cover,
               // scale: size.height * 0.2,
             ),
@@ -58,9 +58,9 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
     var arguments = _getArguments() as List;
 
     if (arguments.length > 3)
-      arguments[3] = {'value': imgFile};
+      arguments[3] = {'value': _imgFile};
     else
-      arguments.add({'value': imgFile});
+      arguments.add({'value': _imgFile});
 
     return arguments;
   }
@@ -70,7 +70,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
     if (arguments.length > 3)
       setState(() {
-        if (imgFile == null) imgFile = arguments[3]['value'];
+        if (_imgFile == null) _imgFile = arguments[3]['value'];
       });
   }
 
