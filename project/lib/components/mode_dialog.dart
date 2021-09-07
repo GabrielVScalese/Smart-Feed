@@ -15,7 +15,7 @@ class _ModeDialogState extends State<ModeDialog> {
   Color schedulesColor = Color.fromRGBO(237, 237, 237, 1);
   Color aproximationColor;
 
-  List explications = [
+  List explanations = [
     'Despeja a ração utilizando os horários determinados.',
     'Despeja a ração quando seu pet se aproxima do dispositivo.'
   ];
@@ -46,10 +46,10 @@ class _ModeDialogState extends State<ModeDialog> {
 
   String changeText() {
     if (schedulesEnabled)
-      return explications[0];
-    else if (aproximationEnabled) return explications[1];
+      return explanations[0];
+    else if (aproximationEnabled) return explanations[1];
 
-    return explications[0];
+    return explanations[0];
   }
 
   _buildChild(BuildContext context) => Container(
