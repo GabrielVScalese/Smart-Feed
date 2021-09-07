@@ -9,10 +9,10 @@ class ModeDialog extends StatefulWidget {
 
 // Ainda nao esta responsivo
 class _ModeDialogState extends State<ModeDialog> {
-  bool schedulesEnabled = false;
+  bool schedulesEnabled = true;
   bool aproximationEnabled = false;
 
-  Color schedulesColor;
+  Color schedulesColor = Color.fromRGBO(237, 237, 237, 1);
   Color aproximationColor;
 
   List explications = [
