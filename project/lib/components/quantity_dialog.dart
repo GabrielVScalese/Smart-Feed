@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 
 class QuantityDialog extends StatefulWidget {
@@ -47,9 +48,14 @@ class _QuantityDialogState extends State<QuantityDialog> {
                       style: GoogleFonts.inter(
                           fontSize: 20, fontWeight: FontWeight.w700),
                     ),
-                    Container(
-                        margin: EdgeInsets.only(right: 25),
-                        child: Icon(Icons.error_outline)),
+                    GestureDetector(
+                      onTap: () {
+                        DialogHelper.infoModal(context);
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(right: 25),
+                          child: Icon(Icons.error_outline)),
+                    ),
                   ]),
             ),
             SizedBox(
