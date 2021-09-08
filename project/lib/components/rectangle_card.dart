@@ -31,12 +31,18 @@ class RectangleCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             icon,
-            SizedBox(
-              height: scale * 0.1,
+            Visibility(
+              visible: content != '' ? true : false,
+              child: SizedBox(
+                height: scale * 0.1,
+              ),
             ),
-            Text(content,
-                style: GoogleFonts.inter(
-                    fontSize: scale * 0.14, fontWeight: FontWeight.bold)),
+            Visibility(
+              visible: content != '' ? true : false,
+              child: Text(content,
+                  style: GoogleFonts.inter(
+                      fontSize: scale * 0.14, fontWeight: FontWeight.bold)),
+            ),
           ],
         ),
       ),

@@ -143,7 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                         DialogBuilder(context).hideOpenDialog();
                       }
                     },
-                    child: RoundedButton(size: size, text: 'LOGIN'),
+                    child: RoundedButton(
+                        height: size.height * 0.053,
+                        width: size.width * 0.9,
+                        radius: 30,
+                        text: 'LOGIN'),
                   )
                 ],
               ),

@@ -191,17 +191,27 @@ class _InformationPageState extends State<InformationPage> {
                         content: 'Modo',
                       ),
                     ),
-                    RectangleCard(
-                      size: size,
-                      icon: Icon(Icons.schedule, size: size.height * 0.053),
-                      scale: size.height * 0.13,
-                      content: 'Quantidade',
+                    GestureDetector(
+                      onTap: () {
+                        DialogHelper.setQuantity(context);
+                      },
+                      child: RectangleCard(
+                        size: size,
+                        icon: Icon(Icons.schedule, size: size.height * 0.053),
+                        scale: size.height * 0.13,
+                        content: 'Quantidade',
+                      ),
                     ),
-                    RectangleCard(
-                      size: size,
-                      icon: Icon(Icons.schedule, size: size.height * 0.053),
-                      scale: size.height * 0.13,
-                      content: 'Horários',
+                    GestureDetector(
+                      onTap: () {
+                        DialogHelper.setSchedule(context);
+                      },
+                      child: RectangleCard(
+                        size: size,
+                        icon: Icon(Icons.schedule, size: size.height * 0.053),
+                        scale: size.height * 0.13,
+                        content: 'Horários',
+                      ),
                     )
                   ],
                 ),

@@ -138,7 +138,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.09),
-                RoundedButton(size: size, text: 'CRIAR CONTA'),
+                RoundedButton(
+                    height: size.height * 0.053,
+                    width: size.width * 0.9,
+                    radius: 30,
+                    text: 'CRIAR CONTA'),
                 SizedBox(height: size.height * 0.06),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
