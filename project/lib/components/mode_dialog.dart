@@ -32,15 +32,17 @@ class _ModeDialogState extends State<ModeDialog> {
 
   void changeColors() {
     setState(() {
-      if (schedulesEnabled)
+      if (schedulesEnabled) {
         schedulesColor = Color.fromRGBO(237, 237, 237, 1);
-      else
+      } else {
         schedulesColor = Colors.white;
+      }
 
-      if (aproximationEnabled)
+      if (aproximationEnabled) {
         aproximationColor = Color.fromRGBO(237, 237, 237, 1);
-      else
+      } else {
         aproximationColor = Colors.white;
+      }
     });
   }
 
@@ -75,9 +77,10 @@ class _ModeDialogState extends State<ModeDialog> {
             ),
             GestureDetector(
                 onTap: () {
-                  if (schedulesEnabled != true) aproximationEnabled = false;
+                  if (schedulesEnabled == true) aproximationEnabled = true;
 
                   schedulesEnabled = !schedulesEnabled;
+                  aproximationEnabled = !schedulesEnabled;
                   changeColors();
                 },
                 child: Align(
@@ -89,10 +92,10 @@ class _ModeDialogState extends State<ModeDialog> {
             ),
             GestureDetector(
                 onTap: () {
-                  if (aproximationEnabled != true) schedulesEnabled = false;
+                  if (aproximationEnabled == true) schedulesEnabled = true;
 
                   aproximationEnabled = !aproximationEnabled;
-
+                  schedulesEnabled = !aproximationEnabled;
                   changeColors();
                 },
                 child: Align(

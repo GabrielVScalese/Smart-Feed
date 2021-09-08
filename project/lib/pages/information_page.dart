@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/dialog_helper.dart';
-import 'package:project/components/mode_dialog.dart';
 import 'package:project/components/rectangle_card.dart';
 
 class InformationPage extends StatefulWidget {
