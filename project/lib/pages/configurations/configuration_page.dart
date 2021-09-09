@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,83 +27,105 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           children: [
             SizedBox(height: size.height * 0.06),
             GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                child: Container(
-                    margin: EdgeInsets.only(left: size.width * 0.05),
-                    child: CircleCard(
-                        size: size,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                          size: size.height * 0.03,
-                        )))),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomePage()));
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: size.width * 0.05),
+                child: CircleCard(
+                  size: size,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: size.height * 0.03,
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               height: size.height * 0.04,
             ),
-            Container(
-              margin: EdgeInsets.only(left: size.width * 0.05),
-              child: PageTitle(
-                size: size,
-                title: 'Configurações',
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              child: Container(
+                margin: EdgeInsets.only(left: size.width * 0.05),
+                child: PageTitle(
+                  size: size,
+                  title: 'Configurações',
+                ),
               ),
             ),
             SizedBox(
               height: size.height * 0.08,
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => UserPage()));
-              },
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              initDelay: Duration(milliseconds: 500),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => UserPage()));
+                },
+                child: ConfigurationCard(
+                  size: size,
+                  icon: Icon(
+                    Icons.person,
+                    size: size.height * 0.04,
+                  ),
+                  title: 'Minha Conta',
+                  content: 'Informações e editar conta',
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              initDelay: Duration(milliseconds: 500),
               child: ConfigurationCard(
                 size: size,
                 icon: Icon(
-                  Icons.person,
-                  size: size.height * 0.04,
+                  Icons.color_lens,
+                  size: size.height * 0.035,
                 ),
-                title: 'Minha Conta',
-                content: 'Informações e editar conta',
+                title: 'Tema',
+                content: 'Troque entre o tema escuro ou claro',
               ),
             ),
             SizedBox(
               height: size.height * 0.05,
             ),
-            ConfigurationCard(
-              size: size,
-              icon: Icon(
-                Icons.color_lens,
-                size: size.height * 0.035,
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              initDelay: Duration(milliseconds: 500),
+              child: ConfigurationCard(
+                size: size,
+                icon: Icon(
+                  Icons.help,
+                  size: size.height * 0.035,
+                ),
+                title: 'Ajuda',
+                content: 'Fale conosco ou envie um feedback',
               ),
-              title: 'Tema',
-              content: 'Troque entre o tema escuro ou claro',
             ),
             SizedBox(
               height: size.height * 0.05,
             ),
-            ConfigurationCard(
-              size: size,
-              icon: Icon(
-                Icons.help,
-                size: size.height * 0.035,
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              initDelay: Duration(milliseconds: 500),
+              child: ConfigurationCard(
+                size: size,
+                icon: Icon(
+                  Icons.delete,
+                  size: size.height * 0.035,
+                  color: Colors.red,
+                ),
+                title: 'Excluir Conta',
+                content: 'Remover permanentemente a conta',
               ),
-              title: 'Ajuda',
-              content: 'Fale conosco ou envie um feedback',
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            ConfigurationCard(
-              size: size,
-              icon: Icon(
-                Icons.delete,
-                size: size.height * 0.035,
-                color: Colors.red,
-              ),
-              title: 'Excluir Conta',
-              content: 'Remover permanentemente a conta',
             )
           ],
         ),

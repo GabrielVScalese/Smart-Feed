@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,81 +39,91 @@ class _InformationPageState extends State<InformationPage> {
               SizedBox(
                 height: size.height * 0.08,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: size.width * 0.05),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(this.widget.pet.getName(),
-                            style: GoogleFonts.inter(
-                                fontSize: size.width * 0.08,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        Text('Informações',
-                            style: GoogleFonts.inter(
-                                fontSize: size.width * 0.05,
-                                color: Color.fromRGBO(125, 125, 125, 1)))
-                      ],
+              AnimatedCard(
+                direction: AnimatedCardDirection.top,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: size.width * 0.05),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(this.widget.pet.getName(),
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.08,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          Text('Informações',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.05,
+                                  color: Color.fromRGBO(125, 125, 125, 1)))
+                        ],
+                      ),
                     ),
-                  ),
-                  CircleImage(
-                    scale: size.height * 0.1,
-                    srcImage: this.widget.pet.getImage(),
-                    margin: EdgeInsets.only(right: size.width * 0.07),
-                  )
-                ],
+                    CircleImage(
+                      scale: size.height * 0.1,
+                      srcImage: this.widget.pet.getImage(),
+                      margin: EdgeInsets.only(right: size.width * 0.07),
+                    )
+                  ],
+                ),
               ),
               SizedBox(
                 height: size.height * 0.036,
               ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.06),
-                child: Text(
-                  'Dispositivo',
-                  style: labelStyle,
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Text(
+                    'Dispositivo',
+                    style: labelStyle,
+                  ),
                 ),
               ),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white, width: 1),
-                    borderRadius: BorderRadius.circular(7.5),
-                  ),
-                  elevation: 10,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: size.width * 0.03, right: size.width * 0.02),
-                    width: size.width * 0.9,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                          iconDisabledColor: Colors.black,
-                          value: 'Smart Feed UHG78F',
-                          items: _devices
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Center(
-                                child: Text(
-                                  value,
-                                  style: GoogleFonts.inter(
-                                      fontSize: size.width * 0.04,
-                                      color: Color.fromRGBO(125, 125, 125, 1)),
+              AnimatedCard(
+                direction: AnimatedCardDirection.right,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.circular(7.5),
+                    ),
+                    elevation: 10,
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          left: size.width * 0.03, right: size.width * 0.02),
+                      width: size.width * 0.9,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton(
+                            iconDisabledColor: Colors.black,
+                            value: 'Smart Feed UHG78F',
+                            items: _devices
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(
+                                  child: Text(
+                                    value,
+                                    style: GoogleFonts.inter(
+                                        fontSize: size.width * 0.04,
+                                        color:
+                                            Color.fromRGBO(125, 125, 125, 1)),
+                                  ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String value) {
-                            setState(() {});
-                          }),
+                              );
+                            }).toList(),
+                            onChanged: (String value) {
+                              setState(() {});
+                            }),
+                      ),
                     ),
                   ),
                 ),
@@ -120,138 +131,156 @@ class _InformationPageState extends State<InformationPage> {
               SizedBox(
                 height: size.height * 0.04,
               ),
-              LabelRow(
-                size: size,
-                labelStyle: labelStyle,
-                principalText: 'Características',
-                secondaryText: 'Editar',
-                icon: Icons.edit,
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: LabelRow(
+                  size: size,
+                  labelStyle: labelStyle,
+                  principalText: 'Características',
+                  secondaryText: 'Editar',
+                  icon: Icons.edit,
+                ),
               ),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    RectangleCard(
+              AnimatedCard(
+                direction: AnimatedCardDirection.right,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      RectangleCard(
+                          size: size,
+                          icon: Icon(
+                            Icons.pets,
+                            size: size.height * 0.053,
+                          ),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getAnimal()),
+                      RectangleCard(
                         size: size,
-                        icon: Icon(
-                          Icons.pets,
-                          size: size.height * 0.053,
+                        icon: Icon(Icons.restaurant_menu,
+                            size: size.height * 0.053),
+                        scale: size.height * 0.13,
+                        content: this.widget.pet.getRation(),
+                      ),
+                      RectangleCard(
+                          size: size,
+                          icon: Icon(Icons.aspect_ratio,
+                              size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getSize()),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Text(
+                    'Alimentação',
+                    style: labelStyle,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
+              AnimatedCard(
+                direction: AnimatedCardDirection.right,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          DialogHelper.chooseMode(context);
+                        },
+                        child: RectangleCard(
+                          size: size,
+                          icon: Icon(
+                            Icons.dehaze,
+                            size: size.height * 0.053,
+                          ),
+                          scale: size.height * 0.13,
+                          content: 'Modo',
                         ),
-                        scale: size.height * 0.13,
-                        content: this.widget.pet.getAnimal()),
-                    RectangleCard(
-                      size: size,
-                      icon: Icon(Icons.restaurant_menu,
-                          size: size.height * 0.053),
-                      scale: size.height * 0.13,
-                      content: this.widget.pet.getRation(),
-                    ),
-                    RectangleCard(
-                        size: size,
-                        icon:
-                            Icon(Icons.aspect_ratio, size: size.height * 0.053),
-                        scale: size.height * 0.13,
-                        content: this.widget.pet.getSize()),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.06),
-                child: Text(
-                  'Alimentação',
-                  style: labelStyle,
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        DialogHelper.chooseMode(context);
-                      },
-                      child: RectangleCard(
-                        size: size,
-                        icon: Icon(
-                          Icons.dehaze,
-                          size: size.height * 0.053,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          DialogHelper.setQuantity(context);
+                        },
+                        child: RectangleCard(
+                          size: size,
+                          icon: Icon(Icons.schedule, size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: 'Quantidade',
                         ),
-                        scale: size.height * 0.13,
-                        content: 'Modo',
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        DialogHelper.setQuantity(context);
-                      },
-                      child: RectangleCard(
-                        size: size,
-                        icon: Icon(Icons.schedule, size: size.height * 0.053),
-                        scale: size.height * 0.13,
-                        content: 'Quantidade',
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        DialogHelper.setSchedule(context);
-                      },
-                      child: RectangleCard(
-                        size: size,
-                        icon: Icon(Icons.schedule, size: size.height * 0.053),
-                        scale: size.height * 0.13,
-                        content: 'Horários',
-                      ),
-                    )
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          DialogHelper.setSchedule(context);
+                        },
+                        child: RectangleCard(
+                          size: size,
+                          icon: Icon(Icons.schedule, size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: 'Horários',
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              LabelRow(
-                size: size,
-                labelStyle: labelStyle,
-                principalText: 'Consumo',
-                secondaryText: 'Ver gráfico',
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: LabelRow(
+                  size: size,
+                  labelStyle: labelStyle,
+                  principalText: 'Consumo',
+                  secondaryText: 'Ver gráfico',
+                ),
               ),
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    InformationCard(
-                      size: size,
-                      title: 'Média',
-                      content: 'Após 15 dias',
-                      value: 206,
-                    ),
-                    InformationCard(
-                      size: size,
-                      title: 'Máximo',
-                      content: '24/02/201',
-                      value: 300,
-                    ),
-                    InformationCard(
-                      size: size,
-                      title: 'Mínimo',
-                      content: '14/06/2021',
-                      value: 150,
-                    ),
-                  ],
+              AnimatedCard(
+                direction: AnimatedCardDirection.right,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InformationCard(
+                        size: size,
+                        title: 'Média',
+                        content: 'Após 15 dias',
+                        value: 206,
+                      ),
+                      InformationCard(
+                        size: size,
+                        title: 'Máximo',
+                        content: '24/02/201',
+                        value: 300,
+                      ),
+                      InformationCard(
+                        size: size,
+                        title: 'Mínimo',
+                        content: '14/06/2021',
+                        value: 150,
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

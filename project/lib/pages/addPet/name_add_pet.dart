@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:animated_card/animated_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,20 +106,23 @@ class _NameAddPetState extends State<NameAddPet> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.06),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageTitle(size: size, title: 'Nome'),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text('Digite o nome.',
-                        style: GoogleFonts.inter(
-                            fontSize: size.width * 0.045,
-                            color: Color.fromRGBO(125, 125, 125, 1)))
-                  ],
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageTitle(size: size, title: 'Nome'),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text('Digite o nome.',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.045,
+                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -127,87 +131,93 @@ class _NameAddPetState extends State<NameAddPet> {
               SizedBox(
                 height: size.height * 0.13,
               ),
-              Align(
-                child: new TextFieldContainer(
-                  size: size,
-                  textField: TextField(
-                    controller: _nameController,
-                    style:
-                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                    decoration: InputDecoration(
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        hintText: 'Nome',
-                        prefixIcon: Icon(Icons.person,
-                            size: size.width * 0.9 * 0.06,
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        border: InputBorder.none),
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Align(
+                  child: new TextFieldContainer(
+                    size: size,
+                    textField: TextField(
+                      controller: _nameController,
+                      style:
+                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      decoration: InputDecoration(
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          hintText: 'Nome',
+                          prefixIcon: Icon(Icons.person,
+                              size: size.width * 0.9 * 0.06,
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          border: InputBorder.none),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-          Align(
-            alignment: Alignment(0.92, 0.92),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('Finalizar',
-                    style: GoogleFonts.inter(
-                      fontSize: size.width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(width: size.width * 0.02),
-                GestureDetector(
-                  onTap: () async {
-                    if (!_nameController.text.isEmpty)
-                      try {
-                        DialogBuilder(context).showLoadingIndicator();
+          AnimatedCard(
+            direction: AnimatedCardDirection.left,
+            child: Align(
+              alignment: Alignment(0.92, 0.92),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('Finalizar',
+                      style: GoogleFonts.inter(
+                        fontSize: size.width * 0.045,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  SizedBox(width: size.width * 0.02),
+                  GestureDetector(
+                    onTap: () async {
+                      if (!_nameController.text.isEmpty)
+                        try {
+                          DialogBuilder(context).showLoadingIndicator();
 
-                        var arguments = _insertArgument();
+                          var arguments = _insertArgument();
 
-                        var instance = await SharedPreferences.getInstance();
-                        var user = jsonDecode(instance.getString('user'));
+                          var instance = await SharedPreferences.getInstance();
+                          var user = jsonDecode(instance.getString('user'));
 
-                        var image64 = base64Encode(
-                            await arguments[3]['value'].readAsBytes());
+                          var image64 = base64Encode(
+                              await arguments[3]['value'].readAsBytes());
 
-                        var imageLink = await _uploadImage(image64);
+                          var imageLink = await _uploadImage(image64);
 
-                        var pet = Pet.fromRegister(
-                            user['id'],
-                            arguments[4]['value'],
-                            arguments[0]['value'],
-                            arguments[2]['value'],
-                            arguments[1]['value'],
-                            "Smart Feed UHG78F",
-                            imageLink);
+                          var pet = Pet.fromRegister(
+                              user['id'],
+                              arguments[4]['value'],
+                              arguments[0]['value'],
+                              arguments[2]['value'],
+                              arguments[1]['value'],
+                              "Smart Feed UHG78F",
+                              imageLink);
 
-                        var petsRepository = new PetsRepository();
-                        var statusCode = await petsRepository.create(pet);
+                          var petsRepository = new PetsRepository();
+                          var statusCode = await petsRepository.create(pet);
 
-                        if (statusCode == 200)
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-                        else {
+                          if (statusCode == 200)
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                          else {
+                            DialogBuilder(context).hideOpenDialog();
+                            print('Error');
+                          }
+                        } catch (err) {
+                          print(err.toString());
                           DialogBuilder(context).hideOpenDialog();
-                          print('Error');
                         }
-                      } catch (err) {
-                        print(err.toString());
-                        DialogBuilder(context).hideOpenDialog();
-                      }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: size.width * 0.05),
-                    child: CircleCard(
-                      icon: Icon(Icons.arrow_forward),
-                      size: size,
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: size.width * 0.05),
+                      child: CircleCard(
+                        icon: Icon(Icons.arrow_forward),
+                        size: size,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ]),

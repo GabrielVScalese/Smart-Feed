@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -178,33 +179,37 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: size.height * 0.04),
-                height: size.height * 0.06,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  elevation: 5,
-                  child: Container(
-                    // padding: EdgeInsets.only(top: size.width * 0.9 * 0.0066),
-                    child: TextField(
-                      controller: namePetController,
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty)
-                            this._dynamicPetList = this._petList;
-                          else
-                            this._dynamicPetList = _findPetsByValue(value);
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Buscar",
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        prefixIcon: Icon(Icons.search,
-                            size: size.width * 0.05, color: inputColor),
-                        border: InputBorder.none,
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: size.height * 0.04),
+                  height: size.height * 0.06,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                    elevation: 5,
+                    child: Container(
+                      // padding: EdgeInsets.only(top: size.width * 0.9 * 0.0066),
+
+                      child: TextField(
+                        controller: namePetController,
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.isEmpty)
+                              this._dynamicPetList = this._petList;
+                            else
+                              this._dynamicPetList = _findPetsByValue(value);
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Buscar",
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          prefixIcon: Icon(Icons.search,
+                              size: size.width * 0.05, color: inputColor),
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                   ),
@@ -235,16 +240,21 @@ class _HomePageState extends State<HomePage> {
                           if (_isLoading)
                             return buildPetCardShimmer();
                           else
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => InformationPage(
-                                          pet: _petList[index],
-                                        )));
-                              },
-                              child: PetCard(
-                                size: size,
-                                pet: _dynamicPetList[index],
+                            return AnimatedCard(
+                              direction: index % 2 == 0
+                                  ? AnimatedCardDirection.left
+                                  : AnimatedCardDirection.right,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => InformationPage(
+                                            pet: _petList[index],
+                                          )));
+                                },
+                                child: PetCard(
+                                  size: size,
+                                  pet: _dynamicPetList[index],
+                                ),
                               ),
                             );
                         }),

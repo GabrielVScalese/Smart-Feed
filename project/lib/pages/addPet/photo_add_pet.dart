@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -130,100 +131,110 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.06),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageTitle(size: size, title: 'Foto'),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text('Escolha uma foto.',
-                        style: GoogleFonts.inter(
-                            fontSize: size.width * 0.045,
-                            color: Color.fromRGBO(125, 125, 125, 1)))
-                  ],
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageTitle(size: size, title: 'Foto'),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text('Escolha uma foto.',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.045,
+                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
                 height: size.height * 0.13,
               ),
-              Stack(
-                children: [
-                  Align(
-                    child: Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(150),
-                      ),
-                      child: Container(
-                          child: Stack(
-                            children: [
-                              _decideView(size),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await _openGallery();
-                                  },
-                                  child: Card(
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(150),
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Stack(
+                  children: [
+                    Align(
+                      child: Card(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(150),
+                        ),
+                        child: Container(
+                            child: Stack(
+                              children: [
+                                _decideView(size),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await _openGallery();
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(150),
+                                      ),
+                                      child: Container(
+                                          child: Icon(Icons.photo_camera,
+                                              size: (size.width * 0.15) * 0.5,
+                                              color: Color.fromRGBO(
+                                                  144, 143, 143, 1)),
+                                          width: size.width * 0.15,
+                                          height: size.width * 0.15,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle)),
                                     ),
-                                    child: Container(
-                                        child: Icon(Icons.photo_camera,
-                                            size: (size.width * 0.15) * 0.5,
-                                            color: Color.fromRGBO(
-                                                144, 143, 143, 1)),
-                                        width: size.width * 0.15,
-                                        height: size.width * 0.15,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle)),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                          width: size.width * 0.5,
-                          height: size.width * 0.5,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          )),
-                    ),
-                  )
-                ],
+                                )
+                              ],
+                            ),
+                            width: size.width * 0.5,
+                            height: size.width * 0.5,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            )),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
-          Align(
-            alignment: Alignment(0.92, 0.92),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('Próximo',
-                    style: GoogleFonts.inter(
-                      fontSize: size.width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(width: size.width * 0.02),
-                GestureDetector(
-                  onTap: () {
-                    var arguments = _insertArgument();
+          AnimatedCard(
+            direction: AnimatedCardDirection.left,
+            child: Align(
+              alignment: Alignment(0.92, 0.92),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('Próximo',
+                      style: GoogleFonts.inter(
+                        fontSize: size.width * 0.045,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  SizedBox(width: size.width * 0.02),
+                  GestureDetector(
+                    onTap: () {
+                      var arguments = _insertArgument();
 
-                    Navigator.of(context)
-                        .pushReplacementNamed('/name', arguments: arguments);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: size.width * 0.05),
-                    child: CircleCard(
-                      icon: Icon(Icons.arrow_forward),
-                      size: size,
+                      Navigator.of(context)
+                          .pushReplacementNamed('/name', arguments: arguments);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: size.width * 0.05),
+                      child: CircleCard(
+                        icon: Icon(Icons.arrow_forward),
+                        size: size,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ]),

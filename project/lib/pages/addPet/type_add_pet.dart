@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -107,66 +108,75 @@ class _TypeAddPetState extends State<TypeAddPet> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.06),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageTitle(size: size, title: 'Novo Pet'),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text('Cão ou gato.',
-                        style: GoogleFonts.inter(
-                            fontSize: size.width * 0.045,
-                            color: Color.fromRGBO(125, 125, 125, 1)))
-                  ],
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Container(
+                  margin: EdgeInsets.only(left: size.width * 0.06),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageTitle(size: size, title: 'Novo Pet'),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Text('Cão ou gato.',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.045,
+                              color: Color.fromRGBO(125, 125, 125, 1)))
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
                 height: size.height * 0.13,
               ),
-              Carousel(
-                  size: size,
-                  optionlist: optionList,
-                  initialPage: _getInitialPage(optionList),
-                  controller: cardChangerController),
+              AnimatedCard(
+                direction: AnimatedCardDirection.left,
+                child: Carousel(
+                    size: size,
+                    optionlist: optionList,
+                    initialPage: _getInitialPage(optionList),
+                    controller: cardChangerController),
+              ),
             ],
           ),
-          Align(
-            alignment: Alignment(0.92, 0.92),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('Próximo',
-                    style: GoogleFonts.inter(
-                      fontSize: size.width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(width: size.width * 0.02),
-                GestureDetector(
-                  onTap: () {
-                    var arguments = _getArguments() as List;
+          AnimatedCard(
+            direction: AnimatedCardDirection.left,
+            child: Align(
+              alignment: Alignment(0.92, 0.92),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('Próximo',
+                      style: GoogleFonts.inter(
+                        fontSize: size.width * 0.045,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  SizedBox(width: size.width * 0.02),
+                  GestureDetector(
+                    onTap: () {
+                      var arguments = _getArguments() as List;
 
-                    if (arguments != null)
-                      arguments[0] = cardChangerController.getValue();
-                    else {
-                      arguments = [];
-                      arguments.add(cardChangerController.getValue());
-                    }
+                      if (arguments != null)
+                        arguments[0] = cardChangerController.getValue();
+                      else {
+                        arguments = [];
+                        arguments.add(cardChangerController.getValue());
+                      }
 
-                    Navigator.of(context)
-                        .pushReplacementNamed('/size', arguments: arguments);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: size.width * 0.05),
-                    child: CircleCard(
-                      icon: Icon(Icons.arrow_forward),
-                      size: size,
+                      Navigator.of(context)
+                          .pushReplacementNamed('/size', arguments: arguments);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: size.width * 0.05),
+                      child: CircleCard(
+                        icon: Icon(Icons.arrow_forward),
+                        size: size,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ]),
