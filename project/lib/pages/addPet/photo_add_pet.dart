@@ -48,10 +48,21 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
         ),
       );
     else
-      return Align(
-        child: Icon(Icons.person,
-            size: (size.width * 0.5) * 0.55,
-            color: Color.fromRGBO(186, 184, 184, 1)),
+      return Center(
+        child: Container(
+          width: size.width * 0.5,
+          height: size.width * 0.5,
+          child: ClipOval(
+            child: Image.network(
+              _getNetworkImage(),
+              fit: BoxFit.cover,
+              scale: 0.1,
+              height: size.width * 0.01,
+              width: size.width * 0.01,
+              // scale: size.height * 0.2,
+            ),
+          ),
+        ),
       );
   }
 
@@ -73,6 +84,15 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
       setState(() {
         if (_imgFile == null) _imgFile = arguments[3]['value'];
       });
+  }
+
+  _getNetworkImage() {
+    var arguments = _getArguments() as List;
+
+    if (arguments[0]['value'] == 'Cão')
+      return 'https://i.imgur.com/yh365gr.png';
+
+    return 'https://i.imgur.com/WYShCBk.png';
   }
 
   @override

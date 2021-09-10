@@ -178,10 +178,18 @@ class _NameAddPetState extends State<NameAddPet> {
                           var instance = await SharedPreferences.getInstance();
                           var user = jsonDecode(instance.getString('user'));
 
-                          var image64 = base64Encode(
-                              await arguments[3]['value'].readAsBytes());
+                          var image64 = null;
+                          if (arguments[3]['value'] != null)
+                            image64 = base64Encode(
+                                await arguments[3]['value'].readAsBytes());
 
-                          var imageLink = await _uploadImage(image64);
+                          var imageLink = null;
+                          if (image64 != null)
+                            imageLink = await _uploadImage(image64);
+                          else if (arguments[0]['value'] == 'Cão')
+                            imageLink = 'https://i.imgur.com/yh365gr.png';
+                          else
+                            imageLink = 'https://i.imgur.com/WYShCBk.png;';
 
                           var pet = Pet.fromRegister(
                               user['id'],
