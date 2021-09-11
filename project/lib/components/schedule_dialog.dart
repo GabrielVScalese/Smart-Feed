@@ -46,7 +46,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   }
 
   _buildChild(BuildContext context) => Container(
-        height: 400,
+        height: 390,
         width: 300,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -120,7 +120,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 23,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

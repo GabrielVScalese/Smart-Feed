@@ -26,7 +26,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
   }
 
   _buildChild(BuildContext context) => Container(
-        height: 293,
+        height: 280,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(30))),

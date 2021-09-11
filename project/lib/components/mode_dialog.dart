@@ -84,7 +84,7 @@ class _ModeDialogState extends State<ModeDialog> {
                   changeColors();
                 },
                 child: Align(
-                  child: OptionCard(Icon(Icons.schedule, size: 30), 'Horários',
+                  child: OptionCard(Icon(Icons.schedule, size: 30), 'Horário',
                       schedulesColor),
                 )),
             SizedBox(
