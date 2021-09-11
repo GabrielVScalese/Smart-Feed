@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/components/rounded_button.dart';
-import 'package:intl/intl.dart';
 
 import 'dialog_helper.dart';
 
