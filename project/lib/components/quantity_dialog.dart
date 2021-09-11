@@ -69,7 +69,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
                   child: TextField(
                       keyboardType: TextInputType.number,
                       style: GoogleFonts.inter(
-                          fontSize: 25, fontWeight: FontWeight.bold),
+                          fontSize: 28, fontWeight: FontWeight.bold),
                       controller: quantityController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(

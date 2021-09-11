@@ -2,9 +2,14 @@ import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
+import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rectangle_card.dart';
+import 'package:project/repositories/pets_repository.dart';
+
+import 'home_page.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -282,52 +287,58 @@ class _InformationPageState extends State<InformationPage> {
                     ],
                   ),
                 ),
-              )
+              ),
+              SizedBox(
+                height: size.height * 0.025,
+              ),
+              Align(
+                alignment: Alignment(0.92, 0.95),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Excluir',
+                        style: GoogleFonts.inter(
+                            fontSize: size.width * 0.042,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red)),
+                    SizedBox(width: size.width * 0.02),
+                    GestureDetector(
+                      onTap: () async {
+                        try {
+                          DialogBuilder(context).showLoadingIndicator();
+
+                          var petsRepository = new PetsRepository();
+                          var statusCode = await petsRepository
+                              .destroy(this.widget.pet.getId());
+
+                          if (statusCode == 200)
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()));
+                          else {
+                            print('Error');
+                            DialogBuilder(context).hideOpenDialog();
+                          }
+                        } catch (err) {
+                          print(err.toString());
+                          DialogBuilder(context).hideOpenDialog();
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: size.width * 0.05),
+                        child: CircleCard(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          size: size,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.016))
             ],
           ),
-          // Align(
-          //   alignment: Alignment(0.92, 0.95),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       Text('Excluir',
-          //           style: GoogleFonts.inter(
-          //               fontSize: size.width * 0.042,
-          //               fontWeight: FontWeight.bold,
-          //               color: Colors.red)),
-          //       SizedBox(width: size.width * 0.02),
-          //       GestureDetector(
-          //         onTap: () async {
-          //           try {
-          //             DialogBuilder(context).showLoadingIndicator();
-
-          //             var petsRepository = new PetsRepository();
-          //             var statusCode =
-          //                 await petsRepository.destroy(this.widget.pet.getId());
-
-          //             if (statusCode == 200)
-          //               Navigator.of(context).pushReplacement(MaterialPageRoute(
-          //                   builder: (context) => HomePage()));
-          //             else {
-          //               print('Error');
-          //               DialogBuilder(context).hideOpenDialog();
-          //             }
-          //           } catch (err) {
-          //             print(err.toString());
-          //             DialogBuilder(context).hideOpenDialog();
-          //           }
-          //         },
-          //         child: Container(
-          //           margin: EdgeInsets.only(right: size.width * 0.05),
-          //           child: CircleCard(
-          //             icon: Icon(Icons.delete, color: Colors.red),
-          //             size: size,
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ),
       ),
     );

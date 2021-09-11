@@ -189,7 +189,7 @@ class _NameAddPetState extends State<NameAddPet> {
                           else if (arguments[0]['value'] == 'Cão')
                             imageLink = 'https://i.imgur.com/yh365gr.png';
                           else
-                            imageLink = 'https://i.imgur.com/WYShCBk.png;';
+                            imageLink = 'https://i.imgur.com/WYShCBk.png';
 
                           var pet = Pet.fromRegister(
                               user['id'],

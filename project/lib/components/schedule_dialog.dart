@@ -47,6 +47,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
 
   _buildChild(BuildContext context) => Container(
         height: 400,
+        width: 300,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -71,10 +72,6 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    var infoTitle = "Recomendação (por dia)";
-                    var infoContent =
-                        "Filhote: 4 vezes ao dia.\nJovem ou Adulto: 2 vezes ao dia.";
-
                     DialogHelper.infoModal(context);
                   },
                   child: Container(
@@ -87,7 +84,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               height: 23,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -102,6 +99,9 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                     scale: 90,
                     content: schedules[0],
                   ),
+                ),
+                SizedBox(
+                  width: 20,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -123,7 +123,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               height: 30,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -138,6 +138,9 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                     scale: 90,
                     content: schedules[2],
                   ),
+                ),
+                SizedBox(
+                  width: 20,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -158,7 +161,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
             SizedBox(
               height: 25,
             ),
-            RoundedButton(height: 45, width: 230, radius: 10, text: 'APLICAR'),
+            RoundedButton(height: 45, width: 220, radius: 10, text: 'APLICAR'),
           ],
         ),
       );
