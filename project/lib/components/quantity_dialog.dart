@@ -67,6 +67,10 @@ class _QuantityDialogState extends State<QuantityDialog> {
                 width: 200,
                 child: Align(
                   child: TextField(
+                      onChanged: (value) {
+                        if (value.isNotEmpty) this.quantity = int.parse(value);
+                        print(this.quantity);
+                      },
                       keyboardType: TextInputType.number,
                       style: GoogleFonts.inter(
                           fontSize: 28, fontWeight: FontWeight.bold),
@@ -74,7 +78,6 @@ class _QuantityDialogState extends State<QuantityDialog> {
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: quantityController.text,
                       )),
                 ),
               ),

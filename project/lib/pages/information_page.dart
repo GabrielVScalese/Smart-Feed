@@ -6,6 +6,7 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
+import 'package:project/components/panel_widget.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/repositories/pets_repository.dart';
 
@@ -22,7 +23,6 @@ class InformationPage extends StatefulWidget {
 
 class _InformationPageState extends State<InformationPage> {
   var _devices = ['Smart Feed UHG78F'];
-
   // Fazer tamanho máximo e tamanho mínimo; colocar arrow back card
   @override
   Widget build(BuildContext context) {
@@ -336,7 +336,7 @@ class _InformationPageState extends State<InformationPage> {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.016))
+                  padding: EdgeInsets.symmetric(vertical: size.height * 0.016)),
             ],
           ),
         ),
