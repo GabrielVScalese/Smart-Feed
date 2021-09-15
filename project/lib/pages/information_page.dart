@@ -8,6 +8,7 @@ import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/panel_widget.dart';
 import 'package:project/components/rectangle_card.dart';
+import 'package:project/pages/addPet/type_add_pet.dart';
 import 'package:project/repositories/pets_repository.dart';
 
 import 'home_page.dart';
@@ -138,12 +139,21 @@ class _InformationPageState extends State<InformationPage> {
               ),
               AnimatedCard(
                 direction: AnimatedCardDirection.left,
-                child: LabelRow(
-                  size: size,
-                  labelStyle: labelStyle,
-                  principalText: 'Características',
-                  secondaryText: 'Editar',
-                  icon: Icons.edit,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => TypeAddPet(),
+                      ),
+                    );
+                  },
+                  child: LabelRow(
+                    size: size,
+                    labelStyle: labelStyle,
+                    principalText: 'Características',
+                    secondaryText: 'Editar',
+                    icon: Icons.edit,
+                  ),
                 ),
               ),
               SizedBox(
@@ -224,7 +234,8 @@ class _InformationPageState extends State<InformationPage> {
                         },
                         child: RectangleCard(
                           size: size,
-                          icon: Icon(Icons.schedule, size: size.height * 0.053),
+                          icon: Icon(Icons.local_restaurant,
+                              size: size.height * 0.053),
                           scale: size.height * 0.13,
                           content: 'Quantidade',
                         ),

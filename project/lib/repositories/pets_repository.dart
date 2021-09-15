@@ -42,16 +42,18 @@ class PetsRepository {
   }
 
   Future<int> destroy(id) async {
-    var response = await this._dio.delete('/pets/$id');
+    try {
+      var response = await this._dio.delete('/pets/$id');
 
-    // Token is invalid
-    if (response.statusCode == 401) {
-      var refreshToken = new RefreshToken();
-      var newResponse = await refreshToken.execute(response.requestOptions);
+      // Token is invalid
+      if (response.statusCode == 401) {
+        var refreshToken = new RefreshToken();
+        var newResponse = await refreshToken.execute(response.requestOptions);
 
-      return newResponse.statusCode;
-    }
-
-    return response.statusCode;
+        return newResponse.statusCode;
+      }
+      print(response);
+      return response.statusCode;
+    } catch (e) {}
   }
 }

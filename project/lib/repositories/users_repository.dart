@@ -24,4 +24,19 @@ class UsersRepository {
 
     return response.statusCode;
   }
+
+  Future<int> destroy(id) async {
+    var response = await this._dio.delete('/users/$id');
+
+    // Token is invalid
+    if (response.statusCode == 401) {
+      var refreshToken = new RefreshToken();
+      var newResponse = await refreshToken.execute(response.requestOptions);
+
+      return newResponse.statusCode;
+    }
+
+    print(response);
+    return response.statusCode;
+  }
 }

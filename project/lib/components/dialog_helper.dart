@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project/components/mode_dialog.dart';
+import 'package:project/components/password_dialog.dart';
 import 'package:project/components/quantity_dialog.dart';
 import 'package:project/components/schedule_dialog.dart';
+import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'info_dialog.dart';
 
 class DialogHelper {
@@ -16,4 +18,7 @@ class DialogHelper {
 
   static infoModal(context) =>
       showDialog(context: context, builder: (context) => InfoDialog());
+
+  static confirmPassword(context) =>
+      showDialog(context: context, builder: (context) => PasswordDialog());
 }

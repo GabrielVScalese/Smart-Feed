@@ -6,9 +6,12 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/addPet/size_add_pet.dart';
 import 'package:project/pages/home_page.dart';
 
 class TypeAddPet extends StatefulWidget {
+  var pet;
+  TypeAddPet({this.pet});
   @override
   _TypeAddPetState createState() => _TypeAddPetState();
 }
@@ -77,8 +80,11 @@ class _TypeAddPetState extends State<TypeAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => HomePage()));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                        );
                       },
                       child: CircleCard(
                           size: size,
@@ -157,9 +163,9 @@ class _TypeAddPetState extends State<TypeAddPet> {
                     onTap: () {
                       var arguments = _getArguments() as List;
 
-                      if (arguments != null)
+                      if (arguments != null) {
                         arguments[0] = cardChangerController.getValue();
-                      else {
+                      } else {
                         arguments = [];
                         arguments.add(cardChangerController.getValue());
                       }
