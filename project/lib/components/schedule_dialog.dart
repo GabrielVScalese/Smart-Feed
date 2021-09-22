@@ -6,31 +6,50 @@ import 'package:project/components/rounded_button.dart';
 import 'dialog_helper.dart';
 
 class ScheduleDialog extends StatefulWidget {
+  List<TimeOfDay> schedules;
+
+  ScheduleDialog({this.schedules});
+
   @override
   _ScheduleDialogState createState() => _ScheduleDialogState();
 }
 
 class _ScheduleDialogState extends State<ScheduleDialog> {
-  List schedules = ['07:30', '12:00', '', ''];
   var scheduleSelected;
   var time = '__:__';
 
-  Future<Null> pickTime(BuildContext context) async {
-    var selectedTime;
-    var hour;
-    var minute;
+  TimeOfDay getTime(int index) {
+    try {
+      return this.widget.schedules[index];
+    } catch (err) {
+      return null;
+    }
+  }
 
+  String timeToString(TimeOfDay time) {
+    if (time == null) return '';
+
+    var hour = time.hour.toString().padLeft(2, '0');
+    var minute = time.minute.toString().padLeft(2, '0');
+    var stringTime = hour + ':' + minute;
+
+    return stringTime;
+  }
+
+  Future<Null> pickTime(BuildContext context, int index) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: 12, minute: 0),
     );
+
     if (picked != null)
       setState(() {
-        selectedTime = picked;
-        hour = selectedTime.hour.toString().padLeft(2, '0');
-        minute = selectedTime.minute.toString().padLeft(2, '0');
-        time = hour + ':' + minute;
-        schedules[scheduleSelected] = time;
+        time = timeToString(picked);
+        try {
+          this.widget.schedules[index] = picked;
+        } catch (err) {
+          this.widget.schedules.add(picked);
+        }
       });
   }
 
@@ -87,16 +106,16 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    pickTime(context);
+                    pickTime(context, 0);
                     scheduleSelected = 0;
                   },
                   child: RectangleCard(
                     icon: Icon(
-                      schedules[0] != '' ? Icons.alarm_outlined : Icons.add,
+                      getTime(0) != null ? Icons.alarm_outlined : Icons.add,
                       size: 35,
                     ),
                     scale: 90,
-                    content: schedules[0],
+                    content: getTime(0) == null ? '' : timeToString(getTime(0)),
                   ),
                 ),
                 SizedBox(
@@ -104,16 +123,16 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    pickTime(context);
+                    pickTime(context, 1);
                     scheduleSelected = 1;
                   },
                   child: RectangleCard(
                     icon: Icon(
-                      schedules[1] != '' ? Icons.alarm_outlined : Icons.add,
+                      getTime(1) != null ? Icons.alarm_outlined : Icons.add,
                       size: 35,
                     ),
                     scale: 90,
-                    content: schedules[1],
+                    content: getTime(1) == null ? '' : timeToString(getTime(1)),
                   ),
                 ),
               ],
@@ -126,16 +145,16 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    pickTime(context);
+                    pickTime(context, 2);
                     scheduleSelected = 2;
                   },
                   child: RectangleCard(
                     icon: Icon(
-                      schedules[2] != '' ? Icons.alarm_outlined : Icons.add,
+                      getTime(2) != null ? Icons.alarm_outlined : Icons.add,
                       size: 35,
                     ),
                     scale: 90,
-                    content: schedules[2],
+                    content: getTime(1) == null ? '' : timeToString(getTime(2)),
                   ),
                 ),
                 SizedBox(
@@ -143,16 +162,16 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    pickTime(context);
+                    pickTime(context, 3);
                     scheduleSelected = 3;
                   },
                   child: RectangleCard(
                     icon: Icon(
-                      schedules[3] != '' ? Icons.alarm_outlined : Icons.add,
+                      getTime(3) != null ? Icons.alarm_outlined : Icons.add,
                       size: 35,
                     ),
                     scale: 90,
-                    content: schedules[3],
+                    content: getTime(3) == null ? '' : timeToString(getTime(3)),
                   ),
                 ),
               ],

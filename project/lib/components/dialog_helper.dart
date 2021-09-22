@@ -13,8 +13,9 @@ class DialogHelper {
   static setQuantity(context) =>
       showDialog(context: context, builder: (context) => QuantityDialog());
 
-  static setSchedule(context) =>
-      showDialog(context: context, builder: (context) => ScheduleDialog());
+  static setSchedule(context, schedules) => showDialog(
+      context: context,
+      builder: (context) => ScheduleDialog(schedules: schedules));
 
   static infoModal(context) =>
       showDialog(context: context, builder: (context) => InfoDialog());

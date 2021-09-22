@@ -8,6 +8,7 @@ import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/panel_widget.dart';
 import 'package:project/components/rectangle_card.dart';
+import 'package:project/models/feed.dart';
 import 'package:project/pages/addPet/type_add_pet.dart';
 import 'package:project/repositories/pets_repository.dart';
 
@@ -15,8 +16,8 @@ import 'home_page.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
-
-  InformationPage({this.pet});
+  Feed feed;
+  InformationPage({this.pet, this.feed});
 
   @override
   _InformationPageState createState() => _InformationPageState();
@@ -242,7 +243,8 @@ class _InformationPageState extends State<InformationPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          DialogHelper.setSchedule(context);
+                          DialogHelper.setSchedule(
+                              context, this.widget.feed.getSchedules());
                         },
                         child: RectangleCard(
                           size: size,

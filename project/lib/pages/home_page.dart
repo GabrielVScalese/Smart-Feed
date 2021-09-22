@@ -9,6 +9,7 @@ import 'package:project/components/shimmer_widget.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
+import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'addPet/type_add_pet.dart';
@@ -23,6 +24,7 @@ class HomePage extends StatefulWidget {
 // IMPORTANTE: CORRIGIR ERRO HOME PAGE -> INFORMATION PAGE (DEPOIS DE INPUT)
 class _HomePageState extends State<HomePage> {
   var _petList = [];
+  var _feedList = [];
   var _dynamicPetList = [];
   var _isLoading = true;
 
@@ -32,6 +34,9 @@ class _HomePageState extends State<HomePage> {
     try {
       var prefs = await SharedPreferences.getInstance();
       var user = jsonDecode(prefs.getString('user'));
+
+      var feedsRepository = new FeedsRepository();
+      _feedList = await feedsRepository.findByOwner(user['id']);
 
       var petsRepository = PetsRepository();
       _petList = await petsRepository.findByOwner(user['id']);
@@ -249,6 +254,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InformationPage(
                                             pet: _petList[index],
+                                            feed: _feedList[index],
                                           )));
                                 },
                                 child: PetCard(
