@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RectangleCard extends StatelessWidget {
-  const RectangleCard({
-    Key key,
-    @required this.size,
-    @required this.scale,
-    @required this.icon,
-    @required this.content,
-  }) : super(key: key);
+  const RectangleCard(
+      {Key key,
+      @required this.size,
+      @required this.scale,
+      @required this.icon,
+      @required this.content,
+      this.backgroundColor})
+      : super(key: key);
 
   final Size size;
   final double scale;
   final Icon icon;
   final String content;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: this.backgroundColor,
       elevation: 10,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: Colors.white, width: 1),

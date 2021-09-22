@@ -38,13 +38,17 @@ class Feed {
 
   static Map<String, dynamic> toMap(Feed feed) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pet_id'] = feed.getPetId();
     data['mode'] = feed.getMode();
     data['quantity'] = feed.getQuantity();
     data['schedules'] = [];
 
-    for (TimeOfDay time in feed.getSchedules())
-      data['schedules'].add(time.toString());
+    for (TimeOfDay time in feed.getSchedules()) {
+      var hour = time.hour.toString().padLeft(2, '0');
+      var minute = time.minute.toString().padLeft(2, '0');
+      var stringTime = hour + ':' + minute;
+
+      data['schedules'].add(stringTime);
+    }
 
     return data;
   }

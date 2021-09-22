@@ -6,10 +6,11 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
-import 'package:project/components/panel_widget.dart';
 import 'package:project/components/rectangle_card.dart';
+import 'package:project/controllers/feed_controller.dart';
 import 'package:project/models/feed.dart';
 import 'package:project/pages/addPet/type_add_pet.dart';
+import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 
 import 'home_page.dart';
@@ -25,332 +26,391 @@ class InformationPage extends StatefulWidget {
 
 class _InformationPageState extends State<InformationPage> {
   var _devices = ['Smart Feed UHG78F'];
+
+  var feedController;
+
+  @override
+  void initState() {
+    feedController = FeedController(this.widget.feed.getMode(),
+        this.widget.feed.getQuantity(), this.widget.feed.getSchedules());
+
+    setState(() {
+      if (feedController.getMode() == "Horário")
+        cardColor = Colors.white;
+      else
+        cardColor = Color(0xFFC4C4C4);
+    });
+
+    super.initState();
+  }
+
+  var cardColor;
+
+  void getCardColor() {
+    feedController.addListener(() {
+      setState(() {
+        if (feedController.getMode() == "Horário")
+          cardColor = Colors.white;
+        else
+          cardColor = Color(0xFFC4C4C4);
+      });
+    });
+  }
+
   // Fazer tamanho máximo e tamanho mínimo; colocar arrow back card
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    getCardColor();
 
     var labelStyle = GoogleFonts.inter(
         fontSize: size.width * 0.05,
         color: Colors.black,
         fontWeight: FontWeight.w500);
 
-    return Scaffold(
-      body: Container(
-        height: size.height,
-        width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.top,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: size.width * 0.05),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(this.widget.pet.getName(),
-                              style: GoogleFonts.inter(
-                                  fontSize: size.width * 0.08,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: size.height * 0.01,
-                          ),
-                          Text('Informações',
-                              style: GoogleFonts.inter(
-                                  fontSize: size.width * 0.05,
-                                  color: Color.fromRGBO(125, 125, 125, 1)))
-                        ],
-                      ),
-                    ),
-                    CircleImage(
-                      scale: size.height * 0.1,
-                      srcImage: this.widget.pet.getImage(),
-                      margin: EdgeInsets.only(right: size.width * 0.07),
-                    )
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        var feedsRepository = new FeedsRepository();
+        var feed = new Feed(this.widget.pet.getId(), feedController.getMode(),
+            feedController.getQuantity(), feedController.getSchedules());
+
+        DialogBuilder(context).showLoadingIndicator();
+
+        var statusCode =
+            await feedsRepository.updateByPetId(feed.getPetId(), feed);
+
+        print(statusCode);
+        if (statusCode == 200) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => HomePage()));
+        } else {
+          DialogBuilder(context).hideOpenDialog();
+        }
+      },
+      child: Scaffold(
+        body: Container(
+          height: size.height,
+          width: size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size.height * 0.08,
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.036,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.left,
-                child: Container(
-                  margin: EdgeInsets.only(left: size.width * 0.06),
-                  child: Text(
-                    'Dispositivo',
-                    style: labelStyle,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.right,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.white, width: 1),
-                      borderRadius: BorderRadius.circular(7.5),
-                    ),
-                    elevation: 10,
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          left: size.width * 0.03, right: size.width * 0.02),
-                      width: size.width * 0.9,
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            iconDisabledColor: Colors.black,
-                            value: 'Smart Feed UHG78F',
-                            items: _devices
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Center(
-                                  child: Text(
-                                    value,
-                                    style: GoogleFonts.inter(
-                                        fontSize: size.width * 0.04,
-                                        color:
-                                            Color.fromRGBO(125, 125, 125, 1)),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String value) {
-                              setState(() {});
-                            }),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.04,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.left,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => TypeAddPet(),
-                      ),
-                    );
-                  },
-                  child: LabelRow(
-                    size: size,
-                    labelStyle: labelStyle,
-                    principalText: 'Características',
-                    secondaryText: 'Editar',
-                    icon: Icons.edit,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.right,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.top,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RectangleCard(
-                          size: size,
-                          icon: Icon(
-                            Icons.pets,
-                            size: size.height * 0.053,
-                          ),
-                          scale: size.height * 0.13,
-                          content: this.widget.pet.getAnimal()),
-                      RectangleCard(
-                        size: size,
-                        icon: Icon(Icons.restaurant_menu,
-                            size: size.height * 0.053),
-                        scale: size.height * 0.13,
-                        content: this.widget.pet.getRation(),
-                      ),
-                      RectangleCard(
-                          size: size,
-                          icon: Icon(Icons.aspect_ratio,
-                              size: size.height * 0.053),
-                          scale: size.height * 0.13,
-                          content: this.widget.pet.getSize()),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.left,
-                child: Container(
-                  margin: EdgeInsets.only(left: size.width * 0.06),
-                  child: Text(
-                    'Alimentação',
-                    style: labelStyle,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.right,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          DialogHelper.chooseMode(context);
-                        },
-                        child: RectangleCard(
-                          size: size,
-                          icon: Icon(
-                            Icons.dehaze,
-                            size: size.height * 0.053,
-                          ),
-                          scale: size.height * 0.13,
-                          content: 'Modo',
+                      Container(
+                        margin: EdgeInsets.only(left: size.width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(this.widget.pet.getName(),
+                                style: GoogleFonts.inter(
+                                    fontSize: size.width * 0.08,
+                                    fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: size.height * 0.01,
+                            ),
+                            Text('Informações',
+                                style: GoogleFonts.inter(
+                                    fontSize: size.width * 0.05,
+                                    color: Color.fromRGBO(125, 125, 125, 1)))
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          DialogHelper.setQuantity(context);
-                        },
-                        child: RectangleCard(
-                          size: size,
-                          icon: Icon(Icons.local_restaurant,
-                              size: size.height * 0.053),
-                          scale: size.height * 0.13,
-                          content: 'Quantidade',
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          DialogHelper.setSchedule(
-                              context, this.widget.feed.getSchedules());
-                        },
-                        child: RectangleCard(
-                          size: size,
-                          icon: Icon(Icons.schedule, size: size.height * 0.053),
-                          scale: size.height * 0.13,
-                          content: 'Horários',
-                        ),
+                      CircleImage(
+                        scale: size.height * 0.1,
+                        srcImage: this.widget.pet.getImage(),
+                        margin: EdgeInsets.only(right: size.width * 0.07),
                       )
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.left,
-                child: LabelRow(
-                  size: size,
-                  labelStyle: labelStyle,
-                  principalText: 'Consumo',
-                  secondaryText: 'Ver gráfico',
+                SizedBox(
+                  height: size.height * 0.036,
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.03,
-              ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.right,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.06),
+                    child: Text(
+                      'Dispositivo',
+                      style: labelStyle,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.right,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(7.5),
+                      ),
+                      elevation: 10,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: size.width * 0.03, right: size.width * 0.02),
+                        width: size.width * 0.9,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                              iconDisabledColor: Colors.black,
+                              value: 'Smart Feed UHG78F',
+                              items: _devices.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Center(
+                                    child: Text(
+                                      value,
+                                      style: GoogleFonts.inter(
+                                          fontSize: size.width * 0.04,
+                                          color:
+                                              Color.fromRGBO(125, 125, 125, 1)),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String value) {
+                                setState(() {});
+                              }),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.04,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => TypeAddPet(),
+                        ),
+                      );
+                    },
+                    child: LabelRow(
+                      size: size,
+                      labelStyle: labelStyle,
+                      principalText: 'Características',
+                      secondaryText: 'Editar',
+                      icon: Icons.edit,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.right,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        RectangleCard(
+                            size: size,
+                            icon: Icon(
+                              Icons.pets,
+                              size: size.height * 0.053,
+                            ),
+                            scale: size.height * 0.13,
+                            content: this.widget.pet.getAnimal()),
+                        RectangleCard(
+                          size: size,
+                          icon: Icon(Icons.restaurant_menu,
+                              size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getRation(),
+                        ),
+                        RectangleCard(
+                            size: size,
+                            icon: Icon(Icons.aspect_ratio,
+                                size: size.height * 0.053),
+                            scale: size.height * 0.13,
+                            content: this.widget.pet.getSize()),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.06),
+                    child: Text(
+                      'Alimentação',
+                      style: labelStyle,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.right,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            DialogHelper.chooseMode(context, feedController);
+                          },
+                          child: RectangleCard(
+                            size: size,
+                            icon: Icon(
+                              Icons.dehaze,
+                              size: size.height * 0.053,
+                            ),
+                            scale: size.height * 0.13,
+                            content: 'Modo',
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            DialogHelper.setQuantity(context, feedController);
+                          },
+                          child: RectangleCard(
+                            size: size,
+                            icon: Icon(Icons.local_restaurant,
+                                size: size.height * 0.053),
+                            scale: size.height * 0.13,
+                            content: 'Quantidade',
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (feedController.getMode() == "Horário")
+                                DialogHelper.setSchedule(
+                                    context, feedController);
+                            });
+                          },
+                          child: RectangleCard(
+                            size: size,
+                            icon:
+                                Icon(Icons.schedule, size: size.height * 0.053),
+                            scale: size.height * 0.13,
+                            content: 'Horários',
+                            backgroundColor: cardColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: LabelRow(
+                    size: size,
+                    labelStyle: labelStyle,
+                    principalText: 'Consumo',
+                    secondaryText: 'Ver gráfico',
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
+                AnimatedCard(
+                  direction: AnimatedCardDirection.right,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InformationCard(
+                          size: size,
+                          title: 'Média',
+                          content: 'Após 15 dias',
+                          value: 206,
+                        ),
+                        InformationCard(
+                          size: size,
+                          title: 'Máximo',
+                          content: '24/02/201',
+                          value: 300,
+                        ),
+                        InformationCard(
+                          size: size,
+                          title: 'Mínimo',
+                          content: '14/06/2021',
+                          value: 150,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.025,
+                ),
+                Align(
+                  alignment: Alignment(0.92, 0.95),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InformationCard(
-                        size: size,
-                        title: 'Média',
-                        content: 'Após 15 dias',
-                        value: 206,
-                      ),
-                      InformationCard(
-                        size: size,
-                        title: 'Máximo',
-                        content: '24/02/201',
-                        value: 300,
-                      ),
-                      InformationCard(
-                        size: size,
-                        title: 'Mínimo',
-                        content: '14/06/2021',
-                        value: 150,
+                      Text('Excluir',
+                          style: GoogleFonts.inter(
+                              fontSize: size.width * 0.042,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red)),
+                      SizedBox(width: size.width * 0.02),
+                      GestureDetector(
+                        onTap: () async {
+                          try {
+                            DialogBuilder(context).showLoadingIndicator();
+
+                            var petsRepository = new PetsRepository();
+                            var statusCode = await petsRepository
+                                .destroy(this.widget.pet.getId());
+
+                            if (statusCode == 200)
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            else {
+                              print('Error');
+                              DialogBuilder(context).hideOpenDialog();
+                            }
+                          } catch (err) {
+                            print(err.toString());
+                            DialogBuilder(context).hideOpenDialog();
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: size.width * 0.05),
+                          child: CircleCard(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            size: size,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: size.height * 0.025,
-              ),
-              Align(
-                alignment: Alignment(0.92, 0.95),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('Excluir',
-                        style: GoogleFonts.inter(
-                            fontSize: size.width * 0.042,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red)),
-                    SizedBox(width: size.width * 0.02),
-                    GestureDetector(
-                      onTap: () async {
-                        try {
-                          DialogBuilder(context).showLoadingIndicator();
-
-                          var petsRepository = new PetsRepository();
-                          var statusCode = await petsRepository
-                              .destroy(this.widget.pet.getId());
-
-                          if (statusCode == 200)
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
-                          else {
-                            print('Error');
-                            DialogBuilder(context).hideOpenDialog();
-                          }
-                        } catch (err) {
-                          print(err.toString());
-                          DialogBuilder(context).hideOpenDialog();
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: size.width * 0.05),
-                        child: CircleCard(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          size: size,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: size.height * 0.016)),
-            ],
+                Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: size.height * 0.016)),
+              ],
+            ),
           ),
         ),
       ),

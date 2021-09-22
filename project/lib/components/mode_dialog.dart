@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/controllers/feed_controller.dart';
 
 class ModeDialog extends StatefulWidget {
+  FeedController feedController;
+
+  ModeDialog({this.feedController});
   @override
   _ModeDialogState createState() => _ModeDialogState();
 }
 
 // Ainda nao esta responsivo
 class _ModeDialogState extends State<ModeDialog> {
-  bool schedulesEnabled = true;
-  bool aproximationEnabled = false;
+  bool schedulesEnabled;
+  bool aproximationEnabled;
 
   Color schedulesColor = Color.fromRGBO(237, 237, 237, 1);
   Color aproximationColor;
@@ -22,6 +26,14 @@ class _ModeDialogState extends State<ModeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      schedulesEnabled =
+          this.widget.feedController.getMode() == 'Horário' ? true : false;
+      aproximationEnabled =
+          this.widget.feedController.getMode() == 'Aproximação' ? true : false;
+      changeColors();
+    });
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 10,
@@ -79,6 +91,7 @@ class _ModeDialogState extends State<ModeDialog> {
                 onTap: () {
                   if (schedulesEnabled == true) aproximationEnabled = true;
 
+                  this.widget.feedController.changeMode('Horário');
                   schedulesEnabled = !schedulesEnabled;
                   aproximationEnabled = !schedulesEnabled;
                   changeColors();
@@ -94,6 +107,7 @@ class _ModeDialogState extends State<ModeDialog> {
                 onTap: () {
                   if (aproximationEnabled == true) schedulesEnabled = true;
 
+                  this.widget.feedController.changeMode('Aproximação');
                   aproximationEnabled = !aproximationEnabled;
                   schedulesEnabled = !aproximationEnabled;
                   changeColors();

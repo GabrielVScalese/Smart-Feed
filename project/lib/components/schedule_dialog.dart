@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/components/rounded_button.dart';
+import 'package:project/controllers/feed_controller.dart';
 
 import 'dialog_helper.dart';
 
 class ScheduleDialog extends StatefulWidget {
-  List<TimeOfDay> schedules;
+  FeedController feedController;
 
-  ScheduleDialog({this.schedules});
+  ScheduleDialog({this.feedController});
 
   @override
   _ScheduleDialogState createState() => _ScheduleDialogState();
@@ -20,7 +21,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
 
   TimeOfDay getTime(int index) {
     try {
-      return this.widget.schedules[index];
+      return this.widget.feedController.getSchedules()[index];
     } catch (err) {
       return null;
     }
@@ -46,9 +47,11 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
       setState(() {
         time = timeToString(picked);
         try {
-          this.widget.schedules[index] = picked;
+          this.widget.feedController.getSchedules()[index] = picked;
         } catch (err) {
-          this.widget.schedules.add(picked);
+          var schedules = this.widget.feedController.getSchedules();
+          schedules.add(picked);
+          this.widget.feedController.changeSchedules(schedules);
         }
       });
   }
@@ -179,7 +182,13 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
             SizedBox(
               height: 25,
             ),
-            RoundedButton(height: 45, width: 220, radius: 10, text: 'APLICAR'),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: RoundedButton(
+                  height: 45, width: 220, radius: 10, text: 'APLICAR'),
+            ),
           ],
         ),
       );

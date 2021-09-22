@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
+import 'package:project/controllers/feed_controller.dart';
 
 class QuantityDialog extends StatefulWidget {
+  FeedController feedController;
+
+  QuantityDialog({this.feedController});
+
   @override
   _QuantityDialogState createState() => _QuantityDialogState();
 }
 
 class _QuantityDialogState extends State<QuantityDialog> {
   TextEditingController quantityController = new TextEditingController();
-  int quantity = 50;
 
   @override
   Widget build(BuildContext context) {
-    quantityController.text = '$quantity';
+    quantityController.text = '${this.widget.feedController.getQuantity()}';
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -68,8 +72,11 @@ class _QuantityDialogState extends State<QuantityDialog> {
                 child: Align(
                   child: TextField(
                       onChanged: (value) {
-                        if (value.isNotEmpty) this.quantity = int.parse(value);
-                        print(this.quantity);
+                        if (value.isNotEmpty)
+                          this
+                              .widget
+                              .feedController
+                              .changeQuantity(int.parse(value));
                       },
                       keyboardType: TextInputType.number,
                       style: GoogleFonts.inter(
@@ -86,8 +93,11 @@ class _QuantityDialogState extends State<QuantityDialog> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        if (this.quantity != 500) this.quantity += 50;
-                        quantityController.text = '$quantity';
+                        if (this.widget.feedController.getQuantity() != 500)
+                          this.widget.feedController.changeQuantity(
+                              this.widget.feedController.getQuantity() + 50);
+                        quantityController.text =
+                            '${this.widget.feedController.getQuantity()}';
                       });
                     },
                     child: BoxCard(
@@ -104,9 +114,12 @@ class _QuantityDialogState extends State<QuantityDialog> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        if (this.quantity != 50) this.quantity -= 50;
+                        if (this.widget.feedController.getQuantity() != 50)
+                          this.widget.feedController.changeQuantity(
+                              this.widget.feedController.getQuantity() - 50);
 
-                        quantityController.text = '$quantity';
+                        quantityController.text =
+                            '${this.widget.feedController.getQuantity()}';
                       });
                     },
                     child: BoxCard(
@@ -127,11 +140,16 @@ class _QuantityDialogState extends State<QuantityDialog> {
               height: 20,
             ),
             Align(
-              child: RoundedButton(
-                height: 45,
-                width: 260,
-                text: 'APLICAR',
-                radius: 10,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: RoundedButton(
+                  height: 45,
+                  width: 260,
+                  text: 'APLICAR',
+                  radius: 10,
+                ),
               ),
             ),
           ],
