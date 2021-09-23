@@ -10,6 +10,12 @@ class UsersRepository {
     this._dio = CustomDio.withAuthentication().instance;
   }
 
+  Future<int> register(User user) async {
+    var response = await this._dio.post('/users', data: User.toMap(user));
+
+    return response.statusCode;
+  }
+
   Future<int> update(User user) async {
     var response =
         await this._dio.put('/users/${user.getId()}', data: User.toMap(user));

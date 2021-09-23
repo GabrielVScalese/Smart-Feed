@@ -8,12 +8,14 @@ class RoundedButton extends StatelessWidget {
       @required this.height,
       @required this.width,
       @required this.radius,
+      @required this.backgroundColor,
       @required this.text})
       : super(key: key);
 
   final double height;
   final double width;
   final double radius;
+  final Color backgroundColor;
   final String text;
 
   @override
@@ -28,7 +30,7 @@ class RoundedButton extends StatelessWidget {
             GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 153, 255, 1),
+          color: backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(this.radius))),
     );
   }

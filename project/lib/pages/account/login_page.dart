@@ -144,10 +144,12 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     child: RoundedButton(
-                        height: size.height * 0.053,
-                        width: size.width * 0.9,
-                        radius: 30,
-                        text: 'LOGIN'),
+                      height: size.height * 0.053,
+                      width: size.width * 0.9,
+                      radius: 30,
+                      text: 'LOGIN',
+                      backgroundColor: Color.fromRGBO(0, 153, 255, 1),
+                    ),
                   )
                 ],
               ),

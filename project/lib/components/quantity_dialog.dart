@@ -149,6 +149,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
                   width: 260,
                   text: 'APLICAR',
                   radius: 10,
+                  backgroundColor: Color.fromRGBO(0, 153, 255, 1),
                 ),
               ),
             ),

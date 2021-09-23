@@ -187,7 +187,12 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                 Navigator.pop(context);
               },
               child: RoundedButton(
-                  height: 45, width: 220, radius: 10, text: 'APLICAR'),
+                backgroundColor: Color.fromRGBO(0, 153, 255, 1),
+                height: 45,
+                width: 220,
+                radius: 10,
+                text: 'APLICAR',
+              ),
             ),
           ],
         ),

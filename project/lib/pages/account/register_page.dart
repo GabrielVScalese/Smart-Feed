@@ -2,14 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
+import 'package:project/components/dialog_builder.dart';
+import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/models/user.dart';
+import 'package:project/repositories/users_repository.dart';
+import '../home_page.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
+
+var nameController = TextEditingController();
+var emailController = TextEditingController();
+var passwordController = TextEditingController();
+var confirmPasswordController = TextEditingController();
+
+var passwordVisible = true;
+var confirmVisible = true;
 
 class _RegisterPageState extends State<RegisterPage> {
   // Fazer tamanho máximo e tamanho mínimo
@@ -33,6 +46,10 @@ class _RegisterPageState extends State<RegisterPage> {
             SizedBox(height: size.height * 0.06),
             GestureDetector(
                 onTap: () {
+                  nameController.clear();
+                  emailController.clear();
+                  passwordController.clear();
+                  confirmPasswordController.clear();
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 },
@@ -59,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFieldContainer(
                   size: size,
                   textField: TextField(
+                    controller: nameController,
                     style:
                         GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                     decoration: InputDecoration(
@@ -77,6 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFieldContainer(
                   size: size,
                   textField: TextField(
+                    controller: emailController,
                     style:
                         GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                     decoration: InputDecoration(
@@ -95,6 +114,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFieldContainer(
                   size: size,
                   textField: TextField(
+                    controller: passwordController,
+                    obscureText: passwordVisible,
                     style:
                         GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                     decoration: InputDecoration(
@@ -106,10 +127,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           size: size.width * 0.9 * 0.06,
                           color: inputColor,
                         ),
-                        suffixIcon: Icon(
-                          Icons.visibility,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          child: Icon(
+                            passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            size: size.width * 0.9 * 0.06,
+                            color: inputColor,
+                          ),
                         ),
                         border: InputBorder.none),
                   ),
@@ -118,6 +148,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFieldContainer(
                   size: size,
                   textField: TextField(
+                    controller: confirmPasswordController,
+                    obscureText: confirmVisible,
                     style:
                         GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
                     decoration: InputDecoration(
@@ -129,20 +161,76 @@ class _RegisterPageState extends State<RegisterPage> {
                           size: size.width * 0.9 * 0.06,
                           color: inputColor,
                         ),
-                        suffixIcon: Icon(
-                          Icons.visibility,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              confirmVisible = !confirmVisible;
+                            });
+                          },
+                          child: Icon(
+                            confirmVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            size: size.width * 0.9 * 0.06,
+                            color: inputColor,
+                          ),
                         ),
                         border: InputBorder.none),
                   ),
                 ),
                 SizedBox(height: size.height * 0.09),
-                RoundedButton(
+                GestureDetector(
+                  onTap: () async {
+                    if (nameController.text.isEmpty ||
+                        emailController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
+                      DialogHelper.errorModal(
+                          context,
+                          "Falta de informações",
+                          "Preencha todos os campos para poder criar sua conta",
+                          Icons.error_outline_outlined);
+                    } else {
+                      if (passwordController.text ==
+                          confirmPasswordController.text) {
+                        User user = User(nameController.text,
+                            emailController.text, passwordController.text);
+
+                        DialogBuilder(context).showLoadingIndicator();
+
+                        var usersRepository = UsersRepository();
+                        var statusCode = await usersRepository.register(user);
+
+                        DialogBuilder(context).hideOpenDialog();
+
+                        if (statusCode == 200) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+                        }
+
+                        if (statusCode == 400)
+                          DialogHelper.errorModal(
+                              context,
+                              "Usuário já existe",
+                              "Email fornecido já está cadastrado",
+                              Icons.error);
+                      } else {
+                        DialogHelper.errorModal(
+                            context,
+                            "Confirme a senha",
+                            "As senhas que você colocou não são as mesmas",
+                            Icons.error);
+                      }
+                    }
+                  },
+                  child: RoundedButton(
                     height: size.height * 0.053,
                     width: size.width * 0.9,
                     radius: 30,
-                    text: 'CRIAR CONTA'),
+                    text: 'CRIAR CONTA',
+                    backgroundColor: Color.fromRGBO(0, 153, 255, 1),
+                  ),
+                ),
                 SizedBox(height: size.height * 0.06),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,16 +246,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        nameController.clear();
+                        emailController.clear();
+                        passwordController.clear();
+                        confirmPasswordController.clear();
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => LoginPage()));
                       },
                       child: Container(
-                          child: Text('Fazer login',
-                              style: GoogleFonts.inter(
-                                color: Color.fromRGBO(0, 119, 199, 1),
-                                fontSize: labelSize,
-                              ))),
-                    )
+                        child: Text(
+                          'Fazer login',
+                          style: GoogleFonts.inter(
+                            color: Color.fromRGBO(0, 119, 199, 1),
+                            fontSize: labelSize,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

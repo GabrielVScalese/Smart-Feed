@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/components/error_dialog.dart';
 import 'package:project/components/mode_dialog.dart';
 import 'package:project/components/password_dialog.dart';
 import 'package:project/components/quantity_dialog.dart';
@@ -23,4 +24,9 @@ class DialogHelper {
 
   static confirmPassword(context) =>
       showDialog(context: context, builder: (context) => PasswordDialog());
+
+  static errorModal(context, title, message, icon) => showDialog(
+      context: context,
+      builder: (context) =>
+          ErrorDialog(title: title, message: message, icon: icon));
 }
