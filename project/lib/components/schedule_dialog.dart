@@ -56,6 +56,13 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
       });
   }
 
+  void removeTime(int index) {
+    List schedules = this.widget.feedController.getSchedules();
+    schedules.removeAt(index);
+    this.widget.feedController.changeSchedules(schedules);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -112,32 +119,82 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                     pickTime(context, 0);
                     scheduleSelected = 0;
                   },
-                  child: RectangleCard(
-                    icon: Icon(
-                      getTime(0) != null ? Icons.alarm_outlined : Icons.add,
-                      size: 35,
+                  child: Stack(children: [
+                    RectangleCard(
+                      icon: Icon(
+                        getTime(0) != null ? Icons.alarm_outlined : Icons.add,
+                        size: 35,
+                      ),
+                      scale: 90,
+                      content:
+                          getTime(0) == null ? '' : timeToString(getTime(0)),
                     ),
-                    scale: 90,
-                    content: getTime(0) == null ? '' : timeToString(getTime(0)),
-                  ),
+                    Visibility(
+                      visible: getTime(0) != null ? true : false,
+                      child: GestureDetector(
+                        onTap: () {
+                          removeTime(0);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 70),
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
                 SizedBox(
                   width: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    pickTime(context, 1);
-                    scheduleSelected = 1;
-                  },
-                  child: RectangleCard(
-                    icon: Icon(
-                      getTime(1) != null ? Icons.alarm_outlined : Icons.add,
-                      size: 35,
+                Stack(children: [
+                  GestureDetector(
+                    onTap: () {
+                      pickTime(context, 1);
+                      scheduleSelected = 1;
+                    },
+                    child: RectangleCard(
+                      icon: Icon(
+                        getTime(1) != null ? Icons.alarm_outlined : Icons.add,
+                        size: 35,
+                      ),
+                      scale: 90,
+                      content:
+                          getTime(1) == null ? '' : timeToString(getTime(1)),
                     ),
-                    scale: 90,
-                    content: getTime(1) == null ? '' : timeToString(getTime(1)),
                   ),
-                ),
+                  Visibility(
+                    visible: getTime(1) != null ? true : false,
+                    child: GestureDetector(
+                      onTap: () {
+                        removeTime(1);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 70),
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
               ],
             ),
             SizedBox(
@@ -146,37 +203,87 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    pickTime(context, 2);
-                    scheduleSelected = 2;
-                  },
-                  child: RectangleCard(
-                    icon: Icon(
-                      getTime(2) != null ? Icons.alarm_outlined : Icons.add,
-                      size: 35,
+                Stack(children: [
+                  GestureDetector(
+                    onTap: () {
+                      pickTime(context, 2);
+                      scheduleSelected = 2;
+                    },
+                    child: RectangleCard(
+                      icon: Icon(
+                        getTime(2) != null ? Icons.alarm_outlined : Icons.add,
+                        size: 35,
+                      ),
+                      scale: 90,
+                      content:
+                          getTime(1) == null ? '' : timeToString(getTime(2)),
                     ),
-                    scale: 90,
-                    content: getTime(1) == null ? '' : timeToString(getTime(2)),
                   ),
-                ),
+                  Visibility(
+                    visible: getTime(2) != null ? true : false,
+                    child: GestureDetector(
+                      onTap: () {
+                        removeTime(2);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 70),
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
                 SizedBox(
                   width: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    pickTime(context, 3);
-                    scheduleSelected = 3;
-                  },
-                  child: RectangleCard(
-                    icon: Icon(
-                      getTime(3) != null ? Icons.alarm_outlined : Icons.add,
-                      size: 35,
+                Stack(children: [
+                  GestureDetector(
+                    onTap: () {
+                      pickTime(context, 3);
+                      scheduleSelected = 3;
+                    },
+                    child: RectangleCard(
+                      icon: Icon(
+                        getTime(3) != null ? Icons.alarm_outlined : Icons.add,
+                        size: 35,
+                      ),
+                      scale: 90,
+                      content:
+                          getTime(3) == null ? '' : timeToString(getTime(3)),
                     ),
-                    scale: 90,
-                    content: getTime(3) == null ? '' : timeToString(getTime(3)),
                   ),
-                ),
+                  Visibility(
+                    visible: getTime(3) != null ? true : false,
+                    child: GestureDetector(
+                      onTap: () {
+                        removeTime(3);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 70),
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
               ],
             ),
             SizedBox(
