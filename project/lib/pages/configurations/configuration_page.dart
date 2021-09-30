@@ -6,6 +6,7 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
+import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/pages/home_page.dart';
 
@@ -100,17 +101,23 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               SizedBox(
                 height: size.height * 0.05,
               ),
-              AnimatedCard(
-                direction: AnimatedCardDirection.left,
-                initDelay: Duration(milliseconds: 500),
-                child: ConfigurationCard(
-                  size: size,
-                  icon: Icon(
-                    Icons.help,
-                    size: size.height * 0.035,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HelpPage()));
+                },
+                child: AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  initDelay: Duration(milliseconds: 500),
+                  child: ConfigurationCard(
+                    size: size,
+                    icon: Icon(
+                      Icons.help,
+                      size: size.height * 0.035,
+                    ),
+                    title: 'Ajuda',
+                    content: 'Fale conosco ou envie um feedback',
                   ),
-                  title: 'Ajuda',
-                  content: 'Fale conosco ou envie um feedback',
                 ),
               ),
               SizedBox(
