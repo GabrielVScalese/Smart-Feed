@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:animated_card/animated_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +12,7 @@ import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigurationPage extends StatefulWidget {
   @override
@@ -127,8 +131,22 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 direction: AnimatedCardDirection.left,
                 initDelay: Duration(milliseconds: 500),
                 child: GestureDetector(
-                  onTap: () {
-                    DialogHelper.confirmPassword(context);
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    var user = jsonDecode(prefs.getString('user'));
+                    RequestOptions requestOptions = new RequestOptions(
+                        path:
+                            'https://smart-feed-app.herokuapp.com/users/${user["id"]}',
+                        method: 'DELETE');
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ConfirmPasswordPage(
+                            requestOptions,
+                            "Você está excluindo sua conta!",
+                            "Excluir",
+                            "login")));
                   },
                   child: ConfigurationCard(
                     size: size,
@@ -197,12 +215,15 @@ class ConfigurationCard extends StatelessWidget {
                       SizedBox(
                         height: size.height * 0.007,
                       ),
-                      Text(content,
-                          style: GoogleFonts.inter(
-                              fontSize: size.width * 0.035,
-                              color: Color.fromRGBO(125, 125, 125, 1))),
+                      Text(
+                        content,
+                        style: GoogleFonts.inter(
+                          fontSize: size.width * 0.035,
+                          color: Color.fromRGBO(125, 125, 125, 1),
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

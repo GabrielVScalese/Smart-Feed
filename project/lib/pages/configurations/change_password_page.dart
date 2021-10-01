@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:animated_card/animated_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,93 +60,103 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 SizedBox(
                   height: size.height * 0.04,
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: size.width * 0.06),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PageTitle(size: size, title: 'Mudar Senha'),
-                      SizedBox(
-                        height: size.height * 0.015,
-                      ),
-                      Text('Digite e repita a nova senha.',
-                          style: GoogleFonts.inter(
-                              fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
-                    ],
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.06),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PageTitle(size: size, title: 'Mudar Senha'),
+                        SizedBox(
+                          height: size.height * 0.015,
+                        ),
+                        Text('Digite e repita a nova senha.',
+                            style: GoogleFonts.inter(
+                                fontSize: size.width * 0.045,
+                                color: Color.fromRGBO(125, 125, 125, 1)))
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: size.height * 0.21),
-                Align(
-                  child: TextFieldContainer(
-                    size: size,
-                    textField: TextField(
-                      controller: newPasswordController,
-                      obscureText: newPasswordObscure,
-                      style:
-                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                      decoration: InputDecoration(
-                          hintStyle: GoogleFonts.inter(
-                              color: Color.fromRGBO(186, 184, 184, 1)),
-                          hintText: 'Nova Senha',
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            size: size.width * 0.9 * 0.06,
-                            color: inputColor,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                newPasswordObscure = !newPasswordObscure;
-                              });
-                            },
-                            child: Icon(
-                              newPasswordObscure
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: Align(
+                    child: TextFieldContainer(
+                      size: size,
+                      textField: TextField(
+                        controller: newPasswordController,
+                        obscureText: newPasswordObscure,
+                        style: GoogleFonts.inter(
+                            fontSize: size.width * 0.9 * 0.045),
+                        decoration: InputDecoration(
+                            hintStyle: GoogleFonts.inter(
+                                color: Color.fromRGBO(186, 184, 184, 1)),
+                            hintText: 'Nova Senha',
+                            prefixIcon: Icon(
+                              Icons.lock,
                               size: size.width * 0.9 * 0.06,
                               color: inputColor,
                             ),
-                          ),
-                          border: InputBorder.none),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  newPasswordObscure = !newPasswordObscure;
+                                });
+                              },
+                              child: Icon(
+                                newPasswordObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                size: size.width * 0.9 * 0.06,
+                                color: inputColor,
+                              ),
+                            ),
+                            border: InputBorder.none),
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-                Align(
-                  child: TextFieldContainer(
-                    size: size,
-                    textField: TextField(
-                      controller: reapeatPasswordController,
-                      obscureText: repeatPasswordObscure,
-                      style:
-                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                      decoration: InputDecoration(
-                          hintStyle: GoogleFonts.inter(
-                              color: Color.fromRGBO(186, 184, 184, 1)),
-                          hintText: 'Repita a Senha',
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            size: size.width * 0.9 * 0.06,
-                            color: inputColor,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                repeatPasswordObscure = !repeatPasswordObscure;
-                              });
-                            },
-                            child: Icon(
-                              repeatPasswordObscure
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                AnimatedCard(
+                  direction: AnimatedCardDirection.left,
+                  child: Align(
+                    child: TextFieldContainer(
+                      size: size,
+                      textField: TextField(
+                        controller: reapeatPasswordController,
+                        obscureText: repeatPasswordObscure,
+                        style: GoogleFonts.inter(
+                            fontSize: size.width * 0.9 * 0.045),
+                        decoration: InputDecoration(
+                            hintStyle: GoogleFonts.inter(
+                                color: Color.fromRGBO(186, 184, 184, 1)),
+                            hintText: 'Repita a Senha',
+                            prefixIcon: Icon(
+                              Icons.lock,
                               size: size.width * 0.9 * 0.06,
                               color: inputColor,
                             ),
-                          ),
-                          border: InputBorder.none),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  repeatPasswordObscure =
+                                      !repeatPasswordObscure;
+                                });
+                              },
+                              child: Icon(
+                                repeatPasswordObscure
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                size: size.width * 0.9 * 0.06,
+                                color: inputColor,
+                              ),
+                            ),
+                            border: InputBorder.none),
+                      ),
                     ),
                   ),
                 ),
@@ -154,52 +165,58 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ],
             ),
-            Align(
-              alignment: Alignment(0.92, 0.95),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('Próximo',
-                      style: GoogleFonts.inter(
-                          fontSize: size.width * 0.042,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black)),
-                  SizedBox(width: size.width * 0.02),
-                  GestureDetector(
-                    onTap: () async {
-                      if (newPasswordController.text ==
-                              reapeatPasswordController.text &&
-                          newPasswordController.text.isNotEmpty) {
-                        var instance = await SharedPreferences.getInstance();
-                        Map user = jsonDecode(instance.getString('user'));
+            AnimatedCard(
+              direction: AnimatedCardDirection.left,
+              child: Align(
+                alignment: Alignment(0.92, 0.95),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Próximo',
+                        style: GoogleFonts.inter(
+                            fontSize: size.width * 0.042,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black)),
+                    SizedBox(width: size.width * 0.02),
+                    GestureDetector(
+                      onTap: () async {
+                        if (newPasswordController.text ==
+                                reapeatPasswordController.text &&
+                            newPasswordController.text.isNotEmpty) {
+                          var instance = await SharedPreferences.getInstance();
+                          Map user = jsonDecode(instance.getString('user'));
 
-                        RequestOptions requestOptions = new RequestOptions(
-                            path:
-                                'https://smart-feed-app.herokuapp.com/users/${user['id']}',
-                            data: {
-                              'name': user['name'],
-                              'email': user['email'],
-                              'password': newPasswordController.text
-                            },
-                            method: 'PUT');
+                          RequestOptions requestOptions = new RequestOptions(
+                              path:
+                                  'https://smart-feed-app.herokuapp.com/users/${user['id']}',
+                              data: {
+                                'name': user['name'],
+                                'email': user['email'],
+                                'password': newPasswordController.text
+                              },
+                              method: 'PUT');
 
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) =>
-                                ConfirmPasswordPage(requestOptions)));
-                      }
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: size.width * 0.05),
-                      child: CircleCard(
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: Colors.black,
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ConfirmPasswordPage(
+                                  requestOptions,
+                                  'Confirme a sua senha atual',
+                                  'Salvar',
+                                  'userPage')));
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: size.width * 0.05),
+                        child: CircleCard(
+                          icon: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.black,
+                          ),
+                          size: size,
                         ),
-                        size: size,
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             )
           ],

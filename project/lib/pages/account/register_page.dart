@@ -1,3 +1,4 @@
+import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
+import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/users_repository.dart';
 import '../home_page.dart';
 import 'login_page.dart';
@@ -23,6 +25,7 @@ var confirmPasswordController = TextEditingController();
 
 var passwordVisible = true;
 var confirmVisible = true;
+var showEmailMessage = false;
 
 class _RegisterPageState extends State<RegisterPage> {
   // Fazer tamanho máximo e tamanho mínimo
@@ -41,231 +44,250 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           height: size.height,
           width: size.width,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: size.height * 0.06),
-            GestureDetector(
-                onTap: () {
-                  nameController.clear();
-                  emailController.clear();
-                  passwordController.clear();
-                  confirmPasswordController.clear();
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                child: Container(
-                    margin: EdgeInsets.only(left: size.width * 0.05),
-                    child: CircleCard(
-                        size: size,
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                          size: size.height * 0.03,
-                        )))),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height * 0.09,
-                ),
-                Text('Criar Conta',
-                    style: GoogleFonts.inter(
-                        fontSize: size.width * 0.06,
-                        fontWeight: FontWeight.bold)),
-                SizedBox(height: size.height * 0.05),
-                TextFieldContainer(
-                  size: size,
-                  textField: TextField(
-                    controller: nameController,
-                    style:
-                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                    decoration: InputDecoration(
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        hintText: 'Nome',
-                        prefixIcon: Icon(
-                          Icons.person,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
-                        ),
-                        border: InputBorder.none),
+          child: Stack(children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SizedBox(height: size.height * 0.06),
+              GestureDetector(
+                  onTap: () {
+                    nameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
+                    confirmPasswordController.clear();
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  child: Container(
+                      margin: EdgeInsets.only(left: size.width * 0.05),
+                      child: CircleCard(
+                          size: size,
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                            size: size.height * 0.03,
+                          )))),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.09,
                   ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                TextFieldContainer(
-                  size: size,
-                  textField: TextField(
-                    controller: emailController,
-                    style:
-                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                    decoration: InputDecoration(
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        hintText: 'Email',
-                        prefixIcon: Icon(
-                          Icons.email,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
-                        ),
-                        border: InputBorder.none),
-                  ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                TextFieldContainer(
-                  size: size,
-                  textField: TextField(
-                    controller: passwordController,
-                    obscureText: passwordVisible,
-                    style:
-                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                    decoration: InputDecoration(
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        hintText: 'Senha',
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
-                        ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              passwordVisible = !passwordVisible;
-                            });
-                          },
-                          child: Icon(
-                            passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                  Text('Criar Conta',
+                      style: GoogleFonts.inter(
+                          fontSize: size.width * 0.06,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(height: size.height * 0.05),
+                  TextFieldContainer(
+                    size: size,
+                    textField: TextField(
+                      controller: nameController,
+                      style:
+                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      decoration: InputDecoration(
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          hintText: 'Nome',
+                          prefixIcon: Icon(
+                            Icons.person,
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                        ),
-                        border: InputBorder.none),
+                          border: InputBorder.none),
+                    ),
                   ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                TextFieldContainer(
-                  size: size,
-                  textField: TextField(
-                    controller: confirmPasswordController,
-                    obscureText: confirmVisible,
-                    style:
-                        GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
-                    decoration: InputDecoration(
-                        hintStyle: GoogleFonts.inter(
-                            color: Color.fromRGBO(186, 184, 184, 1)),
-                        hintText: 'Confirmar senha',
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          size: size.width * 0.9 * 0.06,
-                          color: inputColor,
-                        ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              confirmVisible = !confirmVisible;
-                            });
-                          },
-                          child: Icon(
-                            confirmVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                  SizedBox(height: size.height * 0.03),
+                  TextFieldContainer(
+                    size: size,
+                    textField: TextField(
+                      controller: emailController,
+                      style:
+                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      decoration: InputDecoration(
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          hintText: 'Email',
+                          prefixIcon: Icon(
+                            Icons.email,
                             size: size.width * 0.9 * 0.06,
                             color: inputColor,
                           ),
-                        ),
-                        border: InputBorder.none),
+                          border: InputBorder.none),
+                    ),
                   ),
-                ),
-                SizedBox(height: size.height * 0.09),
-                GestureDetector(
-                  onTap: () async {
-                    if (nameController.text.isEmpty ||
-                        emailController.text.isEmpty ||
-                        passwordController.text.isEmpty) {
-                      DialogHelper.errorModal(
-                          context,
-                          "Falta de informações",
-                          "Preencha todos os campos para poder criar sua conta",
-                          Icons.error_outline_outlined);
-                    } else {
-                      if (passwordController.text ==
-                          confirmPasswordController.text) {
-                        User user = User(nameController.text,
-                            emailController.text, passwordController.text);
+                  SizedBox(height: size.height * 0.03),
+                  TextFieldContainer(
+                    size: size,
+                    textField: TextField(
+                      controller: passwordController,
+                      obscureText: passwordVisible,
+                      style:
+                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      decoration: InputDecoration(
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          hintText: 'Senha',
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            size: size.width * 0.9 * 0.06,
+                            color: inputColor,
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            child: Icon(
+                              passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              size: size.width * 0.9 * 0.06,
+                              color: inputColor,
+                            ),
+                          ),
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  TextFieldContainer(
+                    size: size,
+                    textField: TextField(
+                      controller: confirmPasswordController,
+                      obscureText: confirmVisible,
+                      style:
+                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      decoration: InputDecoration(
+                          hintStyle: GoogleFonts.inter(
+                              color: Color.fromRGBO(186, 184, 184, 1)),
+                          hintText: 'Confirmar senha',
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            size: size.width * 0.9 * 0.06,
+                            color: inputColor,
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                confirmVisible = !confirmVisible;
+                              });
+                            },
+                            child: Icon(
+                              confirmVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              size: size.width * 0.9 * 0.06,
+                              color: inputColor,
+                            ),
+                          ),
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.09),
+                  GestureDetector(
+                    onTap: () async {
+                      if (nameController.text.isEmpty ||
+                          emailController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                        DialogHelper.errorModal(
+                            context,
+                            "Falta de informações",
+                            "Preencha todos os campos para poder criar sua conta",
+                            Icons.error_outline_outlined);
+                      } else {
+                        if (passwordController.text ==
+                            confirmPasswordController.text) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          User user = User(nameController.text,
+                              emailController.text, passwordController.text);
 
-                        DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context).showLoadingIndicator();
 
-                        var usersRepository = UsersRepository();
-                        var statusCode = await usersRepository.register(user);
+                          var usersRepository = UsersRepository();
+                          var statusCode = await usersRepository.register(user);
 
-                        DialogBuilder(context).hideOpenDialog();
+                          DialogBuilder(context).hideOpenDialog();
 
-                        if (statusCode == 200) {
+                          if (statusCode == 200) {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          }
+
+                          if (statusCode == 400) {
+                            showEmailMessage = true;
+                          }
+                        } else {
+                          DialogHelper.errorModal(
+                              context,
+                              "Confirme a senha",
+                              "As senhas que você colocou não são as mesmas",
+                              Icons.error);
+                        }
+
+                        await Future.delayed(Duration(seconds: 5));
+                        showEmailMessage = false;
+                        setState(() {});
+                      }
+                    },
+                    child: RoundedButton(
+                      height: size.height * 0.053,
+                      width: size.width * 0.9,
+                      radius: 30,
+                      text: 'CRIAR CONTA',
+                      backgroundColor: Color.fromRGBO(0, 153, 255, 1),
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.06),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Já possui conta? ',
+                          style: GoogleFonts.inter(
+                              color: Color.fromRGBO(140, 138, 138, 1),
+                              fontSize: labelSize),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          nameController.clear();
+                          emailController.clear();
+                          passwordController.clear();
+                          confirmPasswordController.clear();
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()));
-                        }
-
-                        if (statusCode == 400)
-                          DialogHelper.errorModal(
-                              context,
-                              "Usuário já existe",
-                              "Email fornecido já está cadastrado",
-                              Icons.error);
-                      } else {
-                        DialogHelper.errorModal(
-                            context,
-                            "Confirme a senha",
-                            "As senhas que você colocou não são as mesmas",
-                            Icons.error);
-                      }
-                    }
-                  },
-                  child: RoundedButton(
-                    height: size.height * 0.053,
-                    width: size.width * 0.9,
-                    radius: 30,
-                    text: 'CRIAR CONTA',
-                    backgroundColor: Color.fromRGBO(0, 153, 255, 1),
-                  ),
-                ),
-                SizedBox(height: size.height * 0.06),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        'Já possui conta? ',
-                        style: GoogleFonts.inter(
-                            color: Color.fromRGBO(140, 138, 138, 1),
-                            fontSize: labelSize),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        nameController.clear();
-                        emailController.clear();
-                        passwordController.clear();
-                        confirmPasswordController.clear();
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginPage()));
-                      },
-                      child: Container(
-                        child: Text(
-                          'Fazer login',
-                          style: GoogleFonts.inter(
-                            color: Color.fromRGBO(0, 119, 199, 1),
-                            fontSize: labelSize,
+                        },
+                        child: Container(
+                          child: Text(
+                            'Fazer login',
+                            style: GoogleFonts.inter(
+                              color: Color.fromRGBO(0, 119, 199, 1),
+                              fontSize: labelSize,
+                            ),
                           ),
                         ),
                       ),
+                    ],
+                  )
+                ],
+              ),
+            ]),
+            Visibility(
+              visible: showEmailMessage,
+              child: AnimatedCard(
+                direction: AnimatedCardDirection.right,
+                child: SafeArea(
+                  child: Align(
+                    alignment: Alignment(-1, -1),
+                    child: MessageEmail(
+                      message: "Email já está cadastrado",
+                      color: Colors.redAccent,
                     ),
-                  ],
-                )
-              ],
+                  ),
+                ),
+              ),
             ),
           ]),
         ),

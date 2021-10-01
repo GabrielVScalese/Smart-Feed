@@ -221,6 +221,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
+                  height: size.height * 0.67,
+                  width: size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
@@ -237,33 +239,56 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Container(
                     height: size.height * 0.7,
-                    child: ListView.builder(
-                        padding:
-                            EdgeInsets.symmetric(vertical: size.height * 0.02),
-                        itemCount: _isLoading ? 1 : _dynamicPetList.length,
-                        itemBuilder: (BuildContext context, index) {
-                          if (_isLoading)
-                            return buildPetCardShimmer();
-                          else
-                            return AnimatedCard(
-                              direction: index % 2 == 0
-                                  ? AnimatedCardDirection.left
-                                  : AnimatedCardDirection.right,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => InformationPage(
-                                            pet: _petList[index],
-                                            feed: _feedList[index],
-                                          )));
-                                },
-                                child: PetCard(
-                                  size: size,
-                                  pet: _dynamicPetList[index],
-                                ),
-                              ),
-                            );
-                        }),
+                    child: Column(
+                      children: [
+                        Visibility(
+                          visible:
+                              _isLoading || _petList.isNotEmpty ? true : false,
+                          // !_petList.isEmpty && _isLoading ? true : false,
+                          child: ListView.builder(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: size.height * 0.02),
+                              itemCount:
+                                  _isLoading ? 1 : _dynamicPetList.length,
+                              itemBuilder: (BuildContext context, index) {
+                                if (_isLoading)
+                                  return buildPetCardShimmer();
+                                else {
+                                  return AnimatedCard(
+                                    direction: index % 2 == 0
+                                        ? AnimatedCardDirection.left
+                                        : AnimatedCardDirection.right,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    InformationPage(
+                                                      pet: _petList[index],
+                                                      feed: _feedList[index],
+                                                    )));
+                                      },
+                                      child: PetCard(
+                                        size: size,
+                                        pet: _dynamicPetList[index],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }),
+                        ),
+                        Visibility(
+                          visible:
+                              !_isLoading && _petList.isEmpty ? true : false,
+                          // !_petList.isEmpty && _isLoading ? false : true,
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            color: Colors.blue,
+                          ),
+                        )
+                      ],
+                    ),
                   ))
             ],
           ),

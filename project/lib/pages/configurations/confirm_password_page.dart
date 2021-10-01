@@ -16,8 +16,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfirmPasswordPage extends StatefulWidget {
   RequestOptions requestOptions;
+  String subtitle;
+  String buttonTitle;
+  String page;
 
-  ConfirmPasswordPage(this.requestOptions);
+  ConfirmPasswordPage(
+      this.requestOptions, this.subtitle, this.buttonTitle, this.page);
 
   @override
   _ConfirmPasswordPageState createState() => _ConfirmPasswordPageState();
@@ -46,8 +50,7 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
               ),
               GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => ChangePasswordPage()));
+                    Navigator.pop(context);
                   },
                   child: Container(
                       margin: EdgeInsets.only(left: size.width * 0.05),
@@ -70,7 +73,7 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                     SizedBox(
                       height: size.height * 0.01,
                     ),
-                    Text('Digite sua senha atual.',
+                    Text(this.widget.subtitle,
                         style: GoogleFonts.inter(
                             fontSize: size.width * 0.045,
                             color: Color.fromRGBO(125, 125, 125, 1)))
@@ -120,7 +123,7 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Salvar',
+                Text(this.widget.buttonTitle,
                     style: GoogleFonts.inter(
                         fontSize: size.width * 0.042,
                         fontWeight: FontWeight.w600,
@@ -145,16 +148,23 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                         var dio = CustomDio.withAuthentication().instance;
                         var options = this.widget.requestOptions;
 
+                        if (options.data != null) if (options
+                            .data['password'].isEmpty)
+                          options.data['password'] =
+                              _currentPasswordController.text;
+
                         var response = await dio.request(options.path,
                             queryParameters: options.queryParameters,
                             data: options.data,
                             options: Options(method: options.method));
 
-                        if (response.statusCode == 200)
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => UserPage()));
-                        else
+                        if (response.statusCode == 200) {
+                          if (options.data != null)
+                            user['email'] = options.data['email'];
+
+                          instance.setString('user', jsonEncode(user));
+                          Navigator.pushNamed(context, '/${this.widget.page}');
+                        } else
                           DialogBuilder(context).hideOpenDialog();
                       } else
                         print('Error');

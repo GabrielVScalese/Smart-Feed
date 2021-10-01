@@ -7,6 +7,7 @@ import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/shimmer_widget.dart';
 import 'package:project/pages/account/login_page.dart';
+import 'package:project/pages/configurations/change_email_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'change_password_page.dart';
@@ -140,10 +141,16 @@ class _UserPageState extends State<UserPage> {
                     SizedBox(
                       height: size.height * 0.05,
                     ),
-                    DataCard(
-                      size: size,
-                      icon: Icons.email,
-                      title: 'Trocar Email',
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ChangeEmailPage()));
+                      },
+                      child: DataCard(
+                        size: size,
+                        icon: Icons.email,
+                        title: 'Trocar Email',
+                      ),
                     ),
                     SizedBox(
                       height: size.height * 0.03,
