@@ -67,6 +67,115 @@ class _HomePageState extends State<HomePage> {
     _loadData().then((data) {});
   }
 
+  Widget getPets(size) {
+    if (_petList.isEmpty) {
+      return AnimatedCard(
+        direction: AnimatedCardDirection.bottom,
+        child: Container(
+          width: size.width,
+          height: size.height * 0.67,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.height * 0.1,
+              ),
+              Text(
+                "Você ainda não",
+                style: GoogleFonts.inter(
+                    fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: size.width * 0.05,
+              ),
+              Image.asset(
+                'assets/images/noPets.png',
+                scale: 1.5,
+              ),
+              SizedBox(
+                height: size.width * 0.05,
+              ),
+              Text(
+                "possui nenhum pet",
+                style: GoogleFonts.inter(
+                    fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+        itemCount: _isLoading ? 1 : _dynamicPetList.length,
+        itemBuilder: (BuildContext context, index) {
+          if (_isLoading)
+            return buildPetCardShimmer(size);
+          else
+            return AnimatedCard(
+              direction: index % 2 == 0
+                  ? AnimatedCardDirection.left
+                  : AnimatedCardDirection.right,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => InformationPage(
+                            pet: _petList[index],
+                            feed: _feedList[index],
+                          )));
+                },
+                child: PetCard(
+                  size: size,
+                  pet: _dynamicPetList[index],
+                ),
+              ),
+            );
+        },
+      );
+  }
+
+  buildPetCardShimmer(size) => Container(
+        margin: EdgeInsets.only(
+            left: size.width * 0.03,
+            right: size.width * 0.03,
+            bottom: size.height * 0.015),
+        child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ShimmerWidget.circular(
+                        width: size.width * 0.2, height: size.width * 0.2)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    height: size.width * 0.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ShimmerWidget.rectangular(
+                            width: size.width * 0.15,
+                            height: size.height * 0.015),
+                        ShimmerWidget.rectangular(
+                            width: size.width * 0.5,
+                            height: size.height * 0.015),
+                        ShimmerWidget.rectangular(
+                            width: size.width * 0.17,
+                            height: size.height * 0.015),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            )),
+      );
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -75,46 +184,6 @@ class _HomePageState extends State<HomePage> {
     var inputColor = Color.fromRGBO(186, 184, 184, 1);
 
     // Shimmer Effect para o carregamento de cards dos pets
-    buildPetCardShimmer() => Container(
-          margin: EdgeInsets.only(
-              left: size.width * 0.03,
-              right: size.width * 0.03,
-              bottom: size.height * 0.015),
-          child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ShimmerWidget.circular(
-                          width: size.width * 0.2, height: size.width * 0.2)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Container(
-                      height: size.width * 0.2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ShimmerWidget.rectangular(
-                              width: size.width * 0.15,
-                              height: size.height * 0.015),
-                          ShimmerWidget.rectangular(
-                              width: size.width * 0.5,
-                              height: size.height * 0.015),
-                          ShimmerWidget.rectangular(
-                              width: size.width * 0.17,
-                              height: size.height * 0.015),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              )),
-        );
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -221,75 +290,25 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                  height: size.height * 0.67,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Container(
-                    height: size.height * 0.7,
-                    child: Column(
-                      children: [
-                        Visibility(
-                          visible:
-                              _isLoading || _petList.isNotEmpty ? true : false,
-                          // !_petList.isEmpty && _isLoading ? true : false,
-                          child: ListView.builder(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: size.height * 0.02),
-                              itemCount:
-                                  _isLoading ? 1 : _dynamicPetList.length,
-                              itemBuilder: (BuildContext context, index) {
-                                if (_isLoading)
-                                  return buildPetCardShimmer();
-                                else {
-                                  return AnimatedCard(
-                                    direction: index % 2 == 0
-                                        ? AnimatedCardDirection.left
-                                        : AnimatedCardDirection.right,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    InformationPage(
-                                                      pet: _petList[index],
-                                                      feed: _feedList[index],
-                                                    )));
-                                      },
-                                      child: PetCard(
-                                        size: size,
-                                        pet: _dynamicPetList[index],
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }),
-                        ),
-                        Visibility(
-                          visible:
-                              !_isLoading && _petList.isEmpty ? true : false,
-                          // !_petList.isEmpty && _isLoading ? false : true,
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            color: Colors.blue,
-                          ),
-                        )
-                      ],
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0), //(x,y)
+                      blurRadius: 6.0,
                     ),
-                  ))
+                  ],
+                ),
+                child: Container(
+                  height: size.height * 0.7,
+                  child: getPets(size),
+                ),
+              ),
             ],
           ),
         ),
