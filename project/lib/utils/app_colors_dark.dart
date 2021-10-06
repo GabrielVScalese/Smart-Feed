@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
-  AppColors();
+class AppColorsDark {
   Color backgroundColor() {
-    return Colors.white;
+    return Colors.grey[850];
   }
 
   Color descriptionTextColor() {

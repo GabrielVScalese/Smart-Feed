@@ -165,12 +165,10 @@ class _HelpPageState extends State<HelpPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Container(
-                      // margin: EdgeInsets.only(left: size.width * 0.05),
                       width: size.width * 0.8,
                       child: Card(
                         elevation: 10,
                         shape: RoundedRectangleBorder(
-                          // side: BorderSide(color: Colors.white70, width: 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextField(

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
@@ -92,14 +93,23 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               AnimatedCard(
                 direction: AnimatedCardDirection.left,
                 initDelay: Duration(milliseconds: 500),
-                child: ConfigurationCard(
-                  size: size,
-                  icon: Icon(
-                    Icons.color_lens,
-                    size: size.height * 0.035,
+                child: GestureDetector(
+                  onTap: () async {
+                    var themeController = ThemeController();
+
+                    bool darkTheme = await themeController.getTheme();
+                    print(darkTheme);
+                    DialogHelper.themeModal(context, darkTheme);
+                  },
+                  child: ConfigurationCard(
+                    size: size,
+                    icon: Icon(
+                      Icons.color_lens,
+                      size: size.height * 0.035,
+                    ),
+                    title: 'Tema',
+                    content: 'Troque entre o tema escuro ou claro',
                   ),
-                  title: 'Tema',
-                  content: 'Troque entre o tema escuro ou claro',
                 ),
               ),
               SizedBox(

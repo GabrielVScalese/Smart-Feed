@@ -4,6 +4,7 @@ import 'package:project/components/mode_dialog.dart';
 import 'package:project/components/password_dialog.dart';
 import 'package:project/components/quantity_dialog.dart';
 import 'package:project/components/schedule_dialog.dart';
+import 'package:project/components/theme_dialog.dart';
 import 'info_dialog.dart';
 
 class DialogHelper {
@@ -29,4 +30,10 @@ class DialogHelper {
       context: context,
       builder: (context) =>
           ErrorDialog(title: title, message: message, icon: icon));
+
+  static themeModal(context, darkTheme) => showDialog(
+      context: context,
+      builder: (context) => ThemeDialog(
+            darkTheme: darkTheme,
+          ));
 }

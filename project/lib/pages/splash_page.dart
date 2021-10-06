@@ -2,9 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/controllers/auth_controller.dart';
 import 'package:animated_card/animated_card.dart';
+import 'package:project/controllers/theme_controller.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key key}) : super(key: key);
+
+  @override
+  _SplashPageState createState() => _SplashPageState();
+}
+
+var appColors;
+
+class _SplashPageState extends State<SplashPage> {
+  bool darkTheme;
+
+  loadTheme() async {
+    var themeController = ThemeController();
+    darkTheme = await themeController.getTheme();
+
+    if (this.darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    loadTheme().then((data) {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +46,7 @@ class SplashPage extends StatelessWidget {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: Stack(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
