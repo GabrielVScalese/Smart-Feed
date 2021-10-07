@@ -5,13 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
-import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/models/pet.dart';
+import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
-import 'package:project/pages/home_page.dart';
-import 'package:project/repositories/pets_repository.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeEmailPage extends StatefulWidget {
@@ -22,6 +21,27 @@ class ChangeEmailPage extends StatefulWidget {
 class _ChangeEmailPageState extends State<ChangeEmailPage> {
   var emailController = new TextEditingController();
 
+  var appColors;
+  bool darkTheme;
+
+  loadTheme() async {
+    var themeController = ThemeController();
+    darkTheme = await themeController.getTheme();
+
+    if (this.darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadTheme().then((data) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -30,6 +50,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: Stack(children: [
           Column(
             mainAxisSize: MainAxisSize.max,
@@ -46,12 +67,14 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
                         Navigator.pop(context);
                       },
                       child: CircleCard(
-                          size: size,
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                            size: size.height * 0.03,
-                          )),
+                        size: size,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: appColors.iconButtonColor(),
+                          size: size.height * 0.03,
+                        ),
+                        color: appColors.cardColor(),
+                      ),
                     ),
                   ],
                 ),
@@ -66,14 +89,18 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PageTitle(size: size, title: 'Trocar email'),
+                      PageTitle(
+                        size: size,
+                        title: 'Trocar email',
+                        color: appColors.textColor(),
+                      ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
                       Text('Digite seu novo email.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                              color: appColors.descriptionTextColor()))
                     ],
                   ),
                 ),
@@ -87,20 +114,25 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
               AnimatedCard(
                 direction: AnimatedCardDirection.left,
                 child: Align(
-                  child: new TextFieldContainer(
+                  child: TextFieldContainer(
+                    backgroundColor: appColors.cardColor(),
                     size: size,
                     textField: TextField(
+                      cursorColor: appColors.textColor(),
                       controller: emailController,
-                      style:
-                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      style: GoogleFonts.inter(
+                        fontSize: size.width * 0.9 * 0.045,
+                        color: appColors.descriptionTextColor(),
+                      ),
                       decoration: InputDecoration(
-                          hintStyle: GoogleFonts.inter(
-                              color: Color.fromRGBO(186, 184, 184, 1)),
-                          hintText: 'Novo email',
-                          prefixIcon: Icon(Icons.mail,
-                              size: size.width * 0.9 * 0.06,
-                              color: Color.fromRGBO(186, 184, 184, 1)),
-                          border: InputBorder.none),
+                        border: InputBorder.none,
+                        hintStyle: GoogleFonts.inter(
+                            color: appColors.inputTextColor()),
+                        hintText: 'Novo email',
+                        prefixIcon: Icon(Icons.mail,
+                            size: size.width * 0.9 * 0.06,
+                            color: appColors.inputTextColor()),
+                      ),
                     ),
                   ),
                 ),
@@ -118,6 +150,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
                       style: GoogleFonts.inter(
                         fontSize: size.width * 0.045,
                         fontWeight: FontWeight.bold,
+                        color: appColors.iconButtonColor(),
                       )),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
@@ -150,9 +183,10 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward),
-                        size: size,
-                      ),
+                          icon: Icon(Icons.arrow_forward,
+                              color: appColors.iconButtonColor()),
+                          size: size,
+                          color: appColors.cardColor()),
                     ),
                   ),
                 ],

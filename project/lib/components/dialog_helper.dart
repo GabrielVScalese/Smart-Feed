@@ -23,8 +23,10 @@ class DialogHelper {
   static infoModal(context) =>
       showDialog(context: context, builder: (context) => InfoDialog());
 
-  static confirmPassword(context) =>
-      showDialog(context: context, builder: (context) => PasswordDialog());
+  static confirmPassword(context) => showDialog(
+      context: context,
+      builder: (context) => PasswordDialog(),
+      barrierColor: null);
 
   static errorModal(context, title, message, icon) => showDialog(
       context: context,
@@ -32,8 +34,9 @@ class DialogHelper {
           ErrorDialog(title: title, message: message, icon: icon));
 
   static themeModal(context, darkTheme) => showDialog(
-      context: context,
-      builder: (context) => ThemeDialog(
-            darkTheme: darkTheme,
-          ));
+        context: context,
+        builder: (context) => ThemeDialog(
+          darkTheme: darkTheme,
+        ),
+      );
 }

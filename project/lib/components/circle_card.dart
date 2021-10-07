@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CircleCard extends StatelessWidget {
-  const CircleCard({Key key, @required this.size, @required this.icon})
+  const CircleCard(
+      {Key key, @required this.size, @required this.icon, @required this.color})
       : super(key: key);
 
   final Size size;
   final Icon icon;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,6 @@ class CircleCard extends StatelessWidget {
             child: icon,
             width: size.width * 0.14,
             height: size.width * 0.14,
-            decoration: BoxDecoration(shape: BoxShape.circle)));
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color)));
   }
 }

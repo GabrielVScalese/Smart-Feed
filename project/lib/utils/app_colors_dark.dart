@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppColorsDark {
   Color backgroundColor() {
-    return Colors.grey[850];
+    return Colors.black;
+  }
+
+  Color textColor() {
+    return Colors.white;
   }
 
   Color descriptionTextColor() {
@@ -18,7 +22,7 @@ class AppColorsDark {
   }
 
   Color notSelectedColor() {
-    return Color.fromRGBO(237, 237, 237, 1);
+    return Colors.white;
   }
 
   Color inputTextColor() {
@@ -57,7 +61,7 @@ class AppColorsDark {
     return Color.fromRGBO(144, 143, 143, 1);
   }
 
-  Color deleteIconColor() {
+  Color deleteColor() {
     return Colors.red;
   }
 
@@ -70,7 +74,7 @@ class AppColorsDark {
   }
 
   Color boxShadowColor() {
-    return Colors.grey;
+    return Colors.grey[700];
   }
 
   Color schedulesDeactivatedColor() {
@@ -79,5 +83,29 @@ class AppColorsDark {
 
   Color secondaryTextColor() {
     return Color.fromRGBO(42, 48, 101, 1);
+  }
+
+  Color buttonBackgroundColor() {
+    return Color(0xFF65686B);
+  }
+
+  Color configurationIconColor() {
+    return Colors.grey[700];
+  }
+
+  Color cardColor() {
+    return Colors.grey[900];
+  }
+
+  Color iconButtonColor() {
+    return Color(0xFF65686B);
+  }
+
+  Color backgroundColorModal() {
+    return Colors.grey[900];
+  }
+
+  Color modalCardColor() {
+    return Colors.grey[500];
   }
 }

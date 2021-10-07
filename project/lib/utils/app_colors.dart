@@ -6,6 +6,10 @@ class AppColors {
     return Colors.white;
   }
 
+  Color textColor() {
+    return Colors.black;
+  }
+
   Color descriptionTextColor() {
     return Color.fromRGBO(125, 125, 125, 1);
   }
@@ -19,7 +23,7 @@ class AppColors {
   }
 
   Color notSelectedColor() {
-    return Color.fromRGBO(237, 237, 237, 1);
+    return Colors.white;
   }
 
   Color inputTextColor() {
@@ -58,7 +62,7 @@ class AppColors {
     return Color.fromRGBO(144, 143, 143, 1);
   }
 
-  Color deleteIconColor() {
+  Color deleteColor() {
     return Colors.red;
   }
 
@@ -80,5 +84,29 @@ class AppColors {
 
   Color secondaryTextColor() {
     return Color.fromRGBO(42, 48, 101, 1);
+  }
+
+  Color buttonBackgroundColor() {
+    return Colors.white;
+  }
+
+  Color configurationIconColor() {
+    return Colors.black;
+  }
+
+  Color cardColor() {
+    return Colors.white;
+  }
+
+  Color iconButtonColor() {
+    return Colors.black;
+  }
+
+  Color backgroundColorModal() {
+    return Colors.white;
+  }
+
+  Color modalCardColor() {
+    return Colors.grey[300];
   }
 }

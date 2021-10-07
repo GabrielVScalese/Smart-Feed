@@ -73,7 +73,7 @@ class _SplashPageState extends State<SplashPage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                       fontSize: size.width * 0.04,
-                      color: Color.fromRGBO(125, 125, 125, 1),
+                      color: appColors.descriptionTextColor(),
                       fontWeight: FontWeight.w600),
                 ),
               ),
@@ -88,7 +88,7 @@ class _SplashPageState extends State<SplashPage> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.inter(
                       fontSize: size.width * 0.05,
-                      color: Color.fromRGBO(125, 125, 125, 1),
+                      color: appColors.descriptionTextColor(),
                       fontWeight: FontWeight.w600),
                 ),
               ),

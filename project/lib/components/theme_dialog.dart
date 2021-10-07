@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/theme_controller.dart';
+import 'package:project/pages/configurations/configuration_page.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 
 class ThemeDialog extends StatefulWidget {
   bool darkTheme;
@@ -23,30 +26,38 @@ class _ThemeDialogState extends State<ThemeDialog> {
     );
   }
 
-  var darkEnabled = false;
-  Color darkCardColor = Colors.white;
-  Color brightCardColor = Colors.white;
+  Color darkCardColor;
+  Color brightCardColor;
   var themeController = ThemeController();
+
+  var appColors;
+  bool darkTheme;
+
+  loadTheme() async {
+    if (this.widget.darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    changeColors();
+    setState(() {});
+  }
 
   @override
   void initState() {
-    darkEnabled = this.widget.darkTheme;
-    changeColors();
+    loadTheme().then((data) {});
+
     super.initState();
   }
 
   void changeColors() {
     setState(() {
-      if (darkEnabled) {
-        darkCardColor = Color.fromRGBO(237, 237, 237, 1);
+      if (this.widget.darkTheme) {
+        darkCardColor = appColors.modalCardColor();
+        brightCardColor = appColors.notSelectedColor();
       } else {
-        darkCardColor = Colors.white;
-      }
-
-      if (!darkEnabled) {
-        brightCardColor = Color.fromRGBO(237, 237, 237, 1);
-      } else {
-        brightCardColor = Colors.white;
+        darkCardColor = appColors.notSelectedColor();
+        brightCardColor = appColors.modalCardColor();
       }
     });
   }
@@ -54,67 +65,77 @@ class _ThemeDialogState extends State<ThemeDialog> {
   _buildChild(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Container(
-      height: size.width * 0.55,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(30))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: size.height * 0.03),
-          Align(
-            child: Text(
-              "Selecione o tema",
-              style:
-                  GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => ConfigurationPage()));
+      },
+      child: Container(
+        height: size.width * 0.55,
+        decoration: BoxDecoration(
+            color: appColors.backgroundColorModal(),
+            borderRadius: BorderRadius.all(Radius.circular(30))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: size.height * 0.03),
+            Align(
+              child: Text(
+                "Selecione o tema",
+                style: GoogleFonts.inter(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: appColors.textColor()),
+              ),
             ),
-          ),
-          SizedBox(height: size.width * 0.05),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  darkEnabled = false;
-                  changeColors();
-                  await themeController.setTheme(darkEnabled);
+            SizedBox(height: size.width * 0.05),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    this.widget.darkTheme = false;
+                    changeColors();
+                    await themeController.setTheme(this.widget.darkTheme);
 
-                  setState(() {});
-                },
-                child: RectangleCard(
-                  size: size,
-                  scale: 100,
-                  icon: Icon(
-                    Icons.brightness_low,
-                    size: size.width * 0.09,
+                    setState(() {});
+                  },
+                  child: RectangleCard(
+                    size: size,
+                    scale: 100,
+                    icon: Icon(
+                      Icons.brightness_low,
+                      size: size.width * 0.09,
+                      color: appColors.iconButtonColor(),
+                    ),
+                    content: "Claro",
+                    backgroundColor: brightCardColor,
                   ),
-                  content: "Claro",
-                  backgroundColor: brightCardColor,
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  darkEnabled = true;
-                  changeColors();
-                  await themeController.setTheme(darkEnabled);
+                GestureDetector(
+                  onTap: () async {
+                    this.widget.darkTheme = true;
+                    changeColors();
+                    await themeController.setTheme(this.widget.darkTheme);
 
-                  setState(() {});
-                },
-                child: RectangleCard(
-                  size: size,
-                  scale: 100,
-                  icon: Icon(
-                    Icons.brightness_2,
-                    size: size.width * 0.09,
+                    setState(() {});
+                  },
+                  child: RectangleCard(
+                    size: size,
+                    scale: 100,
+                    icon: Icon(
+                      Icons.brightness_2,
+                      size: size.width * 0.09,
+                      color: appColors.iconButtonColor(),
+                    ),
+                    content: "Escuro",
+                    backgroundColor: darkCardColor,
                   ),
-                  content: "Escuro",
-                  backgroundColor: darkCardColor,
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -8,10 +8,16 @@ class PetCard extends StatelessWidget {
     Key key,
     this.pet,
     this.size,
+    this.backgroundColor,
+    this.titleColor,
+    this.descriptionColor,
   }) : super(key: key);
 
   final Size size;
   final Pet pet;
+  final Color backgroundColor;
+  final Color titleColor;
+  final Color descriptionColor;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +27,7 @@ class PetCard extends StatelessWidget {
           right: size.width * 0.03,
           bottom: size.height * 0.015),
       child: Card(
+        color: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -52,15 +59,16 @@ class PetCard extends StatelessWidget {
                     Text(
                       pet.getName(),
                       style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: titleColor),
                     ),
                     Text(
                       pet.getDevice(),
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w300,
+                        color: descriptionColor,
                       ),
                     ),
                     Text(

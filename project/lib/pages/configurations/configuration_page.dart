@@ -13,6 +13,8 @@ import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -20,7 +22,31 @@ class ConfigurationPage extends StatefulWidget {
   _ConfigurationPageState createState() => _ConfigurationPageState();
 }
 
+var appColors;
+
 class _ConfigurationPageState extends State<ConfigurationPage> {
+  bool darkTheme;
+
+  loadTheme() async {
+    var themeController = ThemeController();
+    darkTheme = await themeController.getTheme();
+
+    if (this.darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loadTheme().then((data) {});
+  }
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
@@ -30,6 +56,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +73,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     size: size,
                     icon: Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
+                      color: appColors.iconButtonColor(),
                       size: size.height * 0.03,
                     ),
+                    color: appColors.cardColor(),
                   ),
                 ),
               ),
@@ -62,6 +90,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   child: PageTitle(
                     size: size,
                     title: 'Configurações',
+                    color: appColors.textColor(),
                   ),
                 ),
               ),
@@ -81,9 +110,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     icon: Icon(
                       Icons.person,
                       size: size.height * 0.04,
+                      color: appColors.configurationIconColor(),
                     ),
                     title: 'Minha Conta',
                     content: 'Informações e editar conta',
+                    color: appColors.cardColor(),
+                    titleColor: appColors.textColor(),
+                    descriptionTextColor: appColors.descriptionTextColor(),
                   ),
                 ),
               ),
@@ -95,20 +128,20 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 initDelay: Duration(milliseconds: 500),
                 child: GestureDetector(
                   onTap: () async {
-                    var themeController = ThemeController();
-
-                    bool darkTheme = await themeController.getTheme();
-                    print(darkTheme);
-                    DialogHelper.themeModal(context, darkTheme);
+                    DialogHelper.themeModal(context, this.darkTheme);
                   },
                   child: ConfigurationCard(
                     size: size,
                     icon: Icon(
                       Icons.color_lens,
                       size: size.height * 0.035,
+                      color: appColors.configurationIconColor(),
                     ),
                     title: 'Tema',
                     content: 'Troque entre o tema escuro ou claro',
+                    color: appColors.cardColor(),
+                    titleColor: appColors.textColor(),
+                    descriptionTextColor: appColors.descriptionTextColor(),
                   ),
                 ),
               ),
@@ -128,9 +161,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     icon: Icon(
                       Icons.help,
                       size: size.height * 0.035,
+                      color: appColors.configurationIconColor(),
                     ),
                     title: 'Ajuda',
                     content: 'Fale conosco ou envie um feedback',
+                    color: appColors.cardColor(),
+                    titleColor: appColors.textColor(),
+                    descriptionTextColor: appColors.descriptionTextColor(),
                   ),
                 ),
               ),
@@ -163,10 +200,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     icon: Icon(
                       Icons.delete,
                       size: size.height * 0.035,
-                      color: Colors.red,
+                      color: appColors.deleteColor(),
                     ),
                     title: 'Excluir Conta',
                     content: 'Remover permanentemente a conta',
+                    color: appColors.cardColor(),
+                    titleColor: appColors.textColor(),
+                    descriptionTextColor: appColors.descriptionTextColor(),
                   ),
                 ),
               )
@@ -184,13 +224,19 @@ class ConfigurationCard extends StatelessWidget {
       @required this.size,
       @required this.icon,
       @required this.title,
-      @required this.content})
+      @required this.content,
+      @required this.color,
+      @required this.titleColor,
+      @required this.descriptionTextColor})
       : super(key: key);
 
   final Size size;
   final Icon icon;
   final String title;
   final String content;
+  final Color color;
+  final Color titleColor;
+  final Color descriptionTextColor;
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +245,10 @@ class ConfigurationCard extends StatelessWidget {
       child: Column(
         children: [
           Card(
+            color: color,
             elevation: 10,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.white, width: 1),
+              side: BorderSide(color: appColors.backgroundColor(), width: 1),
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             child: Container(
@@ -220,8 +267,10 @@ class ConfigurationCard extends StatelessWidget {
                       ),
                       Text(title,
                           style: GoogleFonts.inter(
-                              fontSize: size.width * 0.04,
-                              fontWeight: FontWeight.bold)),
+                            fontSize: size.width * 0.04,
+                            fontWeight: FontWeight.bold,
+                            color: titleColor,
+                          )),
                       SizedBox(
                         height: size.height * 0.007,
                       ),
@@ -229,7 +278,7 @@ class ConfigurationCard extends StatelessWidget {
                         content,
                         style: GoogleFonts.inter(
                           fontSize: size.width * 0.035,
-                          color: Color.fromRGBO(125, 125, 125, 1),
+                          color: descriptionTextColor,
                         ),
                       ),
                     ],

@@ -55,6 +55,7 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/noPets.png
+    - assets/images/noPetsDark.png
 
     # - images/a_dot_burr.jpeg
     # - images/a_dot_ham.jpeg

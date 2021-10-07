@@ -6,9 +6,12 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/shimmer_widget.dart';
+import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/change_email_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'change_password_page.dart';
 
@@ -16,6 +19,10 @@ class UserPage extends StatefulWidget {
   @override
   _UserPageState createState() => _UserPageState();
 }
+
+var appColors;
+
+bool darkTheme;
 
 class _UserPageState extends State<UserPage> {
   var _isLoading = true;
@@ -30,6 +37,18 @@ class _UserPageState extends State<UserPage> {
         _isLoading = false;
       });
     } catch (err) {}
+  }
+
+  loadTheme() async {
+    var themeController = ThemeController();
+    darkTheme = await themeController.getTheme();
+
+    if (darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    setState(() {});
   }
 
   _decideView(size) {
@@ -69,16 +88,21 @@ class _UserPageState extends State<UserPage> {
         SizedBox(
           height: size.height * 0.03,
         ),
-        Text(_user['name'],
-            style: GoogleFonts.inter(
-                fontSize: size.width * 0.048, fontWeight: FontWeight.bold)),
+        Text(
+          _user['name'],
+          style: GoogleFonts.inter(
+            fontSize: size.width * 0.048,
+            fontWeight: FontWeight.bold,
+            color: appColors.textColor(),
+          ),
+        ),
         SizedBox(
           height: size.height * 0.01,
         ),
         Text(_user['email'],
             style: GoogleFonts.inter(
                 fontSize: size.width * 0.038,
-                color: Color.fromRGBO(125, 125, 125, 1)))
+                color: appColors.descriptionTextColor()))
       ],
     );
   }
@@ -87,6 +111,7 @@ class _UserPageState extends State<UserPage> {
   void initState() {
     super.initState();
 
+    loadTheme().then((data) {});
     _loadData().then((data) {});
   }
 
@@ -99,6 +124,7 @@ class _UserPageState extends State<UserPage> {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: Stack(children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,9 +141,10 @@ class _UserPageState extends State<UserPage> {
                       margin: EdgeInsets.only(left: size.width * 0.05),
                       child: CircleCard(
                           size: size,
+                          color: appColors.cardColor(),
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
                           )))),
               SizedBox(
@@ -128,6 +155,7 @@ class _UserPageState extends State<UserPage> {
                 child: PageTitle(
                   size: size,
                   title: 'Minha Conta',
+                  color: appColors.textColor(),
                 ),
               ),
               SizedBox(
@@ -150,6 +178,9 @@ class _UserPageState extends State<UserPage> {
                         size: size,
                         icon: Icons.email,
                         title: 'Trocar Email',
+                        backgroundColor: appColors.cardColor(),
+                        titleColor: appColors.textColor(),
+                        iconColor: appColors.iconButtonColor(),
                       ),
                     ),
                     SizedBox(
@@ -157,13 +188,19 @@ class _UserPageState extends State<UserPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ChangePasswordPage()));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => ChangePasswordPage(),
+                          ),
+                        );
                       },
                       child: DataCard(
                         size: size,
                         icon: Icons.lock,
                         title: 'Mudar Senha',
+                        backgroundColor: appColors.cardColor(),
+                        titleColor: appColors.textColor(),
+                        iconColor: appColors.iconButtonColor(),
                       ),
                     ),
                   ],
@@ -183,7 +220,7 @@ class _UserPageState extends State<UserPage> {
                     style: GoogleFonts.inter(
                         fontSize: size.width * 0.042,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red)),
+                        color: appColors.deleteColor())),
                 SizedBox(width: size.width * 0.02),
                 GestureDetector(
                   onTap: () async {
@@ -202,8 +239,9 @@ class _UserPageState extends State<UserPage> {
                     child: CircleCard(
                       icon: Icon(
                         Icons.logout,
-                        color: Colors.red,
+                        color: appColors.deleteColor(),
                       ),
+                      color: appColors.cardColor(),
                       size: size,
                     ),
                   ),
@@ -219,22 +257,33 @@ class _UserPageState extends State<UserPage> {
 
 class DataCard extends StatelessWidget {
   const DataCard(
-      {Key key, @required this.size, @required this.icon, @required this.title})
+      {Key key,
+      @required this.size,
+      @required this.icon,
+      @required this.title,
+      @required this.backgroundColor,
+      @required this.titleColor,
+      @required this.iconColor})
       : super(key: key);
 
   final Size size;
   final IconData icon;
   final String title;
+  final Color backgroundColor;
+  final Color titleColor;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size.width * 0.9,
       height: size.height * 0.09,
+      // decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
       child: Card(
-        elevation: 10,
+        color: backgroundColor,
+        elevation: darkTheme ? 0 : 10,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white, width: 1),
+          side: BorderSide(color: appColors.backgroundColor(), width: 1),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         child: Container(
@@ -247,6 +296,7 @@ class DataCard extends StatelessWidget {
                   Icon(
                     icon,
                     size: size.height * 0.028,
+                    color: iconColor,
                   ),
                   SizedBox(
                     width: size.width * 0.04,
@@ -254,12 +304,14 @@ class DataCard extends StatelessWidget {
                   Text(title,
                       style: GoogleFonts.inter(
                           fontSize: size.width * 0.04,
-                          fontWeight: FontWeight.bold))
+                          fontWeight: FontWeight.bold,
+                          color: titleColor))
                 ],
               ),
               Icon(
                 Icons.chevron_right,
                 size: size.height * 0.035,
+                color: iconColor,
               )
             ],
           ),

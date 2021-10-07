@@ -8,8 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
+import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -24,6 +27,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   var newPasswordObscure = true;
   var repeatPasswordObscure = true;
 
+  var appColors;
+  bool darkTheme;
+
+  loadTheme() async {
+    var themeController = ThemeController();
+    darkTheme = await themeController.getTheme();
+
+    if (this.darkTheme)
+      appColors = AppColorsDark();
+    else
+      appColors = AppColors();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadTheme().then((data) {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -35,6 +59,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: Stack(
           children: [
             Column(
@@ -44,19 +69,23 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   height: size.height * 0.06,
                 ),
                 GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => UserPage()));
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(left: size.width * 0.05),
-                        child: CircleCard(
-                            size: size,
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.black,
-                              size: size.height * 0.03,
-                            )))),
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => UserPage()));
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.05),
+                    child: CircleCard(
+                      color: appColors.cardColor(),
+                      size: size,
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: appColors.iconButtonColor(),
+                        size: size.height * 0.03,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: size.height * 0.04,
                 ),
@@ -67,7 +96,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PageTitle(size: size, title: 'Mudar Senha'),
+                        PageTitle(
+                          size: size,
+                          title: 'Mudar Senha',
+                          color: appColors.textColor(),
+                        ),
                         SizedBox(
                           height: size.height * 0.015,
                         ),
@@ -84,12 +117,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   direction: AnimatedCardDirection.left,
                   child: Align(
                     child: TextFieldContainer(
+                      backgroundColor: appColors.cardColor(),
                       size: size,
                       textField: TextField(
+                        cursorColor: appColors.textColor(),
                         controller: newPasswordController,
                         obscureText: newPasswordObscure,
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.9 * 0.045),
+                          fontSize: size.width * 0.9 * 0.045,
+                          color: appColors.descriptionTextColor(),
+                        ),
                         decoration: InputDecoration(
                             hintStyle: GoogleFonts.inter(
                                 color: Color.fromRGBO(186, 184, 184, 1)),
@@ -125,12 +162,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   direction: AnimatedCardDirection.left,
                   child: Align(
                     child: TextFieldContainer(
+                      backgroundColor: appColors.cardColor(),
                       size: size,
                       textField: TextField(
+                        cursorColor: appColors.textColor(),
                         controller: reapeatPasswordController,
                         obscureText: repeatPasswordObscure,
                         style: GoogleFonts.inter(
-                            fontSize: size.width * 0.9 * 0.045),
+                          fontSize: size.width * 0.9 * 0.045,
+                          color: appColors.descriptionTextColor(),
+                        ),
                         decoration: InputDecoration(
                             hintStyle: GoogleFonts.inter(
                                 color: Color.fromRGBO(186, 184, 184, 1)),
@@ -176,7 +217,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         style: GoogleFonts.inter(
                             fontSize: size.width * 0.042,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black)),
+                            color: appColors.iconButtonColor())),
                     SizedBox(width: size.width * 0.02),
                     GestureDetector(
                       onTap: () async {
@@ -207,9 +248,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       child: Container(
                         margin: EdgeInsets.only(right: size.width * 0.05),
                         child: CircleCard(
+                          color: appColors.cardColor(),
                           icon: Icon(
                             Icons.arrow_forward,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                           ),
                           size: size,
                         ),
