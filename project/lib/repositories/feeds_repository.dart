@@ -31,7 +31,6 @@ class FeedsRepository {
   }
 
   Future<int> updateByPetId(int petId, Feed feed) async {
-    print(petId);
     var response = await this._dio.put('/feeds/$petId', data: Feed.toMap(feed));
 
     if (response.statusCode == 401) {
@@ -41,7 +40,6 @@ class FeedsRepository {
       return newResponse.statusCode;
     }
 
-    print(response.data);
     return response.statusCode;
   }
 }

@@ -8,6 +8,7 @@ import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
 import 'package:project/pages/addPet/size_add_pet.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/utils/app_colors.dart';
 
 class TypeAddPet extends StatefulWidget {
   var pet;
@@ -17,6 +18,15 @@ class TypeAddPet extends StatefulWidget {
 }
 
 class _TypeAddPetState extends State<TypeAddPet> {
+  var appColors;
+
+  loadTheme() async {
+    this.appColors = new AppColors();
+    await this.appColors.initialize();
+
+    setState(() {});
+  }
+
   _getArguments() {
     var arguments = ModalRoute.of(context).settings.arguments;
 
@@ -38,6 +48,13 @@ class _TypeAddPetState extends State<TypeAddPet> {
     }
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
@@ -49,12 +66,14 @@ class _TypeAddPetState extends State<TypeAddPet> {
         'icon': Icon(
           Icons.pets,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
       {
         'name': 'Gato',
         'icon': Icon(
           Icons.pets,
+          color: appColors.iconButtonColor(),
           size: size.height * 0.12,
         )
       }
@@ -65,6 +84,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
 
     return Scaffold(
       body: Container(
+        color: appColors.backgroundColor(),
         height: size.height,
         width: size.width,
         child: Stack(children: [
@@ -90,9 +110,10 @@ class _TypeAddPetState extends State<TypeAddPet> {
                           size: size,
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
-                          )),
+                          ),
+                          color: appColors.cardColor()),
                     ),
                     Card(
                         elevation: 10,
@@ -101,13 +122,19 @@ class _TypeAddPetState extends State<TypeAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('1/5',
-                                style: GoogleFonts.inter(
-                                    fontSize: size.width * 0.04,
-                                    fontWeight: FontWeight.bold)),
+                            child: Text(
+                              '1/5',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.04,
+                                  fontWeight: FontWeight.bold,
+                                  color: appColors.iconButtonColor()),
+                            ),
                             width: size.width * 0.14,
                             height: size.width * 0.14,
-                            decoration: BoxDecoration(shape: BoxShape.circle)))
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appColors.cardColor(),
+                            )))
                   ],
                 ),
               ),
@@ -121,14 +148,18 @@ class _TypeAddPetState extends State<TypeAddPet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PageTitle(size: size, title: 'Novo Pet'),
+                      PageTitle(
+                        size: size,
+                        title: 'Novo Pet',
+                        color: appColors.textColor(),
+                      ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
                       Text('Cão ou gato.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                              color: appColors.descriptionTextColor()))
                     ],
                   ),
                 ),
@@ -155,9 +186,9 @@ class _TypeAddPetState extends State<TypeAddPet> {
                 children: [
                   Text('Próximo',
                       style: GoogleFonts.inter(
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      )),
+                          fontSize: size.width * 0.045,
+                          fontWeight: FontWeight.bold,
+                          color: appColors.descriptionTextColor())),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
@@ -176,8 +207,12 @@ class _TypeAddPetState extends State<TypeAddPet> {
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward),
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: appColors.iconButtonColor(),
+                        ),
                         size: size,
+                        color: appColors.cardColor(),
                       ),
                     ),
                   ),

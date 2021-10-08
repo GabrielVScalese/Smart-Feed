@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
@@ -9,6 +8,8 @@ import 'package:project/repositories/login_repository.dart';
 import 'package:project/repositories/users_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
+import 'dialog_builder.dart';
 
 class PasswordDialog extends StatefulWidget {
   const PasswordDialog({Key key}) : super(key: key);
@@ -128,6 +129,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                       );
                     } else {
                       print('Invalid credentials');
+
                       DialogBuilder(context).hideOpenDialog();
                     }
                   } catch (err) {

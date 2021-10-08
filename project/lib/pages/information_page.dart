@@ -12,6 +12,7 @@ import 'package:project/models/feed.dart';
 import 'package:project/pages/addPet/type_add_pet.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
+import 'package:project/utils/app_colors.dart';
 
 import 'home_page.dart';
 
@@ -24,13 +25,23 @@ class InformationPage extends StatefulWidget {
   _InformationPageState createState() => _InformationPageState();
 }
 
+var appColors;
+
 class _InformationPageState extends State<InformationPage> {
   var _devices = ['Smart Feed UHG78F'];
 
   var feedController;
 
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
   @override
   void initState() {
+    loadTheme().then((data) {});
     feedController = FeedController(this.widget.feed.getMode(),
         this.widget.feed.getQuantity(), this.widget.feed.getSchedules());
 
@@ -66,7 +77,7 @@ class _InformationPageState extends State<InformationPage> {
 
     var labelStyle = GoogleFonts.inter(
         fontSize: size.width * 0.05,
-        color: Colors.black,
+        color: appColors.textColor(),
         fontWeight: FontWeight.w500);
 
     return WillPopScope(
@@ -90,6 +101,7 @@ class _InformationPageState extends State<InformationPage> {
       },
       child: Scaffold(
         body: Container(
+          color: appColors.backgroundColor(),
           height: size.height,
           width: size.width,
           child: SingleChildScrollView(
@@ -112,14 +124,15 @@ class _InformationPageState extends State<InformationPage> {
                             Text(this.widget.pet.getName(),
                                 style: GoogleFonts.inter(
                                     fontSize: size.width * 0.08,
-                                    fontWeight: FontWeight.bold)),
+                                    fontWeight: FontWeight.bold,
+                                    color: appColors.textColor())),
                             SizedBox(
                               height: size.height * 0.01,
                             ),
                             Text('Informações',
                                 style: GoogleFonts.inter(
                                     fontSize: size.width * 0.05,
-                                    color: Color.fromRGBO(125, 125, 125, 1)))
+                                    color: appColors.descriptionTextColor()))
                           ],
                         ),
                       ),
@@ -153,17 +166,23 @@ class _InformationPageState extends State<InformationPage> {
                     margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: Card(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white, width: 1),
+                        side:
+                            BorderSide(color: appColors.cardColor(), width: 1),
                         borderRadius: BorderRadius.circular(7.5),
                       ),
                       elevation: 10,
                       child: Container(
+                        decoration: BoxDecoration(
+                            color: appColors.cardColor(),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         padding: EdgeInsets.only(
                             left: size.width * 0.03, right: size.width * 0.02),
                         width: size.width * 0.9,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton(
                               iconDisabledColor: Colors.black,
+                              dropdownColor: appColors.cardColor(),
                               value: 'Smart Feed UHG78F',
                               items: _devices.map<DropdownMenuItem<String>>(
                                   (String value) {
@@ -175,7 +194,7 @@ class _InformationPageState extends State<InformationPage> {
                                       style: GoogleFonts.inter(
                                           fontSize: size.width * 0.04,
                                           color:
-                                              Color.fromRGBO(125, 125, 125, 1)),
+                                              appColors.descriptionTextColor()),
                                     ),
                                   ),
                                 );
@@ -225,26 +244,36 @@ class _InformationPageState extends State<InformationPage> {
                           icon: Icon(
                             Icons.pets,
                             size: size.height * 0.053,
+                            color: appColors.iconButtonColor(),
                           ),
                           scale: size.height * 0.13,
                           content: this.widget.pet.getAnimal(),
-                          backgroundColor: Colors.white,
+                          backgroundColor: appColors.cardColor(),
+                          contentColor: appColors.textColor(),
                         ),
                         RectangleCard(
                           size: size,
-                          icon: Icon(Icons.restaurant_menu,
-                              size: size.height * 0.053),
+                          icon: Icon(
+                            Icons.restaurant_menu,
+                            size: size.height * 0.053,
+                            color: appColors.iconButtonColor(),
+                          ),
                           scale: size.height * 0.13,
                           content: this.widget.pet.getRation(),
-                          backgroundColor: Colors.white,
+                          backgroundColor: appColors.cardColor(),
+                          contentColor: appColors.textColor(),
                         ),
                         RectangleCard(
                           size: size,
-                          icon: Icon(Icons.aspect_ratio,
-                              size: size.height * 0.053),
+                          icon: Icon(
+                            Icons.aspect_ratio,
+                            size: size.height * 0.053,
+                            color: appColors.iconButtonColor(),
+                          ),
                           scale: size.height * 0.13,
                           content: this.widget.pet.getSize(),
-                          backgroundColor: Colors.white,
+                          backgroundColor: appColors.cardColor(),
+                          contentColor: appColors.textColor(),
                         ),
                       ],
                     ),
@@ -278,14 +307,17 @@ class _InformationPageState extends State<InformationPage> {
                             DialogHelper.chooseMode(context, feedController);
                           },
                           child: RectangleCard(
-                              size: size,
-                              icon: Icon(
-                                Icons.dehaze,
-                                size: size.height * 0.053,
-                              ),
-                              scale: size.height * 0.13,
-                              content: 'Modo',
-                              backgroundColor: Colors.white),
+                            size: size,
+                            icon: Icon(
+                              Icons.dehaze,
+                              size: size.height * 0.053,
+                              color: appColors.iconButtonColor(),
+                            ),
+                            scale: size.height * 0.13,
+                            content: 'Modo',
+                            backgroundColor: appColors.cardColor(),
+                            contentColor: appColors.textColor(),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -293,11 +325,15 @@ class _InformationPageState extends State<InformationPage> {
                           },
                           child: RectangleCard(
                             size: size,
-                            icon: Icon(Icons.local_restaurant,
-                                size: size.height * 0.053),
+                            icon: Icon(
+                              Icons.local_restaurant,
+                              size: size.height * 0.053,
+                              color: appColors.iconButtonColor(),
+                            ),
                             scale: size.height * 0.13,
                             content: 'Quantidade',
-                            backgroundColor: Colors.white,
+                            backgroundColor: appColors.cardColor(),
+                            contentColor: appColors.textColor(),
                           ),
                         ),
                         GestureDetector(
@@ -310,11 +346,15 @@ class _InformationPageState extends State<InformationPage> {
                           },
                           child: RectangleCard(
                             size: size,
-                            icon:
-                                Icon(Icons.schedule, size: size.height * 0.053),
+                            icon: Icon(
+                              Icons.schedule,
+                              size: size.height * 0.053,
+                              color: appColors.iconButtonColor(),
+                            ),
                             scale: size.height * 0.13,
                             content: 'Horários',
-                            backgroundColor: cardColor,
+                            backgroundColor: appColors.cardColor(),
+                            contentColor: appColors.textColor(),
                           ),
                         ),
                       ],
@@ -377,7 +417,7 @@ class _InformationPageState extends State<InformationPage> {
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.042,
                               fontWeight: FontWeight.bold,
-                              color: Colors.red)),
+                              color: appColors.deleteColor())),
                       SizedBox(width: size.width * 0.02),
                       GestureDetector(
                         onTap: () async {
@@ -404,9 +444,10 @@ class _InformationPageState extends State<InformationPage> {
                         child: Container(
                           margin: EdgeInsets.only(right: size.width * 0.05),
                           child: CircleCard(
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: Icon(Icons.delete,
+                                color: appColors.deleteColor()),
                             size: size,
-                            color: Colors.white,
+                            color: appColors.cardColor(),
                           ),
                         ),
                       ),
@@ -456,14 +497,13 @@ class LabelRow extends StatelessWidget {
             children: [
               Text(
                 secondaryText,
-                style: GoogleFonts.inter(color: Color.fromRGBO(42, 48, 101, 1)),
+                style: GoogleFonts.inter(color: appColors.seeMoreColor()),
               ),
               SizedBox(width: size.width * 0.02),
               Visibility(
                 visible: icon != null ? true : false,
                 child: Icon(icon,
-                    size: size.width * 0.05,
-                    color: Color.fromRGBO(42, 48, 101, 1)),
+                    size: size.width * 0.05, color: appColors.seeMoreColor()),
               ),
             ],
           ),
@@ -493,12 +533,18 @@ class InformationCard extends StatelessWidget {
     return Card(
       elevation: 10,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.white, width: 1),
+        side: BorderSide(color: appColors.cardColor(), width: 1),
         borderRadius: BorderRadius.only(topRight: Radius.circular(20)),
       ),
       child: Container(
         height: size.height * 0.16,
         width: size.height * 0.13,
+        decoration: BoxDecoration(
+          color: appColors.cardColor(),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+          ),
+        ),
         padding: EdgeInsets.only(
           left: size.width * 0.03,
           top: size.width * 0.04,
@@ -506,14 +552,16 @@ class InformationCard extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(title,
               style: GoogleFonts.inter(
-                  fontSize: size.width * 0.043, fontWeight: FontWeight.bold)),
+                  fontSize: size.width * 0.043,
+                  fontWeight: FontWeight.bold,
+                  color: appColors.textColor())),
           SizedBox(
             height: size.height * 0.027,
           ),
           Text(content,
               style: GoogleFonts.inter(
-                fontSize: size.width * 0.03,
-              )),
+                  fontSize: size.width * 0.03,
+                  color: appColors.descriptionTextColor())),
           SizedBox(
             height: size.height * 0.024,
           ),
@@ -522,14 +570,15 @@ class InformationCard extends StatelessWidget {
               Text(value.toString(),
                   style: GoogleFonts.inter(
                       fontSize: size.width * 0.043,
-                      fontWeight: FontWeight.bold)),
+                      fontWeight: FontWeight.bold,
+                      color: appColors.textColor())),
               SizedBox(
                 width: size.width * 0.02,
               ),
               Text('kcal',
                   style: GoogleFonts.inter(
-                    fontSize: size.width * 0.037,
-                  )),
+                      fontSize: size.width * 0.037,
+                      color: appColors.textColor())),
             ],
           ),
         ]),

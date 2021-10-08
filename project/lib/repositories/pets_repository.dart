@@ -52,7 +52,7 @@ class PetsRepository {
 
         return newResponse.statusCode;
       }
-      print(response);
+
       return response.statusCode;
     } catch (e) {}
   }

@@ -9,7 +9,8 @@ class RectangleCard extends StatelessWidget {
       @required this.scale,
       @required this.icon,
       @required this.content,
-      this.backgroundColor})
+      @required this.backgroundColor,
+      @required this.contentColor})
       : super(key: key);
 
   final Size size;
@@ -17,6 +18,7 @@ class RectangleCard extends StatelessWidget {
   final Icon icon;
   final String content;
   final Color backgroundColor;
+  final Color contentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class RectangleCard extends StatelessWidget {
       color: this.backgroundColor,
       elevation: 10,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.white, width: 1),
+        side: BorderSide(color: backgroundColor, width: 1),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
@@ -44,7 +46,9 @@ class RectangleCard extends StatelessWidget {
               visible: content != '' ? true : false,
               child: Text(content,
                   style: GoogleFonts.inter(
-                      fontSize: scale * 0.14, fontWeight: FontWeight.bold)),
+                      fontSize: scale * 0.14,
+                      fontWeight: FontWeight.bold,
+                      color: contentColor)),
             ),
           ],
         ),

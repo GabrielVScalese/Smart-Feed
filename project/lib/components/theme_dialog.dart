@@ -5,7 +5,6 @@ import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 
 class ThemeDialog extends StatefulWidget {
   ThemeDialog();
@@ -56,9 +55,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
           darkCardColor = appColors.notSelectedColor();
           brightCardColor = appColors.modalCardColor();
         }
-      } catch (e) {
-        print("deu ruim");
-      }
+      } catch (e) {}
     });
   }
 
@@ -113,6 +110,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
                     ),
                     content: "Claro",
                     backgroundColor: brightCardColor,
+                    contentColor: Colors.black,
                   ),
                 ),
                 GestureDetector(
@@ -126,16 +124,16 @@ class _ThemeDialogState extends State<ThemeDialog> {
                     setState(() {});
                   },
                   child: RectangleCard(
-                    size: size,
-                    scale: 100,
-                    icon: Icon(
-                      Icons.brightness_2,
-                      size: size.width * 0.09,
-                      color: appColors.iconButtonColor(),
-                    ),
-                    content: "Escuro",
-                    backgroundColor: darkCardColor,
-                  ),
+                      size: size,
+                      scale: 100,
+                      icon: Icon(
+                        Icons.brightness_2,
+                        size: size.width * 0.09,
+                        color: appColors.iconButtonColor(),
+                      ),
+                      content: "Escuro",
+                      backgroundColor: darkCardColor,
+                      contentColor: Colors.black),
                 ),
               ],
             ),
