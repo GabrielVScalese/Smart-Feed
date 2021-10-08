@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:project/models/feed.dart';
 import 'package:project/utils/custom_dio.dart';
@@ -20,6 +22,7 @@ class FeedsRepository {
     // Token is invalid
     if (response.statusCode == 401) {
       var refreshToken = new RefreshToken();
+
       var newResponse = await refreshToken.execute(response.requestOptions);
       data = newResponse.data;
     }

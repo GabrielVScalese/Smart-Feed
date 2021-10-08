@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:project/pages/information_page.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'addPet/type_add_pet.dart';
 
@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
 
   var namePetController = new TextEditingController();
   var appColors;
-  bool darkTheme;
 
   _loadData() async {
     try {
@@ -41,6 +40,7 @@ class _HomePageState extends State<HomePage> {
       var user = jsonDecode(prefs.getString('user'));
 
       var feedsRepository = new FeedsRepository();
+
       _feedList = await feedsRepository.findByOwner(user['id']);
 
       var petsRepository = PetsRepository();
@@ -56,13 +56,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (this.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    appColors = new AppColors();
+    await appColors.initialize();
 
     setState(() {});
   }
@@ -80,6 +75,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     loadTheme().then((data) {});
     _loadData().then((data) {});
   }
@@ -97,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  darkTheme
+                  appColors.darkTheme
                       ? 'assets/images/noPetsDark.png'
                       : 'assets/images/noPets.png',
                   scale: 1.5,

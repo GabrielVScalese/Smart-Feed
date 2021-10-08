@@ -14,7 +14,6 @@ import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigurationPage extends StatefulWidget {
@@ -28,13 +27,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   bool darkTheme;
 
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (this.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    appColors = new AppColors();
+    await appColors.initialize();
 
     setState(() {});
   }
@@ -128,7 +122,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 initDelay: Duration(milliseconds: 500),
                 child: GestureDetector(
                   onTap: () async {
-                    DialogHelper.themeModal(context, this.darkTheme);
+                    DialogHelper.themeModal(context);
                   },
                   child: ConfigurationCard(
                     size: size,

@@ -4,7 +4,6 @@ import 'package:project/controllers/auth_controller.dart';
 import 'package:animated_card/animated_card.dart';
 import 'package:project/controllers/theme_controller.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key key}) : super(key: key);
@@ -16,17 +15,9 @@ class SplashPage extends StatefulWidget {
 var appColors;
 
 class _SplashPageState extends State<SplashPage> {
-  bool darkTheme;
-
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (this.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
-
+    appColors = new AppColors();
+    await appColors.initialize();
     setState(() {});
   }
 

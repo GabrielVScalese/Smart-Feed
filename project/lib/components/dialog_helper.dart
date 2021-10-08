@@ -33,10 +33,8 @@ class DialogHelper {
       builder: (context) =>
           ErrorDialog(title: title, message: message, icon: icon));
 
-  static themeModal(context, darkTheme) => showDialog(
+  static themeModal(context) => showDialog(
         context: context,
-        builder: (context) => ThemeDialog(
-          darkTheme: darkTheme,
-        ),
+        builder: (context) => ThemeDialog(),
       );
 }

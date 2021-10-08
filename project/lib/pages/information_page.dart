@@ -221,26 +221,31 @@ class _InformationPageState extends State<InformationPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         RectangleCard(
-                            size: size,
-                            icon: Icon(
-                              Icons.pets,
-                              size: size.height * 0.053,
-                            ),
-                            scale: size.height * 0.13,
-                            content: this.widget.pet.getAnimal()),
+                          size: size,
+                          icon: Icon(
+                            Icons.pets,
+                            size: size.height * 0.053,
+                          ),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getAnimal(),
+                          backgroundColor: Colors.white,
+                        ),
                         RectangleCard(
                           size: size,
                           icon: Icon(Icons.restaurant_menu,
                               size: size.height * 0.053),
                           scale: size.height * 0.13,
                           content: this.widget.pet.getRation(),
+                          backgroundColor: Colors.white,
                         ),
                         RectangleCard(
-                            size: size,
-                            icon: Icon(Icons.aspect_ratio,
-                                size: size.height * 0.053),
-                            scale: size.height * 0.13,
-                            content: this.widget.pet.getSize()),
+                          size: size,
+                          icon: Icon(Icons.aspect_ratio,
+                              size: size.height * 0.053),
+                          scale: size.height * 0.13,
+                          content: this.widget.pet.getSize(),
+                          backgroundColor: Colors.white,
+                        ),
                       ],
                     ),
                   ),
@@ -273,14 +278,14 @@ class _InformationPageState extends State<InformationPage> {
                             DialogHelper.chooseMode(context, feedController);
                           },
                           child: RectangleCard(
-                            size: size,
-                            icon: Icon(
-                              Icons.dehaze,
-                              size: size.height * 0.053,
-                            ),
-                            scale: size.height * 0.13,
-                            content: 'Modo',
-                          ),
+                              size: size,
+                              icon: Icon(
+                                Icons.dehaze,
+                                size: size.height * 0.053,
+                              ),
+                              scale: size.height * 0.13,
+                              content: 'Modo',
+                              backgroundColor: Colors.white),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -292,6 +297,7 @@ class _InformationPageState extends State<InformationPage> {
                                 size: size.height * 0.053),
                             scale: size.height * 0.13,
                             content: 'Quantidade',
+                            backgroundColor: Colors.white,
                           ),
                         ),
                         GestureDetector(
@@ -400,6 +406,7 @@ class _InformationPageState extends State<InformationPage> {
                           child: CircleCard(
                             icon: Icon(Icons.delete, color: Colors.red),
                             size: size,
+                            color: Colors.white,
                           ),
                         ),
                       ),

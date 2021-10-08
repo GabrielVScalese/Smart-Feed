@@ -8,8 +8,7 @@ import 'package:project/utils/app_colors.dart';
 import 'package:project/utils/app_colors_dark.dart';
 
 class ThemeDialog extends StatefulWidget {
-  bool darkTheme;
-  ThemeDialog({this.darkTheme});
+  ThemeDialog();
 
   @override
   _ThemeDialogState createState() => _ThemeDialogState();
@@ -31,13 +30,10 @@ class _ThemeDialogState extends State<ThemeDialog> {
   var themeController = ThemeController();
 
   var appColors;
-  bool darkTheme;
 
   loadTheme() async {
-    if (this.widget.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    this.appColors = new AppColors();
+    await this.appColors.initialize();
 
     changeColors();
     setState(() {});
@@ -52,12 +48,16 @@ class _ThemeDialogState extends State<ThemeDialog> {
 
   void changeColors() {
     setState(() {
-      if (this.widget.darkTheme) {
-        darkCardColor = appColors.modalCardColor();
-        brightCardColor = appColors.notSelectedColor();
-      } else {
-        darkCardColor = appColors.notSelectedColor();
-        brightCardColor = appColors.modalCardColor();
+      try {
+        if (appColors.instance) {
+          darkCardColor = appColors.modalCardColor();
+          brightCardColor = appColors.notSelectedColor();
+        } else {
+          darkCardColor = appColors.notSelectedColor();
+          brightCardColor = appColors.modalCardColor();
+        }
+      } catch (e) {
+        print("deu ruim");
       }
     });
   }
@@ -94,9 +94,12 @@ class _ThemeDialogState extends State<ThemeDialog> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    this.widget.darkTheme = false;
+                    appColors.setDarkTheme(false);
                     changeColors();
-                    await themeController.setTheme(this.widget.darkTheme);
+                    await themeController.setTheme(appColors.instance);
+
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ConfigurationPage()));
 
                     setState(() {});
                   },
@@ -114,9 +117,11 @@ class _ThemeDialogState extends State<ThemeDialog> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    this.widget.darkTheme = true;
+                    appColors.setDarkTheme(true);
                     changeColors();
-                    await themeController.setTheme(this.widget.darkTheme);
+                    await themeController.setTheme(appColors.instance);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ConfigurationPage()));
 
                     setState(() {});
                   },

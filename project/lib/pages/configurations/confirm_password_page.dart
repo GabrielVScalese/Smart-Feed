@@ -13,7 +13,6 @@ import 'package:project/pages/configurations/change_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/repositories/login_repository.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,16 +34,10 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
 
   var currentPasswordObscure = true;
   var appColors;
-  bool darkTheme;
 
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (this.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    appColors = new AppColors();
+    await appColors.initialize();
 
     setState(() {});
   }

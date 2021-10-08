@@ -6,12 +6,10 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/shimmer_widget.dart';
-import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/change_email_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'change_password_page.dart';
 
@@ -21,8 +19,6 @@ class UserPage extends StatefulWidget {
 }
 
 var appColors;
-
-bool darkTheme;
 
 class _UserPageState extends State<UserPage> {
   var _isLoading = true;
@@ -40,13 +36,8 @@ class _UserPageState extends State<UserPage> {
   }
 
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    appColors = new AppColors();
+    await appColors.initialize();
 
     setState(() {});
   }
@@ -281,7 +272,7 @@ class DataCard extends StatelessWidget {
       // decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
       child: Card(
         color: backgroundColor,
-        elevation: darkTheme ? 0 : 10,
+        elevation: appColors.darkTheme ? 0 : 10,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: appColors.backgroundColor(), width: 1),
           borderRadius: BorderRadius.all(Radius.circular(15)),

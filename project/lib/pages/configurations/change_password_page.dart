@@ -8,11 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
-import 'package:project/controllers/theme_controller.dart';
 import 'package:project/pages/configurations/confirm_password_page.dart';
 import 'package:project/pages/configurations/user_page.dart';
 import 'package:project/utils/app_colors.dart';
-import 'package:project/utils/app_colors_dark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -28,16 +26,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   var repeatPasswordObscure = true;
 
   var appColors;
-  bool darkTheme;
 
   loadTheme() async {
-    var themeController = ThemeController();
-    darkTheme = await themeController.getTheme();
-
-    if (this.darkTheme)
-      appColors = AppColorsDark();
-    else
-      appColors = AppColors();
+    appColors = new AppColors();
+    await appColors.initialize();
 
     setState(() {});
   }

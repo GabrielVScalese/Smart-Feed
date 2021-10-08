@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:project/controllers/theme_controller.dart';
 
 class AppColors {
+  bool darkTheme;
+
   AppColors();
+
+  bool get instance => darkTheme;
+
+  void initialize() async {
+    var themeController = ThemeController();
+    this.darkTheme = await themeController.getTheme();
+  }
+
+  void setDarkTheme(bool darkTheme) {
+    this.darkTheme = darkTheme;
+  }
+
   Color backgroundColor() {
-    return Colors.white;
+    return this.darkTheme ? Colors.black : Colors.white;
   }
 
   Color textColor() {
-    return Colors.black;
+    return this.darkTheme ? Colors.white : Colors.black;
   }
 
   Color descriptionTextColor() {
@@ -15,7 +30,9 @@ class AppColors {
   }
 
   Color buttonColor() {
-    return Color.fromRGBO(0, 153, 255, 1);
+    return this.darkTheme
+        ? Color.fromRGBO(0, 153, 255, 1)
+        : Color.fromRGBO(0, 153, 255, 1);
   }
 
   Color errorColor() {
@@ -75,7 +92,7 @@ class AppColors {
   }
 
   Color boxShadowColor() {
-    return Colors.grey;
+    return this.darkTheme ? Colors.grey[700] : Colors.grey;
   }
 
   Color schedulesDeactivatedColor() {
@@ -87,26 +104,26 @@ class AppColors {
   }
 
   Color buttonBackgroundColor() {
-    return Colors.white;
+    return this.darkTheme ? Color(0xFF65686B) : Colors.white;
   }
 
   Color configurationIconColor() {
-    return Colors.black;
+    return this.darkTheme ? Colors.grey[700] : Colors.black;
   }
 
   Color cardColor() {
-    return Colors.white;
+    return this.darkTheme ? Colors.grey[900] : Colors.white;
   }
 
   Color iconButtonColor() {
-    return Colors.black;
+    return this.darkTheme ? Color(0xFF65686B) : Colors.black;
   }
 
   Color backgroundColorModal() {
-    return Colors.white;
+    return this.darkTheme ? Colors.grey[900] : Colors.white;
   }
 
   Color modalCardColor() {
-    return Colors.grey[300];
+    return this.darkTheme ? Colors.grey[500] : Colors.grey[300];
   }
 }
