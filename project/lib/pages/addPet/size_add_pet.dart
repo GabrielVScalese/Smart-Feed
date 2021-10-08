@@ -6,6 +6,7 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/utils/app_colors.dart';
 
 class SizeAddPet extends StatefulWidget {
   @override
@@ -13,6 +14,22 @@ class SizeAddPet extends StatefulWidget {
 }
 
 class _SizeAddPetState extends State<SizeAddPet> {
+  var appColors;
+
+  loadTheme() async {
+    this.appColors = new AppColors();
+    await this.appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   _getArguments() {
     var arguments = ModalRoute.of(context).settings.arguments;
 
@@ -89,6 +106,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
 
     return Scaffold(
       body: Container(
+        color: appColors.backgroundColor(),
         height: size.height,
         width: size.width,
         child: Stack(children: [
@@ -111,9 +129,10 @@ class _SizeAddPetState extends State<SizeAddPet> {
                       },
                       child: CircleCard(
                           size: size,
+                          color: appColors.cardColor(),
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
                           )),
                     ),
@@ -124,13 +143,19 @@ class _SizeAddPetState extends State<SizeAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('2/5',
-                                style: GoogleFonts.inter(
-                                    fontSize: size.width * 0.04,
-                                    fontWeight: FontWeight.bold)),
+                            child: Text(
+                              '2/5',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.04,
+                                  fontWeight: FontWeight.bold,
+                                  color: appColors.iconButtonColor()),
+                            ),
                             width: size.width * 0.14,
                             height: size.width * 0.14,
-                            decoration: BoxDecoration(shape: BoxShape.circle)))
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appColors.cardColor(),
+                            )))
                   ],
                 ),
               ),
@@ -144,14 +169,18 @@ class _SizeAddPetState extends State<SizeAddPet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PageTitle(size: size, title: 'Porte'),
+                      PageTitle(
+                        size: size,
+                        title: 'Porte',
+                        color: appColors.textColor(),
+                      ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
                       Text('Pequeno, médio ou grande.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                              color: appColors.descriptionTextColor()))
                     ],
                   ),
                 ),
@@ -178,9 +207,9 @@ class _SizeAddPetState extends State<SizeAddPet> {
                 children: [
                   Text('Próximo',
                       style: GoogleFonts.inter(
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      )),
+                          fontSize: size.width * 0.045,
+                          fontWeight: FontWeight.bold,
+                          color: appColors.descriptionTextColor())),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
@@ -192,8 +221,10 @@ class _SizeAddPetState extends State<SizeAddPet> {
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward),
+                        icon: Icon(Icons.arrow_forward,
+                            color: appColors.iconButtonColor()),
                         size: size,
+                        color: appColors.cardColor(),
                       ),
                     ),
                   ),

@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/utils/app_colors.dart';
 
-class InfoDialog extends StatelessWidget {
+class InfoDialog extends StatefulWidget {
   const InfoDialog({Key key}) : super(key: key);
+
+  @override
+  _InfoDialogState createState() => _InfoDialogState();
+}
+
+var appColors;
+
+class _InfoDialogState extends State<InfoDialog> {
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +41,7 @@ class InfoDialog extends StatelessWidget {
     return Container(
         height: size.height * 0.50,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: appColors.backgroundColorModal(),
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +51,9 @@ class InfoDialog extends StatelessWidget {
               child: Text(
                 "Recomendação por dia",
                 style: GoogleFonts.inter(
-                    fontSize: 20, fontWeight: FontWeight.w700),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: appColors.textColor()),
               ),
             ),
             Padding(
@@ -40,9 +64,9 @@ class InfoDialog extends StatelessWidget {
               child: Text(
                 'Filhotes',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  fontSize: size.width * 0.04,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: size.width * 0.04,
+                    color: appColors.descriptionTextColor()),
               ),
             ),
             Row(
@@ -70,9 +94,9 @@ class InfoDialog extends StatelessWidget {
               child: Text(
                 'Jovens ou adultos',
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  fontSize: size.width * 0.04,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: size.width * 0.04,
+                    color: appColors.descriptionTextColor()),
               ),
             ),
             Row(
@@ -114,9 +138,10 @@ class InformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      color: appColors.buttonBackgroundColor(),
+      elevation: appColors.instance ? 0 : 10,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.white, width: 1),
+        side: BorderSide(color: appColors.backgroundColorModal(), width: 1),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Container(
@@ -129,14 +154,15 @@ class InformationCard extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(title,
               style: GoogleFonts.inter(
-                  fontSize: size.width * 0.043, fontWeight: FontWeight.bold)),
+                  fontSize: size.width * 0.043,
+                  fontWeight: FontWeight.bold,
+                  color: appColors.textColor())),
           SizedBox(
             height: size.height * 0.020,
           ),
           Text(content,
               style: GoogleFonts.inter(
-                fontSize: size.width * 0.04,
-              )),
+                  fontSize: size.width * 0.04, color: appColors.textColor())),
           SizedBox(
             height: size.height * 0.02,
           ),
@@ -145,14 +171,15 @@ class InformationCard extends StatelessWidget {
               Text(value.toString(),
                   style: GoogleFonts.inter(
                       fontSize: size.width * 0.037,
-                      fontWeight: FontWeight.bold)),
+                      fontWeight: FontWeight.bold,
+                      color: appColors.textColor())),
               SizedBox(
                 width: size.width * 0.01,
               ),
               Text('gramas',
                   style: GoogleFonts.inter(
-                    fontSize: size.width * 0.035,
-                  )),
+                      fontSize: size.width * 0.035,
+                      color: appColors.textColor())),
             ],
           ),
         ]),

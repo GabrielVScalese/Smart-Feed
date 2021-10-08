@@ -11,6 +11,7 @@ import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/repositories/pets_repository.dart';
+import 'package:project/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameAddPet extends StatefulWidget {
@@ -19,6 +20,22 @@ class NameAddPet extends StatefulWidget {
 }
 
 class _NameAddPetState extends State<NameAddPet> {
+  var appColors;
+
+  loadTheme() async {
+    this.appColors = new AppColors();
+    await this.appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   var _nameController = new TextEditingController();
 
   _getArguments() {
@@ -60,6 +77,7 @@ class _NameAddPetState extends State<NameAddPet> {
       body: Container(
         height: size.height,
         width: size.width,
+        color: appColors.backgroundColor(),
         child: Stack(children: [
           Column(
             mainAxisSize: MainAxisSize.max,
@@ -79,10 +97,11 @@ class _NameAddPetState extends State<NameAddPet> {
                             arguments: arguments);
                       },
                       child: CircleCard(
+                          color: appColors.cardColor(),
                           size: size,
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
                           )),
                     ),
@@ -93,13 +112,19 @@ class _NameAddPetState extends State<NameAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('5/5',
-                                style: GoogleFonts.inter(
-                                    fontSize: size.width * 0.04,
-                                    fontWeight: FontWeight.bold)),
+                            child: Text(
+                              '5/5',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.04,
+                                  fontWeight: FontWeight.bold,
+                                  color: appColors.iconButtonColor()),
+                            ),
                             width: size.width * 0.14,
                             height: size.width * 0.14,
-                            decoration: BoxDecoration(shape: BoxShape.circle)))
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appColors.cardColor(),
+                            )))
                   ],
                 ),
               ),
@@ -113,14 +138,17 @@ class _NameAddPetState extends State<NameAddPet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PageTitle(size: size, title: 'Nome'),
+                      PageTitle(
+                          size: size,
+                          title: 'Nome',
+                          color: appColors.textColor()),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
                       Text('Digite o nome.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                              color: appColors.descriptionTextColor()))
                     ],
                   ),
                 ),
@@ -135,14 +163,17 @@ class _NameAddPetState extends State<NameAddPet> {
                 direction: AnimatedCardDirection.left,
                 child: Align(
                   child: new TextFieldContainer(
+                    backgroundColor: appColors.cardColor(),
                     size: size,
                     textField: TextField(
                       controller: _nameController,
-                      style:
-                          GoogleFonts.inter(fontSize: size.width * 0.9 * 0.045),
+                      cursorColor: appColors.textColor(),
+                      style: GoogleFonts.inter(
+                          fontSize: size.width * 0.9 * 0.045,
+                          color: appColors.iconButtonColor()),
                       decoration: InputDecoration(
                           hintStyle: GoogleFonts.inter(
-                              color: Color.fromRGBO(186, 184, 184, 1)),
+                              color: appColors.descriptionTextColor()),
                           hintText: 'Nome',
                           prefixIcon: Icon(Icons.person,
                               size: size.width * 0.9 * 0.06,
@@ -163,9 +194,9 @@ class _NameAddPetState extends State<NameAddPet> {
                 children: [
                   Text('Finalizar',
                       style: GoogleFonts.inter(
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      )),
+                          fontSize: size.width * 0.045,
+                          fontWeight: FontWeight.bold,
+                          color: appColors.iconButtonColor())),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () async {
@@ -219,7 +250,9 @@ class _NameAddPetState extends State<NameAddPet> {
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward),
+                        color: appColors.cardColor(),
+                        icon: Icon(Icons.arrow_forward,
+                            color: appColors.iconButtonColor()),
                         size: size,
                       ),
                     ),

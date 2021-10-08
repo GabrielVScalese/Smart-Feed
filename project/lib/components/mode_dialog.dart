@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/controllers/feed_controller.dart';
+import 'package:project/utils/app_colors.dart';
 
 class ModeDialog extends StatefulWidget {
   FeedController feedController;
@@ -11,12 +12,29 @@ class ModeDialog extends StatefulWidget {
   _ModeDialogState createState() => _ModeDialogState();
 }
 
+var appColors;
+
 // Ainda nao esta responsivo
 class _ModeDialogState extends State<ModeDialog> {
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+    changeColors();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+
+    super.initState();
+  }
+
   bool schedulesEnabled;
   bool aproximationEnabled;
 
-  Color schedulesColor = Color.fromRGBO(237, 237, 237, 1);
+  Color schedulesColor;
   Color aproximationColor;
 
   List explanations = [
@@ -36,7 +54,7 @@ class _ModeDialogState extends State<ModeDialog> {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 10,
+      elevation: appColors.instance ? 0 : 10,
       backgroundColor: Colors.transparent,
       child: _buildChild(context),
     );
@@ -45,15 +63,15 @@ class _ModeDialogState extends State<ModeDialog> {
   void changeColors() {
     setState(() {
       if (schedulesEnabled) {
-        schedulesColor = Color.fromRGBO(237, 237, 237, 1);
+        schedulesColor = appColors.modalCardColor();
       } else {
-        schedulesColor = Colors.white;
+        schedulesColor = appColors.notSelectedColor();
       }
 
       if (aproximationEnabled) {
-        aproximationColor = Color.fromRGBO(237, 237, 237, 1);
+        aproximationColor = appColors.modalCardColor();
       } else {
-        aproximationColor = Colors.white;
+        aproximationColor = appColors.notSelectedColor();
       }
     });
   }
@@ -69,7 +87,7 @@ class _ModeDialogState extends State<ModeDialog> {
   _buildChild(BuildContext context) => Container(
         height: 293,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: appColors.backgroundColorModal(),
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +99,9 @@ class _ModeDialogState extends State<ModeDialog> {
               child: Text(
                 'Modo de Alimentação',
                 style: GoogleFonts.inter(
-                    fontSize: 20, fontWeight: FontWeight.w700),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: appColors.textColor()),
               ),
             ),
             SizedBox(
@@ -97,7 +117,13 @@ class _ModeDialogState extends State<ModeDialog> {
                   changeColors();
                 },
                 child: Align(
-                  child: OptionCard(Icon(Icons.schedule, size: 30), 'Horário',
+                  child: OptionCard(
+                      Icon(
+                        Icons.schedule,
+                        size: 30,
+                        color: appColors.iconButtonColor(),
+                      ),
+                      'Horário',
                       schedulesColor),
                 )),
             SizedBox(
@@ -114,7 +140,11 @@ class _ModeDialogState extends State<ModeDialog> {
                 },
                 child: Align(
                   child: OptionCard(
-                      Icon(Icons.center_focus_strong_outlined, size: 30),
+                      Icon(
+                        Icons.center_focus_strong_outlined,
+                        size: 30,
+                        color: appColors.iconButtonColor(),
+                      ),
                       'Aproximação',
                       aproximationColor),
                 )),
@@ -131,7 +161,9 @@ class _ModeDialogState extends State<ModeDialog> {
                     changeText(),
                     textAlign: TextAlign.left,
                     style: GoogleFonts.inter(
-                        fontSize: 15, fontWeight: FontWeight.w300),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w300,
+                        color: appColors.descriptionTextColor()),
                   ),
                 ))
           ],
@@ -155,9 +187,9 @@ class _OptionCardState extends State<OptionCard> {
   Widget build(BuildContext context) {
     return Card(
       color: this.widget.backgroundColor,
-      elevation: 10,
+      elevation: appColors.instance ? 0 : 10,
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.white, width: 1),
+        side: BorderSide(color: appColors.cardColor(), width: 1),
         borderRadius: BorderRadius.all(Radius.circular(7)),
       ),
       child: Container(

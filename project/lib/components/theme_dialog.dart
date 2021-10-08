@@ -18,7 +18,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 10,
+      elevation: appColors.instance ? 0 : 10,
       backgroundColor: Colors.transparent,
       child: _buildChild(context),
     );

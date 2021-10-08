@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/utils/app_colors.dart';
 
 class DialogBuilder {
   DialogBuilder(this.context);
@@ -17,7 +18,7 @@ class DialogBuilder {
             child: AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
-              backgroundColor: Colors.white,
+              backgroundColor: appColors.backgroundColorModal(),
               content: LoadingIndicator(),
             ));
       },
@@ -29,14 +30,35 @@ class DialogBuilder {
   }
 }
 
-class LoadingIndicator extends StatelessWidget {
+class LoadingIndicator extends StatefulWidget {
   LoadingIndicator();
+
+  @override
+  _LoadingIndicatorState createState() => _LoadingIndicatorState();
+}
+
+var appColors;
+
+class _LoadingIndicatorState extends State<LoadingIndicator> {
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(16),
-        color: Colors.white,
+        color: appColors.backgroundColorModal(),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,

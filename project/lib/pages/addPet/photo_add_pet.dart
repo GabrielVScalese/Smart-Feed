@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/utils/app_colors.dart';
 
 class PhotoAddPet extends StatefulWidget {
   @override
@@ -13,6 +14,22 @@ class PhotoAddPet extends StatefulWidget {
 }
 
 class _PhotoAddPetState extends State<PhotoAddPet> {
+  var appColors;
+
+  loadTheme() async {
+    this.appColors = new AppColors();
+    await this.appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   File _imgFile;
 
   _getArguments() {
@@ -103,6 +120,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
     return Scaffold(
       body: Container(
+        color: appColors.backgroundColor(),
         height: size.height,
         width: size.width,
         child: Stack(children: [
@@ -124,10 +142,11 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                             arguments: arguments);
                       },
                       child: CircleCard(
+                          color: appColors.cardColor(),
                           size: size,
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
                           )),
                     ),
@@ -138,13 +157,19 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                         ),
                         child: Container(
                             alignment: Alignment.center,
-                            child: Text('4/5',
-                                style: GoogleFonts.inter(
-                                    fontSize: size.width * 0.04,
-                                    fontWeight: FontWeight.bold)),
+                            child: Text(
+                              '4/5',
+                              style: GoogleFonts.inter(
+                                  fontSize: size.width * 0.04,
+                                  fontWeight: FontWeight.bold,
+                                  color: appColors.iconButtonColor()),
+                            ),
                             width: size.width * 0.14,
                             height: size.width * 0.14,
-                            decoration: BoxDecoration(shape: BoxShape.circle)))
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: appColors.cardColor(),
+                            )))
                   ],
                 ),
               ),
@@ -158,14 +183,18 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      PageTitle(size: size, title: 'Foto'),
+                      PageTitle(
+                        size: size,
+                        title: 'Foto',
+                        color: appColors.textColor(),
+                      ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
                       Text('Escolha uma foto.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
-                              color: Color.fromRGBO(125, 125, 125, 1)))
+                              color: appColors.descriptionTextColor()))
                     ],
                   ),
                 ),
@@ -194,6 +223,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                                       await _openGallery();
                                     },
                                     child: Card(
+                                      color: appColors.cardColor(),
                                       elevation: 10,
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -202,8 +232,8 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                                       child: Container(
                                           child: Icon(Icons.photo_camera,
                                               size: (size.width * 0.15) * 0.5,
-                                              color: Color.fromRGBO(
-                                                  144, 143, 143, 1)),
+                                              color:
+                                                  appColors.cameraIconColor()),
                                           width: size.width * 0.15,
                                           height: size.width * 0.15,
                                           decoration: BoxDecoration(
@@ -234,9 +264,9 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                 children: [
                   Text('Próximo',
                       style: GoogleFonts.inter(
-                        fontSize: size.width * 0.045,
-                        fontWeight: FontWeight.bold,
-                      )),
+                          fontSize: size.width * 0.045,
+                          fontWeight: FontWeight.bold,
+                          color: appColors.iconButtonColor())),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
@@ -248,8 +278,12 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward),
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: appColors.iconButtonColor(),
+                        ),
                         size: size,
+                        color: appColors.cardColor(),
                       ),
                     ),
                   ),

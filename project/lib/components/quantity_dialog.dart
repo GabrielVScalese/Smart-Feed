@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/controllers/feed_controller.dart';
+import 'package:project/utils/app_colors.dart';
 
 class QuantityDialog extends StatefulWidget {
   FeedController feedController;
@@ -14,7 +15,23 @@ class QuantityDialog extends StatefulWidget {
   _QuantityDialogState createState() => _QuantityDialogState();
 }
 
+var appColors;
+
 class _QuantityDialogState extends State<QuantityDialog> {
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   TextEditingController quantityController = new TextEditingController();
 
   @override
@@ -23,7 +40,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 10,
+      elevation: appColors.instance ? 0 : 10,
       backgroundColor: Colors.transparent,
       child: _buildChild(context),
     );
@@ -32,7 +49,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
   _buildChild(BuildContext context) => Container(
         height: 280,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: appColors.backgroundColorModal(),
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +67,9 @@ class _QuantityDialogState extends State<QuantityDialog> {
                     Text(
                       'Quantidade (g)',
                       style: GoogleFonts.inter(
-                          fontSize: 20, fontWeight: FontWeight.w700),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: appColors.textColor()),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -58,7 +77,10 @@ class _QuantityDialogState extends State<QuantityDialog> {
                       },
                       child: Container(
                           margin: EdgeInsets.only(right: 25),
-                          child: Icon(Icons.error_outline)),
+                          child: Icon(
+                            Icons.error_outline,
+                            color: appColors.iconButtonColor(),
+                          )),
                     ),
                   ]),
             ),
@@ -80,7 +102,9 @@ class _QuantityDialogState extends State<QuantityDialog> {
                       },
                       keyboardType: TextInputType.number,
                       style: GoogleFonts.inter(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
                       controller: quantityController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -173,9 +197,10 @@ class BoxCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 10,
+        color: appColors.buttonBackgroundColor(),
+        elevation: appColors.instance ? 0 : 10,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white, width: 1),
+          side: BorderSide(color: appColors.cardColor(), width: 1),
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
         child: Container(

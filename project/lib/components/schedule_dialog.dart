@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/controllers/feed_controller.dart';
+import 'package:project/utils/app_colors.dart';
 
 import 'dialog_helper.dart';
 
@@ -15,7 +16,23 @@ class ScheduleDialog extends StatefulWidget {
   _ScheduleDialogState createState() => _ScheduleDialogState();
 }
 
+var appColors;
+
 class _ScheduleDialogState extends State<ScheduleDialog> {
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   var scheduleSelected;
   var time = '__:__';
 
@@ -67,7 +84,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      elevation: 10,
+      elevation: appColors.instance ? 0 : 10,
       backgroundColor: Colors.transparent,
       child: _buildChild(context),
     );
@@ -77,7 +94,7 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
         height: 390,
         width: 300,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: appColors.backgroundColorModal(),
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,7 +112,9 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                   child: Text(
                     'Horários',
                     style: GoogleFonts.inter(
-                        fontSize: 20, fontWeight: FontWeight.w700),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: appColors.textColor()),
                   ),
                 ),
                 GestureDetector(
@@ -104,7 +123,8 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                   },
                   child: Container(
                       margin: EdgeInsets.only(right: 20),
-                      child: Icon(Icons.error_outline)),
+                      child: Icon(Icons.error_outline,
+                          color: appColors.iconButtonColor())),
                 )
               ],
             ),
@@ -125,6 +145,8 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                         getTime(0) != null ? Icons.alarm_outlined : Icons.add,
                         size: 35,
                       ),
+                      contentColor: Colors.black,
+                      backgroundColor: appColors.buttonBackgroundColor(),
                       scale: 90,
                       content:
                           getTime(0) == null ? '' : timeToString(getTime(0)),
@@ -167,6 +189,8 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                         getTime(1) != null ? Icons.alarm_outlined : Icons.add,
                         size: 35,
                       ),
+                      contentColor: Colors.black,
+                      backgroundColor: appColors.buttonBackgroundColor(),
                       scale: 90,
                       content:
                           getTime(1) == null ? '' : timeToString(getTime(1)),
@@ -215,6 +239,8 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                         size: 35,
                       ),
                       scale: 90,
+                      contentColor: Colors.black,
+                      backgroundColor: appColors.buttonBackgroundColor(),
                       content:
                           getTime(1) == null ? '' : timeToString(getTime(2)),
                     ),
@@ -257,6 +283,8 @@ class _ScheduleDialogState extends State<ScheduleDialog> {
                         size: 35,
                       ),
                       scale: 90,
+                      contentColor: Colors.black,
+                      backgroundColor: appColors.buttonBackgroundColor(),
                       content:
                           getTime(3) == null ? '' : timeToString(getTime(3)),
                     ),
