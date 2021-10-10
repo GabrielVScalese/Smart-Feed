@@ -162,7 +162,8 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                   GestureDetector(
                     onTap: () async {
                       try {
-                        DialogBuilder(context).showLoadingIndicator();
+                        DialogBuilder(context, appColors)
+                            .showLoadingIndicator();
 
                         var instance = await SharedPreferences.getInstance();
                         var user = jsonDecode(instance.get('user'));
@@ -174,7 +175,8 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                                 _currentPasswordController.text));
 
                         if (authenticationStatusCode == 200) {
-                          DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context, appColors)
+                              .showLoadingIndicator();
 
                           var dio = CustomDio.withAuthentication().instance;
                           var options = this.widget.requestOptions;
@@ -197,12 +199,12 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                             Navigator.pushNamed(
                                 context, '/${this.widget.page}');
                           } else
-                            DialogBuilder(context).hideOpenDialog();
+                            DialogBuilder(context, appColors).hideOpenDialog();
                         } else
                           print('Error');
                       } on DioError catch (err) {
                         print(err.toString());
-                        DialogBuilder(context).hideOpenDialog();
+                        DialogBuilder(context, appColors).hideOpenDialog();
                       }
                     },
                     child: Container(

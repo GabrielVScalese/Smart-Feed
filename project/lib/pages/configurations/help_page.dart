@@ -231,7 +231,8 @@ class _HelpPageState extends State<HelpPage> {
                     SizedBox(width: size.width * 0.02),
                     GestureDetector(
                       onTap: () async {
-                        DialogBuilder(context).showLoadingIndicator();
+                        DialogBuilder(context, appColors)
+                            .showLoadingIndicator();
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         var user = jsonDecode(prefs.getString('user'));
@@ -265,7 +266,7 @@ class _HelpPageState extends State<HelpPage> {
                           showErrorMessage = true;
                           e.toString();
                         }
-                        DialogBuilder(context).hideOpenDialog();
+                        DialogBuilder(context, appColors).hideOpenDialog();
                         starsClicked = 1;
                         textFieldController.text = "";
                         await Future.delayed(Duration(seconds: 5));

@@ -202,7 +202,8 @@ class _NameAddPetState extends State<NameAddPet> {
                     onTap: () async {
                       if (!_nameController.text.isEmpty)
                         try {
-                          DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context, appColors)
+                              .showLoadingIndicator();
 
                           var arguments = _insertArgument();
 
@@ -239,12 +240,12 @@ class _NameAddPetState extends State<NameAddPet> {
                                 MaterialPageRoute(
                                     builder: (context) => HomePage()));
                           else {
-                            DialogBuilder(context).hideOpenDialog();
+                            DialogBuilder(context, appColors).hideOpenDialog();
                             print('Error');
                           }
                         } catch (err) {
                           print(err.toString());
-                          DialogBuilder(context).hideOpenDialog();
+                          DialogBuilder(context, appColors).hideOpenDialog();
                         }
                     },
                     child: Container(

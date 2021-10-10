@@ -86,7 +86,7 @@ class _InformationPageState extends State<InformationPage> {
         var feed = new Feed(this.widget.pet.getId(), feedController.getMode(),
             feedController.getQuantity(), feedController.getSchedules());
 
-        DialogBuilder(context).showLoadingIndicator();
+        DialogBuilder(context, appColors).showLoadingIndicator();
 
         var statusCode =
             await feedsRepository.updateByPetId(feed.getPetId(), feed);
@@ -96,7 +96,7 @@ class _InformationPageState extends State<InformationPage> {
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => HomePage()));
         } else {
-          DialogBuilder(context).hideOpenDialog();
+          DialogBuilder(context, appColors).hideOpenDialog();
         }
       },
       child: Scaffold(
@@ -422,7 +422,8 @@ class _InformationPageState extends State<InformationPage> {
                       GestureDetector(
                         onTap: () async {
                           try {
-                            DialogBuilder(context).showLoadingIndicator();
+                            DialogBuilder(context, appColors)
+                                .showLoadingIndicator();
 
                             var petsRepository = new PetsRepository();
                             var statusCode = await petsRepository
@@ -434,11 +435,12 @@ class _InformationPageState extends State<InformationPage> {
                                       builder: (context) => HomePage()));
                             else {
                               print('Error');
-                              DialogBuilder(context).hideOpenDialog();
+                              DialogBuilder(context, appColors)
+                                  .hideOpenDialog();
                             }
                           } catch (err) {
                             print(err.toString());
-                            DialogBuilder(context).hideOpenDialog();
+                            DialogBuilder(context, appColors).hideOpenDialog();
                           }
                         },
                         child: Container(

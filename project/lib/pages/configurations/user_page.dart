@@ -112,135 +112,137 @@ class _UserPageState extends State<UserPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        height: size.height,
-        width: size.width,
-        color: appColors.backgroundColor(),
-        child: Stack(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: size.height * 0.06,
-              ),
-              GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => ConfigurationPage()));
-                  },
-                  child: Container(
-                      margin: EdgeInsets.only(left: size.width * 0.05),
-                      child: CircleCard(
-                          size: size,
-                          color: appColors.cardColor(),
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: appColors.iconButtonColor(),
-                            size: size.height * 0.03,
-                          )))),
-              SizedBox(
-                height: size.height * 0.04,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: size.width * 0.05),
-                child: PageTitle(
-                  size: size,
-                  title: 'Minha Conta',
-                  color: appColors.textColor(),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.08,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    _decideView(size),
-                    SizedBox(
-                      height: size.height * 0.05,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChangeEmailPage()));
-                      },
-                      child: DataCard(
-                        size: size,
-                        icon: Icons.email,
-                        title: 'Trocar Email',
-                        backgroundColor: appColors.cardColor(),
-                        titleColor: appColors.textColor(),
-                        iconColor: appColors.iconButtonColor(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => ChangePasswordPage(),
-                          ),
-                        );
-                      },
-                      child: DataCard(
-                        size: size,
-                        icon: Icons.lock,
-                        title: 'Mudar Senha',
-                        backgroundColor: appColors.cardColor(),
-                        titleColor: appColors.textColor(),
-                        iconColor: appColors.iconButtonColor(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-            ],
-          ),
-          Align(
-            alignment: Alignment(0.92, 0.95),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      body: SingleChildScrollView(
+        child: Container(
+          height: size.height,
+          width: size.width,
+          color: appColors.backgroundColor(),
+          child: Stack(children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Logout',
-                    style: GoogleFonts.inter(
-                        fontSize: size.width * 0.042,
-                        fontWeight: FontWeight.bold,
-                        color: appColors.deleteColor())),
-                SizedBox(width: size.width * 0.02),
+                SizedBox(
+                  height: size.height * 0.06,
+                ),
                 GestureDetector(
-                  onTap: () async {
-                    try {
-                      var instance = await SharedPreferences.getInstance();
-
-                      instance.remove('user');
-                      instance.remove('token');
-
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    } catch (err) {}
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: size.width * 0.05),
-                    child: CircleCard(
-                      icon: Icon(
-                        Icons.logout,
-                        color: appColors.deleteColor(),
-                      ),
-                      color: appColors.cardColor(),
-                      size: size,
-                    ),
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ConfigurationPage()));
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(left: size.width * 0.05),
+                        child: CircleCard(
+                            size: size,
+                            color: appColors.cardColor(),
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: appColors.iconButtonColor(),
+                              size: size.height * 0.03,
+                            )))),
+                SizedBox(
+                  height: size.height * 0.04,
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: size.width * 0.05),
+                  child: PageTitle(
+                    size: size,
+                    title: 'Minha Conta',
+                    color: appColors.textColor(),
                   ),
-                )
+                ),
+                SizedBox(
+                  height: size.height * 0.08,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      _decideView(size),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChangeEmailPage()));
+                        },
+                        child: DataCard(
+                          size: size,
+                          icon: Icons.email,
+                          title: 'Trocar Email',
+                          backgroundColor: appColors.cardColor(),
+                          titleColor: appColors.textColor(),
+                          iconColor: appColors.iconButtonColor(),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => ChangePasswordPage(),
+                            ),
+                          );
+                        },
+                        child: DataCard(
+                          size: size,
+                          icon: Icons.lock,
+                          title: 'Mudar Senha',
+                          backgroundColor: appColors.cardColor(),
+                          titleColor: appColors.textColor(),
+                          iconColor: appColors.iconButtonColor(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
               ],
             ),
-          )
-        ]),
+            Align(
+              alignment: Alignment(0.92, 0.95),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('Logout',
+                      style: GoogleFonts.inter(
+                          fontSize: size.width * 0.042,
+                          fontWeight: FontWeight.bold,
+                          color: appColors.deleteColor())),
+                  SizedBox(width: size.width * 0.02),
+                  GestureDetector(
+                    onTap: () async {
+                      try {
+                        var instance = await SharedPreferences.getInstance();
+
+                        instance.remove('user');
+                        instance.remove('token');
+
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+                      } catch (err) {}
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(right: size.width * 0.05),
+                      child: CircleCard(
+                        icon: Icon(
+                          Icons.logout,
+                          color: appColors.deleteColor(),
+                        ),
+                        color: appColors.cardColor(),
+                        size: size,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

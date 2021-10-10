@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project/components/info_dialog.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/repositories/login_repository.dart';
 import 'package:project/repositories/users_repository.dart';
+import 'package:project/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -17,6 +19,8 @@ class PasswordDialog extends StatefulWidget {
   @override
   _PasswordDialogState createState() => _PasswordDialogState();
 }
+
+var appColors;
 
 class _PasswordDialogState extends State<PasswordDialog> {
   @override
@@ -38,10 +42,17 @@ class _PasswordDialogState extends State<PasswordDialog> {
     } catch (err) {}
   }
 
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-
+    loadTheme().then((data) {});
     _loadData().then((data) {});
   }
 
@@ -130,11 +141,11 @@ class _PasswordDialogState extends State<PasswordDialog> {
                     } else {
                       print('Invalid credentials');
 
-                      DialogBuilder(context).hideOpenDialog();
+                      DialogBuilder(context, appColors).hideOpenDialog();
                     }
                   } catch (err) {
                     print(err.toString());
-                    DialogBuilder(context).hideOpenDialog();
+                    DialogBuilder(context, appColors).hideOpenDialog();
                   }
                 },
                 child: Center(

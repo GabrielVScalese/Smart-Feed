@@ -4,9 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/utils/app_colors.dart';
 
 class DialogBuilder {
-  DialogBuilder(this.context);
+  DialogBuilder(this.context, this.appColors);
 
   final BuildContext context;
+  final AppColors appColors;
 
   void showLoadingIndicator() {
     showDialog(
@@ -37,9 +38,8 @@ class LoadingIndicator extends StatefulWidget {
   _LoadingIndicatorState createState() => _LoadingIndicatorState();
 }
 
-var appColors;
-
 class _LoadingIndicatorState extends State<LoadingIndicator> {
+  var appColors;
   loadTheme() async {
     appColors = new AppColors();
     await appColors.initialize();

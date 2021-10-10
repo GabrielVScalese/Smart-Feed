@@ -11,6 +11,7 @@ import 'package:project/models/user.dart';
 import 'package:project/pages/account/register_page.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/login_repository.dart';
+import 'package:project/utils/app_colors.dart';
 
 import '../home_page.dart';
 
@@ -19,11 +20,27 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+var appColors;
+
 class _LoginPageState extends State<LoginPage> {
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
   var _visible = true;
   var showLoginMessage = false;
+
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadTheme().then((data) {});
+    super.initState();
+  }
 
   // Fazer tamanho máximo e tamanho mínimo
   @override
@@ -129,7 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: () async {
                         try {
-                          DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context, appColors)
+                              .showLoadingIndicator();
 
                           var loginRepository = LoginRepository();
                           var statusCode = await loginRepository.login(
@@ -143,17 +161,17 @@ class _LoginPageState extends State<LoginPage> {
                           } else {
                             print('Invalid credentials');
                             showLoginMessage = true;
-                            DialogBuilder(context).hideOpenDialog();
+                            DialogBuilder(context, appColors).hideOpenDialog();
                             setState(() {});
                           }
                         } catch (err) {
                           print(err.toString());
-                          DialogBuilder(context).hideOpenDialog();
+                          DialogBuilder(context, appColors).hideOpenDialog();
                         }
 
                         await Future.delayed(Duration(seconds: 5));
                         showLoginMessage = false;
-                        setState(() {});
+                        // setState(() {});
                       },
                       child: RoundedButton(
                         height: size.height * 0.053,

@@ -10,6 +10,7 @@ import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/users_repository.dart';
+import 'package:project/utils/app_colors.dart';
 import '../home_page.dart';
 import 'login_page.dart';
 
@@ -26,6 +27,7 @@ var confirmPasswordController = TextEditingController();
 var passwordVisible = true;
 var confirmVisible = true;
 var showEmailMessage = false;
+var appColors;
 
 class _RegisterPageState extends State<RegisterPage> {
   // Fazer tamanho máximo e tamanho mínimo
@@ -38,6 +40,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
     // Labels
     var labelSize = size.width * 0.035;
+
+    loadTheme() async {
+      appColors = new AppColors();
+      await appColors.initialize();
+
+      setState(() {});
+    }
+
+    @override
+    void initState() {
+      // TODO: implement initState
+      loadTheme().then((data) {});
+      super.initState();
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -199,12 +215,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           User user = User(nameController.text,
                               emailController.text, passwordController.text);
 
-                          DialogBuilder(context).showLoadingIndicator();
+                          DialogBuilder(context, appColors)
+                              .showLoadingIndicator();
 
                           var usersRepository = UsersRepository();
                           var statusCode = await usersRepository.register(user);
 
-                          DialogBuilder(context).hideOpenDialog();
+                          DialogBuilder(context, appColors).hideOpenDialog();
 
                           if (statusCode == 200) {
                             Navigator.of(context).pushReplacement(

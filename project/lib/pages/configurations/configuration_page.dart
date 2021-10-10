@@ -47,11 +47,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        height: size.height,
-        width: size.width,
-        color: appColors.backgroundColor(),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          height: size.height,
+          width: size.width,
+          color: appColors.backgroundColor(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
