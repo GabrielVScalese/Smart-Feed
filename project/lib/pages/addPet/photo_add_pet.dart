@@ -86,9 +86,9 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
   _insertArgument() {
     var arguments = _getArguments() as List;
 
-    if (arguments.length > 3)
-      arguments[3] = {'value': _imgFile};
-    else
+    if (arguments.length > 3) {
+      if (arguments.length != 6) arguments[3] = {'value': _imgFile};
+    } else
       arguments.add({'value': _imgFile});
 
     return arguments;
@@ -99,12 +99,17 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
     if (arguments.length > 3)
       setState(() {
-        if (_imgFile == null) _imgFile = arguments[3]['value'];
+        if (arguments.length == 6)
+          this._imgFile = null;
+        else
+          _imgFile = arguments[3]['value'];
       });
   }
 
   _getNetworkImage() {
     var arguments = _getArguments() as List;
+
+    if (arguments.length == 6) return arguments[3]['value'];
 
     if (arguments[0]['value'] == 'Cão')
       return 'https://i.imgur.com/yh365gr.png';

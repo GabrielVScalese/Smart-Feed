@@ -84,6 +84,7 @@ class _RationAddPetState extends State<RationAddPet> {
         'icon': Icon(
           Icons.restaurant_menu,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
       {
@@ -91,6 +92,7 @@ class _RationAddPetState extends State<RationAddPet> {
         'icon': Icon(
           Icons.restaurant_menu,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
       {
@@ -98,6 +100,7 @@ class _RationAddPetState extends State<RationAddPet> {
         'icon': Icon(
           Icons.restaurant_menu,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       }
     ];

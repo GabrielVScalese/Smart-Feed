@@ -221,6 +221,7 @@ class _UserPageState extends State<UserPage> {
 
                         instance.remove('user');
                         instance.remove('token');
+                        instance.remove("SmartFeedDarkMode");
 
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => LoginPage()));

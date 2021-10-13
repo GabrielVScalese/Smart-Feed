@@ -24,8 +24,8 @@ class _ThemeDialogState extends State<ThemeDialog> {
     );
   }
 
-  Color darkCardColor;
-  Color brightCardColor;
+  Color darkCardColor = Colors.white;
+  Color brightCardColor = Colors.white;
   var themeController = ThemeController();
 
   var appColors;
@@ -34,8 +34,8 @@ class _ThemeDialogState extends State<ThemeDialog> {
     this.appColors = new AppColors();
     await this.appColors.initialize();
 
-    changeColors();
     setState(() {});
+    changeColors();
   }
 
   @override

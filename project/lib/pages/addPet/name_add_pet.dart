@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:animated_card/animated_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,8 +11,10 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/pages/information_page.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameAddPet extends StatefulWidget {
@@ -39,7 +42,7 @@ class _NameAddPetState extends State<NameAddPet> {
   var _nameController = new TextEditingController();
 
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments;
+    var arguments = ModalRoute.of(context).settings.arguments as List;
 
     return arguments;
   }
@@ -72,6 +75,11 @@ class _NameAddPetState extends State<NameAddPet> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    var arguments = _getArguments() as List;
+    if (arguments.length == 6) {
+      this._nameController.text = arguments[4]['value'];
+    }
 
     return Scaffold(
       body: Container(
@@ -166,6 +174,7 @@ class _NameAddPetState extends State<NameAddPet> {
                     backgroundColor: appColors.cardColor(),
                     size: size,
                     textField: TextField(
+                      maxLength: 11,
                       controller: _nameController,
                       cursorColor: appColors.textColor(),
                       style: GoogleFonts.inter(
@@ -175,6 +184,7 @@ class _NameAddPetState extends State<NameAddPet> {
                           hintStyle: GoogleFonts.inter(
                               color: appColors.descriptionTextColor()),
                           hintText: 'Nome',
+                          counterText: "",
                           prefixIcon: Icon(Icons.person,
                               size: size.width * 0.9 * 0.06,
                               color: Color.fromRGBO(186, 184, 184, 1)),
@@ -202,22 +212,25 @@ class _NameAddPetState extends State<NameAddPet> {
                     onTap: () async {
                       if (!_nameController.text.isEmpty)
                         try {
-                          DialogBuilder(context, appColors)
-                              .showLoadingIndicator();
+                          // DialogBuilder(context, appColors)
+                          //     .showLoadingIndicator();
 
-                          var arguments = _insertArgument();
+                          var arguments = _insertArgument() as List;
 
                           var instance = await SharedPreferences.getInstance();
                           var user = jsonDecode(instance.getString('user'));
 
                           var image64 = null;
-                          if (arguments[3]['value'] != null)
+                          if (arguments[3]['value'] != null &&
+                              arguments[3]['value'] is File)
                             image64 = base64Encode(
                                 await arguments[3]['value'].readAsBytes());
 
                           var imageLink = null;
                           if (image64 != null)
                             imageLink = await _uploadImage(image64);
+                          else if (arguments.length == 6)
+                            imageLink = arguments[3]['value'];
                           else if (arguments[0]['value'] == 'Cão')
                             imageLink = 'https://i.imgur.com/yh365gr.png';
                           else
@@ -232,16 +245,39 @@ class _NameAddPetState extends State<NameAddPet> {
                               "Smart Feed UHG78F",
                               imageLink);
 
-                          var petsRepository = new PetsRepository();
-                          var statusCode = await petsRepository.create(pet);
+                          print(arguments);
 
-                          if (statusCode == 200)
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
-                          else {
-                            DialogBuilder(context, appColors).hideOpenDialog();
-                            print('Error');
+                          var options = arguments[5]['value'] as RequestOptions;
+
+                          if (options.method == 'PUT') {
+                            options.data = Pet.toMap(pet);
+                            Dio dio = new CustomDio().instance;
+                            var response = await dio.request(options.path,
+                                queryParameters: options.queryParameters,
+                                data: options.data,
+                                options: Options(method: options.method));
+
+                            if (response.statusCode == 200) {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            } else {
+                              DialogBuilder(context, appColors)
+                                  .hideOpenDialog();
+                            }
+                            print('error');
+                          } else {
+                            var petsRepository = new PetsRepository();
+                            var statusCode = await petsRepository.create(pet);
+
+                            if (statusCode == 200)
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            else {
+                              DialogBuilder(context, appColors)
+                                  .hideOpenDialog();
+                            }
                           }
                         } catch (err) {
                           print(err.toString());

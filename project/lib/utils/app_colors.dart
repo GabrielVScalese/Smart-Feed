@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/controllers/theme_controller.dart';
 
 class AppColors {
-  bool darkTheme;
+  bool darkTheme = false;
 
   AppColors();
 

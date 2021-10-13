@@ -84,6 +84,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
         'icon': Icon(
           Icons.aspect_ratio,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
       {
@@ -91,6 +92,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
         'icon': Icon(
           Icons.aspect_ratio,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
       {
@@ -98,6 +100,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
         'icon': Icon(
           Icons.aspect_ratio,
           size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
         )
       },
     ];

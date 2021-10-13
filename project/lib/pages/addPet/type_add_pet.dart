@@ -6,13 +6,13 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
-import 'package:project/pages/addPet/size_add_pet.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/utils/app_colors.dart';
 
 class TypeAddPet extends StatefulWidget {
   var pet;
   TypeAddPet({this.pet});
+
   @override
   _TypeAddPetState createState() => _TypeAddPetState();
 }
@@ -46,6 +46,14 @@ class _TypeAddPetState extends State<TypeAddPet> {
     } catch (err) {
       return 0;
     }
+  }
+
+  decideTitle() {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length == 6) return 'Editando Pet';
+
+    return 'Novo Pet';
   }
 
   @override
@@ -150,7 +158,7 @@ class _TypeAddPetState extends State<TypeAddPet> {
                     children: [
                       PageTitle(
                         size: size,
-                        title: 'Novo Pet',
+                        title: decideTitle(),
                         color: appColors.textColor(),
                       ),
                       SizedBox(

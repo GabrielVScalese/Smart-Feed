@@ -1,4 +1,5 @@
 import 'package:animated_card/animated_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +10,7 @@ import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/feed_controller.dart';
 import 'package:project/models/feed.dart';
+import 'package:project/models/pet.dart';
 import 'package:project/pages/addPet/type_add_pet.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
@@ -19,6 +21,7 @@ import 'home_page.dart';
 class InformationPage extends StatefulWidget {
   var pet;
   Feed feed;
+
   InformationPage({this.pet, this.feed});
 
   @override
@@ -213,20 +216,14 @@ class _InformationPageState extends State<InformationPage> {
                 AnimatedCard(
                   direction: AnimatedCardDirection.left,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => TypeAddPet(),
-                        ),
-                      );
-                    },
                     child: LabelRow(
-                      size: size,
-                      labelStyle: labelStyle,
-                      principalText: 'Características',
-                      secondaryText: 'Editar',
-                      icon: Icons.edit,
-                    ),
+                        size: size,
+                        labelStyle: labelStyle,
+                        principalText: 'Características',
+                        secondaryText: 'Editar',
+                        icon: Icons.edit,
+                        page: 'edit',
+                        pet: this.widget.pet),
                   ),
                 ),
                 SizedBox(
@@ -367,6 +364,7 @@ class _InformationPageState extends State<InformationPage> {
                 AnimatedCard(
                   direction: AnimatedCardDirection.left,
                   child: LabelRow(
+                    page: 'chart',
                     size: size,
                     labelStyle: labelStyle,
                     principalText: 'Consumo',
@@ -475,6 +473,8 @@ class LabelRow extends StatelessWidget {
       @required this.labelStyle,
       @required this.principalText,
       this.icon,
+      @required this.page,
+      this.pet,
       @required this.secondaryText})
       : super(key: key);
 
@@ -483,6 +483,8 @@ class LabelRow extends StatelessWidget {
   final String principalText;
   final String secondaryText;
   final IconData icon;
+  final Pet pet;
+  final String page;
 
   @override
   Widget build(BuildContext context) {
@@ -497,9 +499,28 @@ class LabelRow extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
-                secondaryText,
-                style: GoogleFonts.inter(color: appColors.seeMoreColor()),
+              GestureDetector(
+                onTap: () {
+                  if (this.page == 'edit') {
+                    Navigator.of(context).pushNamed('/type', arguments: [
+                      {'value': this.pet.getAnimal()},
+                      {'value': this.pet.getSize()},
+                      {'value': this.pet.getRation()},
+                      {'value': this.pet.getImage()},
+                      {'value': this.pet.getName()},
+                      {
+                        'value': RequestOptions(
+                            path:
+                                'https://smart-feed-app.herokuapp.com/pets/${this.pet.getId()}',
+                            method: 'PUT')
+                      }
+                    ]);
+                  }
+                },
+                child: Text(
+                  secondaryText,
+                  style: GoogleFonts.inter(color: appColors.seeMoreColor()),
+                ),
               ),
               SizedBox(width: size.width * 0.02),
               Visibility(

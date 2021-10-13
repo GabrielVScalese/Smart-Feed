@@ -18,6 +18,9 @@ class _SplashPageState extends State<SplashPage> {
   loadTheme() async {
     appColors = new AppColors();
     await appColors.initialize();
+
+    var authController = AuthController();
+    authController.currentUser(context);
     setState(() {});
   }
 
@@ -30,9 +33,8 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthController();
     var size = MediaQuery.of(context).size;
-    authController.currentUser(context);
+
     return Scaffold(
       body: Container(
         height: size.height,

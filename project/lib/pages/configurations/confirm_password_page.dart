@@ -196,6 +196,10 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                               user['email'] = options.data['email'];
 
                             instance.setString('user', jsonEncode(user));
+
+                            if (options.method == 'DELETE')
+                              instance.remove('SmartFeedDarkMode');
+
                             Navigator.pushNamed(
                                 context, '/${this.widget.page}');
                           } else
