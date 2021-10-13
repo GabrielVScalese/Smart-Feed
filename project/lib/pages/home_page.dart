@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => InformationPage(
-                            pet: _petList[index],
+                            pet: _dynamicPetList[index],
                             feed: _feedList[index],
                           )));
                 },

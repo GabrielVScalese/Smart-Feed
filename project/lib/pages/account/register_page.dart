@@ -27,9 +27,23 @@ var confirmPasswordController = TextEditingController();
 var passwordVisible = true;
 var confirmVisible = true;
 var showEmailMessage = false;
-var appColors;
 
 class _RegisterPageState extends State<RegisterPage> {
+  var appColors;
+
+  loadTheme() async {
+    appColors = new AppColors();
+    await appColors.initialize();
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    loadTheme().then((data) {});
+    super.initState();
+  }
+
   // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
@@ -41,20 +55,6 @@ class _RegisterPageState extends State<RegisterPage> {
     // Labels
     var labelSize = size.width * 0.035;
 
-    loadTheme() async {
-      appColors = new AppColors();
-      await appColors.initialize();
-
-      setState(() {});
-    }
-
-    @override
-    void initState() {
-      // TODO: implement initState
-      loadTheme().then((data) {});
-      super.initState();
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -65,6 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: size.height * 0.06),
               GestureDetector(
                   onTap: () {
+                    setState(() {});
                     nameController.clear();
                     emailController.clear();
                     passwordController.clear();
@@ -240,9 +241,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               Icons.error);
                         }
 
-                        await Future.delayed(Duration(seconds: 5));
-                        showEmailMessage = false;
-                        setState(() {});
+                        try {
+                          await Future.delayed(Duration(seconds: 5));
+                          showEmailMessage = false;
+                          setState(() {});
+                        } catch (err) {}
                       }
                     },
                     child: RoundedButton(
