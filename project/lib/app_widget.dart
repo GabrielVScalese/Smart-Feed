@@ -13,12 +13,6 @@ import 'package:project/pages/splash_page.dart';
 class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AppWidget() {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitDown,
-      ]);
-    }
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashPage(),
