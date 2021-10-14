@@ -255,9 +255,8 @@ class _HomePageState extends State<HomePage> {
                                   color: appColors.textColor())),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => TypeAddPet()));
+                              Navigator.pushNamed(context, '/type',
+                                  arguments: []);
                             },
                             child: CircleCard(
                               icon: Icon(Icons.add,

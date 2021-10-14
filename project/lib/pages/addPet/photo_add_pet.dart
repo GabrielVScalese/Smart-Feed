@@ -8,7 +8,13 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/utils/app_colors.dart';
 
+import 'name_add_pet.dart';
+
 class PhotoAddPet extends StatefulWidget {
+  var arguments;
+
+  PhotoAddPet({this.arguments});
+
   @override
   _PhotoAddPetState createState() => _PhotoAddPetState();
 }
@@ -27,13 +33,14 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
   void initState() {
     // TODO: implement initState
     loadTheme().then((data) {});
+    _setImgFile();
     super.initState();
   }
 
   File _imgFile;
 
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments;
+    var arguments = this.widget.arguments;
 
     return arguments;
   }
@@ -44,12 +51,15 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
       var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
 
       setState(() {
-        _imgFile = File(pickedFile.path);
+        this._imgFile = File(pickedFile.path);
       });
-    } catch (error) {}
+    } catch (error) {
+      print(error.toString());
+    }
   }
 
   _decideView(size) {
+    print(this._imgFile);
     if (_imgFile != null)
       return Center(
         child: Container(
@@ -87,7 +97,12 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
     var arguments = _getArguments() as List;
 
     if (arguments.length > 3) {
-      if (arguments.length != 6) arguments[3] = {'value': _imgFile};
+      if (this._imgFile == null) {
+        if (arguments.length == 6)
+          arguments[3] = {'value': arguments[3]['value']};
+      } else {
+        arguments[3] = {'value': this._imgFile};
+      }
     } else
       arguments.add({'value': _imgFile});
 
@@ -119,8 +134,6 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
 
   @override
   Widget build(BuildContext context) {
-    _setImgFile();
-
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -276,9 +289,12 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   GestureDetector(
                     onTap: () {
                       var arguments = _insertArgument();
+                      print(arguments);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              NameAddPet(arguments: arguments)));
 
-                      Navigator.of(context)
-                          .pushReplacementNamed('/name', arguments: arguments);
+                      //     .pushReplacementNamed('/name', arguments: arguments);
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),

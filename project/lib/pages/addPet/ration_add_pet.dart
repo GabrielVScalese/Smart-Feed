@@ -6,6 +6,7 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/addPet/photo_add_pet.dart';
 import 'package:project/utils/app_colors.dart';
 
 class RationAddPet extends StatefulWidget {
@@ -217,8 +218,9 @@ class _RationAddPetState extends State<RationAddPet> {
                     onTap: () {
                       var arguments = _insertArgument(cardChangerController);
 
-                      Navigator.of(context)
-                          .pushReplacementNamed('/photo', arguments: arguments);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              PhotoAddPet(arguments: arguments)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),

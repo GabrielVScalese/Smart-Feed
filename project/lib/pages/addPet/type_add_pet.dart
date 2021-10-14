@@ -6,13 +6,11 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/addPet/size_add_pet.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/utils/app_colors.dart';
 
 class TypeAddPet extends StatefulWidget {
-  var pet;
-  TypeAddPet({this.pet});
-
   @override
   _TypeAddPetState createState() => _TypeAddPetState();
 }
@@ -202,15 +200,16 @@ class _TypeAddPetState extends State<TypeAddPet> {
                     onTap: () {
                       var arguments = _getArguments() as List;
 
-                      if (arguments != null) {
+                      if (arguments.length > 1) {
                         arguments[0] = cardChangerController.getValue();
                       } else {
                         arguments = [];
                         arguments.add(cardChangerController.getValue());
                       }
 
-                      Navigator.of(context)
-                          .pushReplacementNamed('/size', arguments: arguments);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              SizeAddPet(arguments: arguments)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),

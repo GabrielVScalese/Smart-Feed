@@ -9,6 +9,10 @@ import 'package:project/controllers/card_changer_controller.dart';
 import 'package:project/utils/app_colors.dart';
 
 class SizeAddPet extends StatefulWidget {
+  var arguments;
+
+  SizeAddPet({this.arguments});
+
   @override
   _SizeAddPetState createState() => _SizeAddPetState();
 }
@@ -31,7 +35,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
   }
 
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments;
+    var arguments = this.widget.arguments;
 
     return arguments;
   }

@@ -11,19 +11,23 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
-import 'package:project/pages/information_page.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NameAddPet extends StatefulWidget {
+  var arguments;
+
+  NameAddPet({this.arguments});
+
   @override
   _NameAddPetState createState() => _NameAddPetState();
 }
 
 class _NameAddPetState extends State<NameAddPet> {
   var appColors;
+  var alreadyBuilt = false;
 
   loadTheme() async {
     this.appColors = new AppColors();
@@ -36,19 +40,17 @@ class _NameAddPetState extends State<NameAddPet> {
   void initState() {
     // TODO: implement initState
     loadTheme().then((data) {});
+
+    if (this.widget.arguments.length == 6)
+      this._nameController.text = this.widget.arguments[4]['value'];
+
     super.initState();
   }
 
   var _nameController = new TextEditingController();
 
-  _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments as List;
-
-    return arguments;
-  }
-
   _insertArgument() {
-    var arguments = _getArguments() as List;
+    var arguments = this.widget.arguments as List;
 
     if (arguments.length > 4)
       arguments[4] = {'value': _nameController.text};
@@ -75,11 +77,6 @@ class _NameAddPetState extends State<NameAddPet> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
-    var arguments = _getArguments() as List;
-    if (arguments.length == 6) {
-      this._nameController.text = arguments[4]['value'];
-    }
 
     return Scaffold(
       body: Container(
@@ -212,8 +209,8 @@ class _NameAddPetState extends State<NameAddPet> {
                     onTap: () async {
                       if (!_nameController.text.isEmpty)
                         try {
-                          // DialogBuilder(context, appColors)
-                          //     .showLoadingIndicator();
+                          DialogBuilder(context, appColors)
+                              .showLoadingIndicator();
 
                           var arguments = _insertArgument() as List;
 
@@ -245,13 +242,13 @@ class _NameAddPetState extends State<NameAddPet> {
                               "Smart Feed UHG78F",
                               imageLink);
 
-                          print(arguments);
+                          if (arguments.length == 6) {
+                            var options =
+                                arguments[5]['value'] as RequestOptions;
 
-                          var options = arguments[5]['value'] as RequestOptions;
-
-                          if (options.method == 'PUT') {
                             options.data = Pet.toMap(pet);
-                            Dio dio = new CustomDio().instance;
+                            Dio dio =
+                                new CustomDio.withAuthentication().instance;
                             var response = await dio.request(options.path,
                                 queryParameters: options.queryParameters,
                                 data: options.data,
@@ -265,7 +262,6 @@ class _NameAddPetState extends State<NameAddPet> {
                               DialogBuilder(context, appColors)
                                   .hideOpenDialog();
                             }
-                            print('error');
                           } else {
                             var petsRepository = new PetsRepository();
                             var statusCode = await petsRepository.create(pet);
