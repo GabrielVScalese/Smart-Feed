@@ -266,13 +266,17 @@ class _HelpPageState extends State<HelpPage> {
                           showErrorMessage = true;
                           e.toString();
                         }
-                        DialogBuilder(context, appColors).hideOpenDialog();
-                        starsClicked = 1;
-                        textFieldController.text = "";
-                        await Future.delayed(Duration(seconds: 5));
-                        showSucessMessage = false;
-                        showErrorMessage = false;
-                        setState(() {});
+
+                        try {
+                          DialogBuilder(context, appColors).hideOpenDialog();
+                          starsClicked = 1;
+                          textFieldController.text = "";
+
+                          await Future.delayed(Duration(seconds: 5));
+                          showSucessMessage = false;
+                          showErrorMessage = false;
+                          setState(() {});
+                        } catch (err) {}
                       },
                       child: Container(
                         margin: EdgeInsets.only(right: size.width * 0.05),

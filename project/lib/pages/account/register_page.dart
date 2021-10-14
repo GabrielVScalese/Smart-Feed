@@ -11,7 +11,6 @@ import 'package:project/models/user.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/users_repository.dart';
 import 'package:project/utils/app_colors.dart';
-import '../home_page.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
