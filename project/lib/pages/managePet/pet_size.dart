@@ -6,15 +6,19 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
-import 'package:project/pages/addPet/photo_add_pet.dart';
+import 'package:project/pages/managePet/pet_ration.dart';
 import 'package:project/utils/app_colors.dart';
 
-class RationAddPet extends StatefulWidget {
+class PetSize extends StatefulWidget {
+  var arguments;
+
+  PetSize({this.arguments});
+
   @override
-  _RationAddPetState createState() => _RationAddPetState();
+  _PetSizeState createState() => _PetSizeState();
 }
 
-class _RationAddPetState extends State<RationAddPet> {
+class _PetSizeState extends State<PetSize> {
   var appColors;
 
   loadTheme() async {
@@ -32,7 +36,7 @@ class _RationAddPetState extends State<RationAddPet> {
   }
 
   _getArguments() {
-    var arguments = ModalRoute.of(context).settings.arguments;
+    var arguments = this.widget.arguments;
 
     return arguments;
   }
@@ -46,7 +50,7 @@ class _RationAddPetState extends State<RationAddPet> {
     try {
       var arguments = _getArguments() as List;
 
-      return _findIndexOf(cardList, arguments[2]['value']);
+      return _findIndexOf(cardList, arguments[1]['value']);
     } catch (err) {
       return 0;
     }
@@ -58,8 +62,8 @@ class _RationAddPetState extends State<RationAddPet> {
     var cardChangerController = new CardChangerController();
     cardChangerController.setValue({'value': cardList[0]['name']});
 
-    if (arguments.length > 2)
-      cardChangerController.setValue({'value': arguments[2]['value']});
+    if (arguments.length > 1)
+      cardChangerController.setValue({'value': arguments[1]['value']});
 
     return cardChangerController;
   }
@@ -67,8 +71,8 @@ class _RationAddPetState extends State<RationAddPet> {
   _insertArgument(cardChangerController) {
     var arguments = _getArguments() as List;
 
-    if (arguments.length > 2)
-      arguments[2] = cardChangerController.getValue();
+    if (arguments.length > 1)
+      arguments[1] = cardChangerController.getValue();
     else
       arguments.add(cardChangerController.getValue());
 
@@ -81,29 +85,29 @@ class _RationAddPetState extends State<RationAddPet> {
 
     var cardList = [
       {
-        'name': 'Premium',
+        'name': 'Pequeno',
         'icon': Icon(
-          Icons.restaurant_menu,
+          Icons.aspect_ratio,
           size: size.height * 0.12,
           color: appColors.iconButtonColor(),
         )
       },
       {
-        'name': 'S. Premium',
+        'name': 'Médio',
         'icon': Icon(
-          Icons.restaurant_menu,
+          Icons.aspect_ratio,
           size: size.height * 0.12,
           color: appColors.iconButtonColor(),
         )
       },
       {
-        'name': 'Uso Clínico',
+        'name': 'Grande',
         'icon': Icon(
-          Icons.restaurant_menu,
+          Icons.aspect_ratio,
           size: size.height * 0.12,
           color: appColors.iconButtonColor(),
         )
-      }
+      },
     ];
 
     var cardChangerController = _setCardChangerController(cardList);
@@ -128,12 +132,12 @@ class _RationAddPetState extends State<RationAddPet> {
                       onTap: () {
                         var arguments = _insertArgument(cardChangerController);
 
-                        Navigator.of(context).pushReplacementNamed('/size',
+                        Navigator.of(context).pushReplacementNamed('/type',
                             arguments: arguments);
                       },
                       child: CircleCard(
-                          color: appColors.cardColor(),
                           size: size,
+                          color: appColors.cardColor(),
                           icon: Icon(
                             Icons.arrow_back,
                             color: appColors.iconButtonColor(),
@@ -148,7 +152,7 @@ class _RationAddPetState extends State<RationAddPet> {
                         child: Container(
                             alignment: Alignment.center,
                             child: Text(
-                              '3/5',
+                              '2/5',
                               style: GoogleFonts.inter(
                                   fontSize: size.width * 0.04,
                                   fontWeight: FontWeight.bold,
@@ -174,13 +178,14 @@ class _RationAddPetState extends State<RationAddPet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PageTitle(
-                          size: size,
-                          title: 'Ração',
-                          color: appColors.textColor()),
+                        size: size,
+                        title: 'Porte',
+                        color: appColors.textColor(),
+                      ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text('Premium, Super Premium ou Uso Clínico.',
+                      Text('Pequeno, médio ou grande.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
                               color: appColors.descriptionTextColor()))
@@ -212,7 +217,7 @@ class _RationAddPetState extends State<RationAddPet> {
                       style: GoogleFonts.inter(
                           fontSize: size.width * 0.045,
                           fontWeight: FontWeight.bold,
-                          color: appColors.iconButtonColor())),
+                          color: appColors.descriptionTextColor())),
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
@@ -220,17 +225,15 @@ class _RationAddPetState extends State<RationAddPet> {
 
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
-                              PhotoAddPet(arguments: arguments)));
+                              PetRation(arguments: arguments)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        color: appColors.cardColor(),
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: appColors.iconButtonColor(),
-                        ),
+                        icon: Icon(Icons.arrow_forward,
+                            color: appColors.iconButtonColor()),
                         size: size,
+                        color: appColors.cardColor(),
                       ),
                     ),
                   ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
-import 'package:project/controllers/theme_controller.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
@@ -15,7 +13,7 @@ import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'addPet/type_add_pet.dart';
+import 'managePet/pet_type.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -255,8 +253,9 @@ class _HomePageState extends State<HomePage> {
                                   color: appColors.textColor())),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/type',
-                                  arguments: []);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      PetType(arguments: [])));
                             },
                             child: CircleCard(
                               icon: Icon(Icons.add,

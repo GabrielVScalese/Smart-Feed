@@ -6,18 +6,19 @@ import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/home_page.dart';
+import 'package:project/pages/managePet/pet_size.dart';
 import 'package:project/utils/app_colors.dart';
 
-class SizeAddPet extends StatefulWidget {
+class PetType extends StatefulWidget {
   var arguments;
-
-  SizeAddPet({this.arguments});
+  PetType({this.arguments});
 
   @override
-  _SizeAddPetState createState() => _SizeAddPetState();
+  _PetTypeState createState() => _PetTypeState();
 }
 
-class _SizeAddPetState extends State<SizeAddPet> {
+class _PetTypeState extends State<PetType> {
   var appColors;
 
   loadTheme() async {
@@ -27,6 +28,35 @@ class _SizeAddPetState extends State<SizeAddPet> {
     setState(() {});
   }
 
+  _getArguments() {
+    var arguments = this.widget.arguments;
+
+    return arguments;
+  }
+
+  _findIndexOf(optionList, value) {
+    for (var item in optionList)
+      if (item['name'] == value) return optionList.indexOf(item);
+  }
+
+  _getInitialPage(cardList) {
+    try {
+      var arguments = _getArguments() as List;
+
+      return _findIndexOf(cardList, arguments[0]['value']);
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  decideTitle() {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length == 6) return 'Editando Pet';
+
+    return 'Novo Pet';
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -34,82 +64,32 @@ class _SizeAddPetState extends State<SizeAddPet> {
     super.initState();
   }
 
-  _getArguments() {
-    var arguments = this.widget.arguments;
-
-    return arguments;
-  }
-
-  _findIndexOf(cardList, value) {
-    for (var item in cardList)
-      if (item['name'] == value) return cardList.indexOf(item);
-  }
-
-  _getInitialPage(cardList) {
-    try {
-      var arguments = _getArguments() as List;
-
-      return _findIndexOf(cardList, arguments[1]['value']);
-    } catch (err) {
-      return 0;
-    }
-  }
-
-  _setCardChangerController(cardList) {
-    var arguments = _getArguments() as List;
-
-    var cardChangerController = new CardChangerController();
-    cardChangerController.setValue({'value': cardList[0]['name']});
-
-    if (arguments.length > 1)
-      cardChangerController.setValue({'value': arguments[1]['value']});
-
-    return cardChangerController;
-  }
-
-  _insertArgument(cardChangerController) {
-    var arguments = _getArguments() as List;
-
-    if (arguments.length > 1)
-      arguments[1] = cardChangerController.getValue();
-    else
-      arguments.add(cardChangerController.getValue());
-
-    return arguments;
-  }
-
+  // Fazer tamanho máximo e tamanho mínimo
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    var cardList = [
+    var optionList = [
       {
-        'name': 'Pequeno',
+        'name': 'Cão',
         'icon': Icon(
-          Icons.aspect_ratio,
+          Icons.pets,
           size: size.height * 0.12,
           color: appColors.iconButtonColor(),
         )
       },
       {
-        'name': 'Médio',
+        'name': 'Gato',
         'icon': Icon(
-          Icons.aspect_ratio,
-          size: size.height * 0.12,
+          Icons.pets,
           color: appColors.iconButtonColor(),
-        )
-      },
-      {
-        'name': 'Grande',
-        'icon': Icon(
-          Icons.aspect_ratio,
           size: size.height * 0.12,
-          color: appColors.iconButtonColor(),
         )
-      },
+      }
     ];
 
-    var cardChangerController = _setCardChangerController(cardList);
+    CardChangerController cardChangerController = CardChangerController();
+    cardChangerController.setValue({'value': optionList[0]['name']});
 
     return Scaffold(
       body: Container(
@@ -129,19 +109,20 @@ class _SizeAddPetState extends State<SizeAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        var arguments = _insertArgument(cardChangerController);
-
-                        Navigator.of(context).pushReplacementNamed('/type',
-                            arguments: arguments);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                        );
                       },
                       child: CircleCard(
                           size: size,
-                          color: appColors.cardColor(),
                           icon: Icon(
                             Icons.arrow_back,
                             color: appColors.iconButtonColor(),
                             size: size.height * 0.03,
-                          )),
+                          ),
+                          color: appColors.cardColor()),
                     ),
                     Card(
                         elevation: 10,
@@ -151,7 +132,7 @@ class _SizeAddPetState extends State<SizeAddPet> {
                         child: Container(
                             alignment: Alignment.center,
                             child: Text(
-                              '2/5',
+                              '1/5',
                               style: GoogleFonts.inter(
                                   fontSize: size.width * 0.04,
                                   fontWeight: FontWeight.bold,
@@ -178,13 +159,13 @@ class _SizeAddPetState extends State<SizeAddPet> {
                     children: [
                       PageTitle(
                         size: size,
-                        title: 'Porte',
+                        title: decideTitle(),
                         color: appColors.textColor(),
                       ),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text('Pequeno, médio ou grande.',
+                      Text('Cão ou gato.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
                               color: appColors.descriptionTextColor()))
@@ -199,8 +180,8 @@ class _SizeAddPetState extends State<SizeAddPet> {
                 direction: AnimatedCardDirection.left,
                 child: Carousel(
                     size: size,
-                    optionlist: cardList,
-                    initialPage: _getInitialPage(cardList),
+                    optionlist: optionList,
+                    initialPage: _getInitialPage(optionList),
                     controller: cardChangerController),
               ),
             ],
@@ -220,16 +201,25 @@ class _SizeAddPetState extends State<SizeAddPet> {
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
-                      var arguments = _insertArgument(cardChangerController);
+                      var arguments = _getArguments() as List;
 
-                      Navigator.of(context).pushReplacementNamed('/ration',
-                          arguments: arguments);
+                      if (arguments.length > 1) {
+                        arguments[0] = cardChangerController.getValue();
+                      } else {
+                        arguments = [];
+                        arguments.add(cardChangerController.getValue());
+                      }
+
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PetSize(arguments: arguments)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
-                        icon: Icon(Icons.arrow_forward,
-                            color: appColors.iconButtonColor()),
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: appColors.iconButtonColor(),
+                        ),
                         size: size,
                         color: appColors.cardColor(),
                       ),

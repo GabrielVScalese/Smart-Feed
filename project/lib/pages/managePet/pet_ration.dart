@@ -1,25 +1,24 @@
-import 'dart:io';
 import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:project/components/carousel.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/controllers/card_changer_controller.dart';
+import 'package:project/pages/managePet/pet_photo.dart';
 import 'package:project/utils/app_colors.dart';
 
-import 'name_add_pet.dart';
-
-class PhotoAddPet extends StatefulWidget {
+class PetRation extends StatefulWidget {
   var arguments;
 
-  PhotoAddPet({this.arguments});
+  PetRation({this.arguments});
 
   @override
-  _PhotoAddPetState createState() => _PhotoAddPetState();
+  _PetRationState createState() => _PetRationState();
 }
 
-class _PhotoAddPetState extends State<PhotoAddPet> {
+class _PetRationState extends State<PetRation> {
   var appColors;
 
   loadTheme() async {
@@ -33,11 +32,8 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
   void initState() {
     // TODO: implement initState
     loadTheme().then((data) {});
-    _setImgFile();
     super.initState();
   }
-
-  File _imgFile;
 
   _getArguments() {
     var arguments = this.widget.arguments;
@@ -45,96 +41,76 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
     return arguments;
   }
 
-  _openGallery() async {
-    try {
-      var imgPicker = ImagePicker();
-      var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
+  _findIndexOf(cardList, value) {
+    for (var item in cardList)
+      if (item['name'] == value) return cardList.indexOf(item);
+  }
 
-      setState(() {
-        this._imgFile = File(pickedFile.path);
-      });
-    } catch (error) {
-      print(error.toString());
+  _getInitialPage(cardList) {
+    try {
+      var arguments = _getArguments() as List;
+
+      return _findIndexOf(cardList, arguments[2]['value']);
+    } catch (err) {
+      return 0;
     }
   }
 
-  _decideView(size) {
-    print(this._imgFile);
-    if (_imgFile != null)
-      return Center(
-        child: Container(
-          width: size.width * 0.5,
-          height: size.width * 0.5,
-          child: ClipOval(
-            child: Image.file(
-              _imgFile,
-              fit: BoxFit.cover,
-              // scale: size.height * 0.2,
-            ),
-          ),
-        ),
-      );
-    else
-      return Center(
-        child: Container(
-          width: size.width * 0.5,
-          height: size.width * 0.5,
-          child: ClipOval(
-            child: Image.network(
-              _getNetworkImage(),
-              fit: BoxFit.cover,
-              scale: 0.1,
-              height: size.width * 0.01,
-              width: size.width * 0.01,
-              // scale: size.height * 0.2,
-            ),
-          ),
-        ),
-      );
-  }
-
-  _insertArgument() {
+  _setCardChangerController(cardList) {
     var arguments = _getArguments() as List;
 
-    if (arguments.length > 3) {
-      if (this._imgFile == null) {
-        if (arguments.length == 6)
-          arguments[3] = {'value': arguments[3]['value']};
-      } else {
-        arguments[3] = {'value': this._imgFile};
-      }
-    } else
-      arguments.add({'value': _imgFile});
+    var cardChangerController = new CardChangerController();
+    cardChangerController.setValue({'value': cardList[0]['name']});
+
+    if (arguments.length > 2)
+      cardChangerController.setValue({'value': arguments[2]['value']});
+
+    return cardChangerController;
+  }
+
+  _insertArgument(cardChangerController) {
+    var arguments = _getArguments() as List;
+
+    if (arguments.length > 2)
+      arguments[2] = cardChangerController.getValue();
+    else
+      arguments.add(cardChangerController.getValue());
 
     return arguments;
-  }
-
-  _setImgFile() {
-    var arguments = _getArguments() as List;
-
-    if (arguments.length > 3)
-      setState(() {
-        if (arguments.length == 6)
-          this._imgFile = null;
-        else
-          _imgFile = arguments[3]['value'];
-      });
-  }
-
-  _getNetworkImage() {
-    var arguments = _getArguments() as List;
-
-    if (arguments.length == 6) return arguments[3]['value'];
-
-    if (arguments[0]['value'] == 'Cão')
-      return 'https://i.imgur.com/yh365gr.png';
-
-    return 'https://i.imgur.com/WYShCBk.png';
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    var cardList = [
+      {
+        'name': 'Premium',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
+        )
+      },
+      {
+        'name': 'S. Premium',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
+        )
+      },
+      {
+        'name': 'Uso Clínico',
+        'icon': Icon(
+          Icons.restaurant_menu,
+          size: size.height * 0.12,
+          color: appColors.iconButtonColor(),
+        )
+      }
+    ];
+
+    var cardChangerController = _setCardChangerController(cardList);
 
     return Scaffold(
       body: Container(
@@ -154,9 +130,9 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        var arguments = _insertArgument();
+                        var arguments = _insertArgument(cardChangerController);
 
-                        Navigator.of(context).pushReplacementNamed('/ration',
+                        Navigator.of(context).pushReplacementNamed('/size',
                             arguments: arguments);
                       },
                       child: CircleCard(
@@ -176,7 +152,7 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                         child: Container(
                             alignment: Alignment.center,
                             child: Text(
-                              '4/5',
+                              '3/5',
                               style: GoogleFonts.inter(
                                   fontSize: size.width * 0.04,
                                   fontWeight: FontWeight.bold,
@@ -202,14 +178,13 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PageTitle(
-                        size: size,
-                        title: 'Foto',
-                        color: appColors.textColor(),
-                      ),
+                          size: size,
+                          title: 'Ração',
+                          color: appColors.textColor()),
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      Text('Escolha uma foto.',
+                      Text('Premium, Super Premium ou Uso Clínico.',
                           style: GoogleFonts.inter(
                               fontSize: size.width * 0.045,
                               color: appColors.descriptionTextColor()))
@@ -222,54 +197,11 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
               ),
               AnimatedCard(
                 direction: AnimatedCardDirection.left,
-                child: Stack(
-                  children: [
-                    Align(
-                      child: Card(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(150),
-                        ),
-                        child: Container(
-                            child: Stack(
-                              children: [
-                                _decideView(size),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      await _openGallery();
-                                    },
-                                    child: Card(
-                                      color: appColors.cardColor(),
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(150),
-                                      ),
-                                      child: Container(
-                                          child: Icon(Icons.photo_camera,
-                                              size: (size.width * 0.15) * 0.5,
-                                              color:
-                                                  appColors.cameraIconColor()),
-                                          width: size.width * 0.15,
-                                          height: size.width * 0.15,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle)),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            width: size.width * 0.5,
-                            height: size.width * 0.5,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            )),
-                      ),
-                    )
-                  ],
-                ),
+                child: Carousel(
+                    size: size,
+                    optionlist: cardList,
+                    initialPage: _getInitialPage(cardList),
+                    controller: cardChangerController),
               ),
             ],
           ),
@@ -288,23 +220,21 @@ class _PhotoAddPetState extends State<PhotoAddPet> {
                   SizedBox(width: size.width * 0.02),
                   GestureDetector(
                     onTap: () {
-                      var arguments = _insertArgument();
-                      print(arguments);
+                      var arguments = _insertArgument(cardChangerController);
+
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
-                              NameAddPet(arguments: arguments)));
-
-                      //     .pushReplacementNamed('/name', arguments: arguments);
+                              PetPhoto(arguments: arguments)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: size.width * 0.05),
                       child: CircleCard(
+                        color: appColors.cardColor(),
                         icon: Icon(
                           Icons.arrow_forward,
                           color: appColors.iconButtonColor(),
                         ),
                         size: size,
-                        color: appColors.cardColor(),
                       ),
                     ),
                   ),

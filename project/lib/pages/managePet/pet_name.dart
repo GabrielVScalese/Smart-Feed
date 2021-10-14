@@ -16,16 +16,16 @@ import 'package:project/utils/app_colors.dart';
 import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NameAddPet extends StatefulWidget {
+class PetName extends StatefulWidget {
   var arguments;
 
-  NameAddPet({this.arguments});
+  PetName({this.arguments});
 
   @override
-  _NameAddPetState createState() => _NameAddPetState();
+  _PetNameState createState() => _PetNameState();
 }
 
-class _NameAddPetState extends State<NameAddPet> {
+class _PetNameState extends State<PetName> {
   var appColors;
   var alreadyBuilt = false;
 

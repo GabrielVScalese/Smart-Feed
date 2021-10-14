@@ -11,12 +11,12 @@ import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/feed_controller.dart';
 import 'package:project/models/feed.dart';
 import 'package:project/models/pet.dart';
-import 'package:project/pages/addPet/type_add_pet.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 
 import 'home_page.dart';
+import 'managePet/pet_type.dart';
 
 class InformationPage extends StatefulWidget {
   var pet;
@@ -502,19 +502,20 @@ class LabelRow extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   if (this.page == 'edit') {
-                    Navigator.of(context).pushNamed('/type', arguments: [
-                      {'value': this.pet.getAnimal()},
-                      {'value': this.pet.getSize()},
-                      {'value': this.pet.getRation()},
-                      {'value': this.pet.getImage()},
-                      {'value': this.pet.getName()},
-                      {
-                        'value': RequestOptions(
-                            path:
-                                'https://smart-feed-app.herokuapp.com/pets/${this.pet.getId()}',
-                            method: 'PUT')
-                      }
-                    ]);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PetType(arguments: [
+                              {'value': this.pet.getAnimal()},
+                              {'value': this.pet.getSize()},
+                              {'value': this.pet.getRation()},
+                              {'value': this.pet.getImage()},
+                              {'value': this.pet.getName()},
+                              {
+                                'value': RequestOptions(
+                                    path:
+                                        'https://smart-feed-app.herokuapp.com/pets/${this.pet.getId()}',
+                                    method: 'PUT')
+                              }
+                            ])));
                   }
                 },
                 child: Text(
