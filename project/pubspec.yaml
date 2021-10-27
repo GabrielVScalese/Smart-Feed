@@ -35,8 +35,17 @@ dependencies:
   shimmer: ^2.0.0
   animated_card: ^2.0.0
   mailer: ^5.0.2
+  flutter_launcher_icons: ^0.9.1
   flutter:
     sdk: flutter
+
+flutter_icons:
+  image_path: "assets/icons/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/icon-android.png"
 
 dev_dependencies:
   flutter_test:
