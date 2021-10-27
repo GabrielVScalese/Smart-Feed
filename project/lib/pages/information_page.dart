@@ -512,7 +512,7 @@ class LabelRow extends StatelessWidget {
                               {
                                 'value': RequestOptions(
                                     path:
-                                        'https://smart-feed-app.herokuapp.com/pets/${this.pet.getId()}',
+                                        'https://smart-feed-api.herokuapp.com/pets/${this.pet.getId()}',
                                     method: 'PUT')
                               }
                             ])));

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_builder.dart';
+import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/user.dart';
+import 'package:project/pages/account/recover_password_page.dart';
 import 'package:project/pages/account/register_page.dart';
 import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/login_repository.dart';
@@ -134,11 +136,17 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: size.height * 0.02,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: size.width * 0.54),
-                      child: Text('Esqueceu a senha?',
-                          style: GoogleFonts.inter(
-                              color: labelColor, fontSize: labelSize)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => RecoverPasswordPage()));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: size.width * 0.54),
+                        child: Text('Esqueceu a senha?',
+                            style: GoogleFonts.inter(
+                                color: labelColor, fontSize: labelSize)),
+                      ),
                     ),
                     SizedBox(
                       height: size.height * 0.1,

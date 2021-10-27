@@ -179,7 +179,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     var user = jsonDecode(prefs.getString('user'));
                     RequestOptions requestOptions = new RequestOptions(
                         path:
-                            'https://smart-feed-app.herokuapp.com/users/${user["id"]}',
+                            'https://smart-feed-api.herokuapp.com/users/${user["id"]}',
                         method: 'DELETE');
 
                     Navigator.of(context).push(MaterialPageRoute(

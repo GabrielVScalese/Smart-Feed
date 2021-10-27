@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDio {
   Dio _dio;
-  String baseUrl = 'https://smart-feed-app.herokuapp.com';
+  String baseUrl = 'https://smart-feed-api.herokuapp.com';
 
   CustomDio() {
     _dio = Dio();

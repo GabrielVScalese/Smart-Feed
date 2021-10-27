@@ -156,7 +156,7 @@ class _ChangeEmailPageState extends State<ChangeEmailPage> {
 
                             RequestOptions requestOptions = new RequestOptions(
                                 path:
-                                    'https://smart-feed-app.herokuapp.com/users/${user['id']}',
+                                    'https://smart-feed-api.herokuapp.com/users/${user['id']}',
                                 data: {
                                   'name': user['name'],
                                   'email': emailController.text,
