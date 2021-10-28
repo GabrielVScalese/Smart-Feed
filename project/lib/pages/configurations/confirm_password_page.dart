@@ -169,10 +169,11 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                         var user = jsonDecode(instance.get('user'));
 
                         var loginRepository = new LoginRepository();
-                        var authenticationStatusCode =
-                            await loginRepository.login(User.fromLogin(
-                                user['email'],
+                        var response = await loginRepository.login(
+                            User.fromLogin(user['email'],
                                 _currentPasswordController.text));
+
+                        var authenticationStatusCode = response["statusCode"];
 
                         if (authenticationStatusCode == 200) {
                           DialogBuilder(context, appColors)
@@ -190,6 +191,8 @@ class _ConfirmPasswordPageState extends State<ConfirmPasswordPage> {
                               queryParameters: options.queryParameters,
                               data: options.data,
                               options: Options(method: options.method));
+
+                          print(response.data);
 
                           if (response.statusCode == 200) {
                             if (options.data != null)

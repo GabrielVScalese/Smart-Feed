@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/dialog_builder.dart';
-import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/components/toast_message.dart';
 import 'package:project/models/user.dart';
 import 'package:project/pages/account/recover_password_page.dart';
 import 'package:project/pages/account/register_page.dart';
-import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/login_repository.dart';
 import 'package:project/utils/app_colors.dart';
 
@@ -23,6 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 var appColors;
+var message;
 
 class _LoginPageState extends State<LoginPage> {
   var _emailController = TextEditingController();
@@ -158,11 +158,13 @@ class _LoginPageState extends State<LoginPage> {
                               .showLoadingIndicator();
 
                           var loginRepository = LoginRepository();
-                          var statusCode = await loginRepository.login(
+                          var response = await loginRepository.login(
                               User.fromLogin(_emailController.text,
                                   _passwordController.text));
 
-                          if (statusCode == 200) {
+                          message = response["data"]["message"];
+
+                          if (response["statusCode"] == 200) {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => HomePage()));
@@ -179,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         await Future.delayed(Duration(seconds: 5));
                         showLoginMessage = false;
-                        // setState(() {});
+                        setState(() {});
                       },
                       child: RoundedButton(
                         height: size.height * 0.053,
@@ -228,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Align(
                       alignment: Alignment(-1, -1),
                       child: MessageEmail(
-                        message: "Email ou senha incorretos",
+                        message: message,
                         color: Colors.redAccent,
                       ),
                     ),

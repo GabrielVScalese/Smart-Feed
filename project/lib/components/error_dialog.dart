@@ -3,16 +3,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/rounded_button.dart';
 
 class ErrorDialog extends StatelessWidget {
-  const ErrorDialog(
-      {Key key,
-      @required this.title,
-      @required this.message,
-      @required this.icon})
-      : super(key: key);
+  const ErrorDialog({
+    Key key,
+    @required this.title,
+    @required this.message,
+    @required this.icon,
+    @required this.iconColor,
+    @required this.buttonColor,
+  }) : super(key: key);
 
   final String title;
   final String message;
   final IconData icon;
+  final Color iconColor;
+  final Color buttonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class ErrorDialog extends StatelessWidget {
             Icon(
               icon,
               size: size.width * 0.15,
-              color: Colors.redAccent,
+              color: iconColor,
             ),
             SizedBox(
               height: size.width * 0.05,
@@ -76,7 +80,7 @@ class ErrorDialog extends StatelessWidget {
                 width: size.width * 0.45,
                 radius: 10,
                 text: 'OK',
-                backgroundColor: Colors.redAccent,
+                backgroundColor: buttonColor,
               ),
             )
           ],

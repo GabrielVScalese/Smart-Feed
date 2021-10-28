@@ -7,8 +7,8 @@ import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rounded_button.dart';
 import 'package:project/components/text_field_container.dart';
+import 'package:project/components/toast_message.dart';
 import 'package:project/models/user.dart';
-import 'package:project/pages/configurations/help_page.dart';
 import 'package:project/repositories/users_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'login_page.dart';
@@ -207,7 +207,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             context,
                             "Falta de informações",
                             "Preencha todos os campos para poder criar sua conta",
-                            Icons.error_outline_outlined);
+                            Icons.error_outline_outlined,
+                            Colors.redAccent,
+                            Colors.redAccent);
                       } else {
                         if (passwordController.text ==
                             confirmPasswordController.text) {
@@ -224,6 +226,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           DialogBuilder(context, appColors).hideOpenDialog();
 
                           if (statusCode == 200) {
+                            DialogHelper.errorModal(
+                              context,
+                              "Verifique seu email",
+                              "Verifique sua conta atravéz do link enviado por email",
+                              Icons.warning,
+                              Colors.grey[300],
+                              Color.fromRGBO(0, 153, 255, 1),
+                            );
+                            await Future.delayed(Duration(seconds: 3));
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => LoginPage()));
@@ -237,7 +248,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               context,
                               "Confirme a senha",
                               "As senhas que você colocou não são as mesmas",
-                              Icons.error);
+                              Icons.error,
+                              Colors.redAccent,
+                              Colors.redAccent);
                         }
 
                         try {

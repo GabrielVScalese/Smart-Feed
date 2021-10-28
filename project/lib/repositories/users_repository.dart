@@ -44,4 +44,11 @@ class UsersRepository {
 
     return response.statusCode;
   }
+
+  Future<int> resetPassword(email) async {
+    var response =
+        await this._dio.post('/users/resetPassword', data: {'email': email});
+
+    return response.statusCode;
+  }
 }

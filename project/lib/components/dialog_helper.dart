@@ -28,10 +28,16 @@ class DialogHelper {
       builder: (context) => PasswordDialog(),
       barrierColor: null);
 
-  static errorModal(context, title, message, icon) => showDialog(
-      context: context,
-      builder: (context) =>
-          ErrorDialog(title: title, message: message, icon: icon));
+  static errorModal(context, title, message, icon, iconColor, buttonColor) =>
+      showDialog(
+          context: context,
+          builder: (context) => ErrorDialog(
+                title: title,
+                message: message,
+                icon: icon,
+                iconColor: iconColor,
+                buttonColor: buttonColor,
+              ));
 
   static themeModal(context) => showDialog(
         context: context,

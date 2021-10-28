@@ -8,6 +8,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/components/toast_message.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -347,36 +348,6 @@ class _StarIconState extends State<StarIcon> {
       color: starsClicked >= this.widget.starNumber
           ? appColors.seeMoreColor()
           : appColors.starNotSelectedColor(),
-    );
-  }
-}
-
-class MessageEmail extends StatelessWidget {
-  String message;
-  Color color;
-
-  MessageEmail({this.message, this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-      alignment: Alignment.center,
-      height: size.width * 0.15,
-      width: size.width,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-      ),
-      child: Text(
-        message,
-        style: GoogleFonts.inter(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
     );
   }
 }

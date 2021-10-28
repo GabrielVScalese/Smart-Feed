@@ -5,7 +5,7 @@ import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginRepository {
-  Future<int> login(User user) async {
+  Future<Map> login(User user) async {
     var dio = CustomDio().instance;
 
     var response = await dio.post('/users/authenticate',
@@ -19,6 +19,6 @@ class LoginRepository {
           'refreshToken', response.data['refreshToken']['id']);
     }
 
-    return response.statusCode;
+    return {"statusCode": response.statusCode, "data": response.data};
   }
 }
