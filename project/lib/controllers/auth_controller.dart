@@ -9,6 +9,8 @@ class AuthController {
     await Future.delayed(Duration(seconds: 2));
 
     if (instance.containsKey("user")) {
+      print(instance.getString('user'));
+
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     } else {

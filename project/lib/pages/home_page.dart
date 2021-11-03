@@ -27,32 +27,26 @@ class _HomePageState extends State<HomePage> {
   var _petList = [];
   var _feedList = [];
   var _dynamicPetList = [];
-  var _isLoading = true;
 
   var namePetController = new TextEditingController();
   var appColors;
 
-  _loadData() async {
-    try {
-      var prefs = await SharedPreferences.getInstance();
-      var user = jsonDecode(prefs.getString('user'));
+  getPetData(size) async {
+    var prefs = await SharedPreferences.getInstance();
+    var user = jsonDecode(prefs.getString('user'));
 
-      var feedsRepository = new FeedsRepository();
+    var feedsRepository = new FeedsRepository();
 
-      _feedList = await feedsRepository.findByOwner(user['id']);
+    _feedList = await feedsRepository.findByOwner(user['id']);
 
-      var petsRepository = PetsRepository();
-      _petList = await petsRepository.findByOwner(user['id']);
-      _dynamicPetList = _petList;
+    var petsRepository = PetsRepository();
+    _petList = await petsRepository.findByOwner(user['id']);
+    _dynamicPetList = _petList;
 
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (err) {
-      print(err.toString());
-    }
+    return _petList;
   }
 
+ 
   loadTheme() async {
     appColors = new AppColors();
     await appColors.initialize();
@@ -75,7 +69,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     loadTheme().then((data) {});
-    _loadData().then((data) {});
   }
 
   Widget getPets(size) {
@@ -114,42 +107,37 @@ class _HomePageState extends State<HomePage> {
       );
     } else
       return ListView.builder(
-        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
-        itemCount: _isLoading ? 1 : _dynamicPetList.length,
+        itemCount: _dynamicPetList.length,
         itemBuilder: (BuildContext context, index) {
-          if (_isLoading)
-            return buildPetCardShimmer(size);
-          else
-            return AnimatedCard(
-              direction: index % 2 == 0
-                  ? AnimatedCardDirection.left
-                  : AnimatedCardDirection.right,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => InformationPage(
-                            pet: _dynamicPetList[index],
-                            feed: _feedList[index],
-                          )));
-                },
-                child: PetCard(
-                  size: size,
-                  pet: _dynamicPetList[index],
-                  backgroundColor: appColors.cardColor(),
-                  titleColor: appColors.textColor(),
-                  descriptionColor: appColors.descriptionTextColor(),
-                ),
+          return AnimatedCard(
+            direction: index % 2 == 0
+                ? AnimatedCardDirection.left
+                : AnimatedCardDirection.right,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => InformationPage(
+                          pet: _dynamicPetList[index],
+                          feed: _feedList[index],
+                        )));
+              },
+              child: PetCard(
+                size: size,
+                pet: _dynamicPetList[index],
+                backgroundColor: appColors.cardColor(),
+                titleColor: appColors.textColor(),
+                descriptionColor: appColors.descriptionTextColor(),
               ),
-            );
+            ),
+          );
         },
       );
   }
 
   buildPetCardShimmer(size) => Container(
-        margin: EdgeInsets.only(
-            left: size.width * 0.03,
-            right: size.width * 0.03,
-            bottom: size.height * 0.015),
+    margin: EdgeInsets.only(
+          left: size.width * 0.03,
+          right: size.width * 0.03, top: size.height * 0.03),
         child: Card(
             elevation: 5,
             shape: RoundedRectangleBorder(
@@ -332,9 +320,19 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 child: Container(
-                  height: size.height * 0.7,
-                  child: getPets(size),
-                ),
+                    height: size.height * 0.7,
+                    width: size.width,
+                    alignment: Alignment.topLeft,
+                    // padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                    // child: getPets(size),
+                    child: FutureBuilder(
+                        future: getPetData(size),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return buildPetCardShimmer(size);
+                          else
+                            return getPets(size);
+                        })),
               ),
             ],
           ),
