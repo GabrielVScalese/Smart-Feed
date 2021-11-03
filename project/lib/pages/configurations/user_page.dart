@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/components/photo_card.dart';
 import 'package:project/components/shimmer_widget.dart';
+import 'package:project/controllers/image_controller.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/change_email_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
@@ -20,6 +22,8 @@ class UserPage extends StatefulWidget {
 
 var appColors;
 
+var imageController = new ImageController();
+
 class _UserPageState extends State<UserPage> {
   var _isLoading = true;
   var _user;
@@ -33,6 +37,11 @@ class _UserPageState extends State<UserPage> {
         _isLoading = false;
       });
     } catch (err) {}
+  }
+
+  _setImgController() {
+    imageController
+        .changeImage('https://engineering.usask.ca/images/no_avatar.jpg');
   }
 
   loadTheme() async {
@@ -71,11 +80,12 @@ class _UserPageState extends State<UserPage> {
 
     return Column(
       children: [
-        CircleImage(
-          scale: size.height * 0.2,
-          srcImage:
-              'https://lh3.google.com/u/0/ogw/ADea4I4W4LOMQSuR-ScGQ5ir_-xWRMF4vs7aliXbOQ6q=s83-c-mo',
-        ),
+        // CircleImage(
+        //   scale: size.height * 0.2,
+        //   srcImage:
+        //       'https://lh3.google.com/u/0/ogw/ADea4I4W4LOMQSuR-ScGQ5ir_-xWRMF4vs7aliXbOQ6q=s83-c-mo',
+        // ),
+        PhotoCard(imageController: imageController, scale: size.width * 0.4),
         SizedBox(
           height: size.height * 0.03,
         ),
@@ -101,7 +111,7 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-
+    _setImgController();
     loadTheme().then((data) {});
     _loadData().then((data) {});
   }

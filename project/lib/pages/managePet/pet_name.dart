@@ -11,6 +11,7 @@ import 'package:project/components/page_title.dart';
 import 'package:project/components/text_field_container.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/home_page.dart';
+import 'package:project/pages/managePet/pet_photo.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:project/utils/custom_dio.dart';
@@ -51,6 +52,8 @@ class _PetNameState extends State<PetName> {
 
   _insertArgument() {
     var arguments = this.widget.arguments as List;
+
+    print("adasdafa: ${arguments}");
 
     if (arguments.length > 4)
       arguments[4] = {'value': _nameController.text};
@@ -98,8 +101,11 @@ class _PetNameState extends State<PetName> {
                       onTap: () {
                         var arguments = _insertArgument();
 
-                        Navigator.of(context).pushReplacementNamed('/photo',
-                            arguments: arguments);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PetPhoto(arguments: arguments)),
+                        );
                       },
                       child: CircleCard(
                           color: appColors.cardColor(),

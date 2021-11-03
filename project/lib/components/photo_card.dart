@@ -7,17 +7,16 @@ import 'package:project/controllers/image_controller.dart';
 import 'package:project/utils/app_colors.dart';
 
 class PhotoCard extends StatefulWidget {
-  var initialImage;
+  var scale;
   ImageController imageController;
 
-  PhotoCard({this.initialImage, this.imageController});
+  PhotoCard({this.imageController, this.scale});
 
   @override
   _PhotoCardState createState() => _PhotoCardState();
 }
 
 class _PhotoCardState extends State<PhotoCard> {
-  var _imgFile;
   var appColors;
 
   _openGallery() async {
@@ -26,8 +25,7 @@ class _PhotoCardState extends State<PhotoCard> {
       var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
 
       setState(() {
-        this._imgFile = File(pickedFile.path);
-        this.widget.imageController.changeImage(this._imgFile);
+        this.widget.imageController.changeImage(File(pickedFile.path));
       });
     } catch (error) {
       print(error.toString());
@@ -35,15 +33,15 @@ class _PhotoCardState extends State<PhotoCard> {
   }
 
   _decideView(size) {
-    print(this._imgFile);
-    if (_imgFile != null)
+    print(this.widget.imageController.image);
+    if (this.widget.imageController.image is File)
       return Center(
         child: Container(
           width: size.width * 0.5,
           height: size.width * 0.5,
           child: ClipOval(
             child: Image.file(
-              _imgFile,
+              this.widget.imageController.image,
               fit: BoxFit.cover,
               // scale: size.height * 0.2,
             ),
@@ -57,7 +55,7 @@ class _PhotoCardState extends State<PhotoCard> {
           height: size.width * 0.5,
           child: ClipOval(
             child: Image.network(
-              this.widget.initialImage,
+              this.widget.imageController.image,
               fit: BoxFit.cover,
               scale: 0.1,
               height: size.width * 0.01,
@@ -109,18 +107,18 @@ class _PhotoCardState extends State<PhotoCard> {
                     ),
                     child: Container(
                         child: Icon(Icons.photo_camera,
-                            size: (size.width * 0.15) * 0.5,
+                            size: (this.widget.scale * 0.4) * 0.5,
                             color: appColors.cameraIconColor()),
-                        width: size.width * 0.15,
-                        height: size.width * 0.15,
+                        width: this.widget.scale * 0.3,
+                        height: this.widget.scale * 0.3,
                         decoration: BoxDecoration(shape: BoxShape.circle)),
                   ),
                 ),
               )
             ],
           ),
-          width: size.width * 0.5,
-          height: size.width * 0.5,
+          width: this.widget.scale,
+          height: this.widget.scale,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
           )),

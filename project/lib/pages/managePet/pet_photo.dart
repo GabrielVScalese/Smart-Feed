@@ -7,6 +7,7 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/photo_card.dart';
 import 'package:project/controllers/image_controller.dart';
+import 'package:project/pages/managePet/pet_ration.dart';
 import 'package:project/utils/app_colors.dart';
 import 'pet_name.dart';
 
@@ -34,7 +35,7 @@ class _PetPhotoState extends State<PetPhoto> {
   void initState() {
     // TODO: implement initState
     loadTheme().then((data) {});
-    _setImgFile();
+    _setImgController();
     super.initState();
   }
 
@@ -50,39 +51,23 @@ class _PetPhotoState extends State<PetPhoto> {
     var arguments = _getArguments() as List;
 
     if (arguments.length > 3) {
-      if (this._imgFile == null) {
-        if (arguments.length == 6)
-          arguments[3] = {'value': arguments[3]['value']};
-      } else {
-        arguments[3] = {'value': this.imageController.image};
-      }
+      arguments[3] = {'value': this.imageController.image};
     } else
       arguments.add({'value': this.imageController.image});
 
     return arguments;
   }
 
-  _setImgFile() {
+  _setImgController() {
     var arguments = _getArguments() as List;
-
-    if (arguments.length > 3)
-      setState(() {
-        if (arguments.length == 6)
-          this._imgFile = null;
-        else
-          _imgFile = arguments[3]['value'];
-      });
-  }
-
-  _getNetworkImage() {
-    var arguments = _getArguments() as List;
-
-    if (arguments.length == 6) return arguments[3]['value'];
-
-    if (arguments[0]['value'] == 'Cão')
-      return 'https://i.imgur.com/yh365gr.png';
-
-    return 'https://i.imgur.com/WYShCBk.png';
+    if (arguments.length == 6 || arguments.length == 5)
+      imageController.changeImage(arguments[3]['value']);
+    else {
+      if (arguments[0]['value'] == 'Cão')
+        imageController.changeImage('https://i.imgur.com/yh365gr.png');
+      else
+        imageController.changeImage('https://i.imgur.com/WYShCBk.png');
+    }
   }
 
   @override
@@ -109,8 +94,11 @@ class _PetPhotoState extends State<PetPhoto> {
                       onTap: () {
                         var arguments = _insertArgument();
 
-                        Navigator.of(context).pushReplacementNamed('/ration',
-                            arguments: arguments);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PetRation(arguments: arguments)),
+                        );
                       },
                       child: CircleCard(
                           color: appColors.cardColor(),
@@ -178,10 +166,10 @@ class _PetPhotoState extends State<PetPhoto> {
                 child: Stack(
                   children: [
                     Align(
-                        child: PhotoCard(
-                      initialImage: _getNetworkImage(),
-                      imageController: imageController,
-                    ))
+                      child: PhotoCard(
+                          imageController: imageController,
+                          scale: size.width * 0.5),
+                    )
                   ],
                 ),
               ),

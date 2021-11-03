@@ -7,6 +7,7 @@ import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/controllers/card_changer_controller.dart';
 import 'package:project/pages/managePet/pet_ration.dart';
+import 'package:project/pages/managePet/pet_type.dart';
 import 'package:project/utils/app_colors.dart';
 
 class PetSize extends StatefulWidget {
@@ -132,8 +133,11 @@ class _PetSizeState extends State<PetSize> {
                       onTap: () {
                         var arguments = _insertArgument(cardChangerController);
 
-                        Navigator.of(context).pushReplacementNamed('/type',
-                            arguments: arguments);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PetType(arguments: arguments)),
+                        );
                       },
                       child: CircleCard(
                           size: size,
