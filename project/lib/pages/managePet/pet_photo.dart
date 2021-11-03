@@ -3,9 +3,10 @@ import 'package:animated_card/animated_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
+import 'package:project/components/photo_card.dart';
+import 'package:project/controllers/image_controller.dart';
 import 'package:project/utils/app_colors.dart';
 import 'pet_name.dart';
 
@@ -20,6 +21,7 @@ class PetPhoto extends StatefulWidget {
 
 class _PetPhotoState extends State<PetPhoto> {
   var appColors;
+  var imageController = new ImageController();
 
   loadTheme() async {
     this.appColors = new AppColors();
@@ -44,54 +46,6 @@ class _PetPhotoState extends State<PetPhoto> {
     return arguments;
   }
 
-  _openGallery() async {
-    try {
-      var imgPicker = ImagePicker();
-      var pickedFile = await imgPicker.getImage(source: ImageSource.gallery);
-
-      setState(() {
-        this._imgFile = File(pickedFile.path);
-      });
-    } catch (error) {
-      print(error.toString());
-    }
-  }
-
-  _decideView(size) {
-    print(this._imgFile);
-    if (_imgFile != null)
-      return Center(
-        child: Container(
-          width: size.width * 0.5,
-          height: size.width * 0.5,
-          child: ClipOval(
-            child: Image.file(
-              _imgFile,
-              fit: BoxFit.cover,
-              // scale: size.height * 0.2,
-            ),
-          ),
-        ),
-      );
-    else
-      return Center(
-        child: Container(
-          width: size.width * 0.5,
-          height: size.width * 0.5,
-          child: ClipOval(
-            child: Image.network(
-              _getNetworkImage(),
-              fit: BoxFit.cover,
-              scale: 0.1,
-              height: size.width * 0.01,
-              width: size.width * 0.01,
-              // scale: size.height * 0.2,
-            ),
-          ),
-        ),
-      );
-  }
-
   _insertArgument() {
     var arguments = _getArguments() as List;
 
@@ -100,10 +54,10 @@ class _PetPhotoState extends State<PetPhoto> {
         if (arguments.length == 6)
           arguments[3] = {'value': arguments[3]['value']};
       } else {
-        arguments[3] = {'value': this._imgFile};
+        arguments[3] = {'value': this.imageController.image};
       }
     } else
-      arguments.add({'value': _imgFile});
+      arguments.add({'value': this.imageController.image});
 
     return arguments;
   }
@@ -224,49 +178,10 @@ class _PetPhotoState extends State<PetPhoto> {
                 child: Stack(
                   children: [
                     Align(
-                      child: Card(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(150),
-                        ),
-                        child: Container(
-                            child: Stack(
-                              children: [
-                                _decideView(size),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      await _openGallery();
-                                    },
-                                    child: Card(
-                                      color: appColors.cardColor(),
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(150),
-                                      ),
-                                      child: Container(
-                                          child: Icon(Icons.photo_camera,
-                                              size: (size.width * 0.15) * 0.5,
-                                              color:
-                                                  appColors.cameraIconColor()),
-                                          width: size.width * 0.15,
-                                          height: size.width * 0.15,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle)),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            width: size.width * 0.5,
-                            height: size.width * 0.5,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            )),
-                      ),
-                    )
+                        child: PhotoCard(
+                      initialImage: _getNetworkImage(),
+                      imageController: imageController,
+                    ))
                   ],
                 ),
               ),
