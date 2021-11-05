@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:project/models/user.dart';
 import 'package:project/utils/custom_dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,8 +7,10 @@ class LoginRepository {
   Future<Map> login(User user) async {
     var dio = CustomDio().instance;
 
-    var response = await dio.post('/users/authenticate',
-        data: {'email': user.getEmail(), 'password': user.getPassword()});
+    var response = await dio.post('/users/authenticate', data: {
+      'email': user.getEmail(),
+      'password': user.getPassword(),
+    });
 
     if (response.statusCode == 200) {
       var prefs = await SharedPreferences.getInstance();

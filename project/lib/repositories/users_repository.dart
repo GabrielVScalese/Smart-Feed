@@ -16,9 +16,8 @@ class UsersRepository {
     return response.statusCode;
   }
 
-  Future<int> update(User user) async {
-    var response =
-        await this._dio.put('/users/${user.getId()}', data: User.toMap(user));
+  Future<int> update(int id, User user) async {
+    var response = await this._dio.put('/users/${id}', data: User.toMap(user));
 
     // Token is invalid
     if (response.statusCode == 401) {

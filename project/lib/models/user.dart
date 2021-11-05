@@ -5,8 +5,9 @@ class User {
   String _name;
   String _email;
   String _password;
+  String _imgUrl;
 
-  User(this._name, this._email, [this._password = '']);
+  User(this._name, this._email, [this._imgUrl = '', this._password = '']);
 
   User.fromAuth(this._id, this._name, this._email);
 
@@ -33,15 +34,28 @@ class User {
     return this._password;
   }
 
-  static User fromMap(Map<String, dynamic> map) {
-    User(map['id'], map['name'], map['email']);
+  String getImageUrl() {
+    return this._imgUrl;
   }
 
-  static Map<String, dynamic> toMap(User user) => {
-        "name": user.getName(),
-        "email": user.getEmail(),
-        "password": user.getPassword()
-      };
+  static User fromMap(Map<String, dynamic> map) {
+    return User(map['name'], map['email'], map['imgUrl']);
+  }
+
+  static Map<String, dynamic> toMap(User user) {
+    var map = {
+      "name": user.getName(),
+      "email": user.getEmail(),
+      "imgUrl": user.getImageUrl(),
+      "password": user.getPassword(),
+    };
+
+    if (map['password'] == '') {
+      map.remove("password");
+    }
+
+    return map;
+  }
 
   String toJson(User user) => jsonEncode(toMap(user));
 }

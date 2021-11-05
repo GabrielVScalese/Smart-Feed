@@ -1,17 +1,23 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/circle_image.dart';
+import 'package:project/components/dialog_builder.dart';
+import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/components/photo_card.dart';
 import 'package:project/components/shimmer_widget.dart';
 import 'package:project/controllers/image_controller.dart';
+import 'package:project/models/user.dart';
 import 'package:project/pages/account/login_page.dart';
 import 'package:project/pages/configurations/change_email_page.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
+import 'package:project/repositories/users_repository.dart';
 import 'package:project/utils/app_colors.dart';
+import 'package:project/utils/image_uploader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'change_password_page.dart';
 
@@ -22,26 +28,32 @@ class UserPage extends StatefulWidget {
 
 var appColors;
 
-var imageController = new ImageController();
-
 class _UserPageState extends State<UserPage> {
   var _isLoading = true;
   var _user;
+
+  var imageController = new ImageController();
 
   _loadData() async {
     try {
       var instance = await SharedPreferences.getInstance();
       _user = await jsonDecode(instance.get('user'));
 
+      await _setImgController();
       setState(() {
         _isLoading = false;
       });
     } catch (err) {}
   }
 
-  _setImgController() {
-    imageController
-        .changeImage('https://engineering.usask.ca/images/no_avatar.jpg');
+  _setImgController() async {
+    final instance = await SharedPreferences.getInstance();
+    var user = jsonDecode(instance.get('user'));
+    if (user['image'] == null)
+      imageController
+          .changeImage('https://engineering.usask.ca/images/no_avatar.jpg');
+    else
+      imageController.changeImage(user['image']);
   }
 
   loadTheme() async {
@@ -80,11 +92,6 @@ class _UserPageState extends State<UserPage> {
 
     return Column(
       children: [
-        // CircleImage(
-        //   scale: size.height * 0.2,
-        //   srcImage:
-        //       'https://lh3.google.com/u/0/ogw/ADea4I4W4LOMQSuR-ScGQ5ir_-xWRMF4vs7aliXbOQ6q=s83-c-mo',
-        // ),
         PhotoCard(imageController: imageController, scale: size.width * 0.4),
         SizedBox(
           height: size.height * 0.03,
@@ -111,7 +118,6 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    _setImgController();
     loadTheme().then((data) {});
     _loadData().then((data) {});
   }
@@ -135,20 +141,56 @@ class _UserPageState extends State<UserPage> {
                   height: size.height * 0.06,
                 ),
                 GestureDetector(
-                    onTap: () {
+                  onTap: () async {
+                    print(imageController.image);
+                    try {
+                      DialogBuilder(context, appColors).showLoadingIndicator();
+
+                      var imgUrl;
+
+                      if (imageController.image is String == false)
+                        imgUrl = await ImageUploader.uploadImage(
+                            imageController.image);
+
+                      var instance = await SharedPreferences.getInstance();
+                      Map user = jsonDecode(instance.getString('user'));
+                      user['image'] = imgUrl;
+
+                      instance.setString('user', jsonEncode(user));
+
+                      var usersRepository = UsersRepository();
+                      await usersRepository.update(
+                          user['id'], User.fromMap(user));
+
+                      DialogBuilder(context, appColors).hideOpenDialog();
+
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => ConfigurationPage()));
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(left: size.width * 0.05),
-                        child: CircleCard(
-                            size: size,
-                            color: appColors.cardColor(),
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: appColors.iconButtonColor(),
-                              size: size.height * 0.03,
-                            )))),
+                    } catch (e) {
+                      print(e.toString());
+                      DialogHelper.errorModal(
+                        context,
+                        "Erro na troca de imagem",
+                        "Não foi possível mudar sua foto de perfil!",
+                        Icons.error,
+                        Colors.redAccent,
+                        Colors.redAccent,
+                      );
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: size.width * 0.05),
+                    child: CircleCard(
+                      size: size,
+                      color: appColors.cardColor(),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: appColors.iconButtonColor(),
+                        size: size.height * 0.03,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: size.height * 0.04,
                 ),

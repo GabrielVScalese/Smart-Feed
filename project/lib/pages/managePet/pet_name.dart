@@ -15,6 +15,7 @@ import 'package:project/pages/managePet/pet_photo.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:project/utils/custom_dio.dart';
+import 'package:project/utils/image_uploader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PetName extends StatefulWidget {
@@ -61,20 +62,6 @@ class _PetNameState extends State<PetName> {
       arguments.add({'value': _nameController.text});
 
     return arguments;
-  }
-
-  _uploadImage(image64) async {
-    var clientID = '2f7307ddc860abf';
-
-    var dio = Dio();
-    var response = await dio.post('https://api.imgur.com/3/image',
-        data: {'image': image64},
-        options: Options(headers: {
-          'Authorization': 'Client-ID $clientID',
-          'Content-Type': "application/json"
-        }));
-
-    return response.data['data']['link'];
   }
 
   @override
@@ -223,21 +210,16 @@ class _PetNameState extends State<PetName> {
                           var instance = await SharedPreferences.getInstance();
                           var user = jsonDecode(instance.getString('user'));
 
-                          var image64 = null;
-                          if (arguments[3]['value'] != null &&
-                              arguments[3]['value'] is File)
-                            image64 = base64Encode(
-                                await arguments[3]['value'].readAsBytes());
-
                           var imageLink = null;
-                          if (image64 != null)
-                            imageLink = await _uploadImage(image64);
-                          else if (arguments.length == 6)
-                            imageLink = arguments[3]['value'];
-                          else if (arguments[0]['value'] == 'Cão')
-                            imageLink = 'https://i.imgur.com/yh365gr.png';
-                          else
-                            imageLink = 'https://i.imgur.com/WYShCBk.png';
+                          if (arguments[3]['value'] == null) {
+                            if (arguments[0]['value'] == "Cão")
+                              imageLink = 'https://i.imgur.com/yh365gr.png';
+                            else if (arguments[0]['value'] == "Gato")
+                              imageLink = 'https://i.imgur.com/WYShCBk.png';
+                          } else {
+                            imageLink = await ImageUploader.uploadImage(
+                                arguments[3]['value']);
+                          }
 
                           var pet = Pet.fromRegister(
                               user['id'],
