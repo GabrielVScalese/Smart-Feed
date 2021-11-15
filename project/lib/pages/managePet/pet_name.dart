@@ -217,8 +217,11 @@ class _PetNameState extends State<PetName> {
                             else if (arguments[0]['value'] == "Gato")
                               imageLink = 'https://i.imgur.com/WYShCBk.png';
                           } else {
-                            imageLink = await ImageUploader.uploadImage(
-                                arguments[3]['value']);
+                            if (arguments[3]['value'] is File)
+                              imageLink = await ImageUploader.uploadImage(
+                                  arguments[3]['value']);
+                            else
+                              imageLink = arguments[3]['value'];
                           }
 
                           var pet = Pet.fromRegister(

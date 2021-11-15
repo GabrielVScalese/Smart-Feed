@@ -4,12 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project/components/circle_card.dart';
+import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/pet_card.dart';
 import 'package:project/components/shimmer_widget.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/pages/configurations/configuration_page.dart';
 import 'package:project/pages/information_page.dart';
-import 'package:project/repositories/feeds_repository.dart';
+import 'package:project/repositories/consumptions_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,6 @@ class HomePage extends StatefulWidget {
 // IMPORTANTE: CORRIGIR ERRO HOME PAGE -> INFORMATION PAGE (DEPOIS DE INPUT)
 class _HomePageState extends State<HomePage> {
   var _petList = [];
-  var _feedList = [];
   var _dynamicPetList = [];
 
   var namePetController = new TextEditingController();
@@ -35,10 +35,6 @@ class _HomePageState extends State<HomePage> {
     var prefs = await SharedPreferences.getInstance();
     var user = jsonDecode(prefs.getString('user'));
 
-    var feedsRepository = new FeedsRepository();
-
-    _feedList = await feedsRepository.findByOwner(user['id']);
-
     var petsRepository = PetsRepository();
     _petList = await petsRepository.findByOwner(user['id']);
     _dynamicPetList = _petList;
@@ -46,7 +42,6 @@ class _HomePageState extends State<HomePage> {
     return _petList;
   }
 
- 
   loadTheme() async {
     appColors = new AppColors();
     await appColors.initialize();
@@ -114,12 +109,25 @@ class _HomePageState extends State<HomePage> {
                 ? AnimatedCardDirection.left
                 : AnimatedCardDirection.right,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
+              onTap: () async {
+                DialogBuilder(context, appColors).showLoadingIndicator();
+
+                var consumptionsRepository = new ConsumptionsRepository();
+                var consumptions = await consumptionsRepository
+                    .findConsumptionByPet(_dynamicPetList[index].getId());
+                var statistics = await consumptionsRepository
+                    .findStatisticsByPet(_dynamicPetList[index].getId());
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
                     builder: (context) => InformationPage(
-                          pet: _dynamicPetList[index],
-                          feed: _feedList[index],
-                        )));
+                      pet: _dynamicPetList[index],
+                      feed: _dynamicPetList[index].getFeed(),
+                      consumptions: consumptions,
+                      statistics: statistics,
+                    ),
+                  ),
+                );
               },
               child: PetCard(
                 size: size,
@@ -135,9 +143,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   buildPetCardShimmer(size) => Container(
-    margin: EdgeInsets.only(
-          left: size.width * 0.03,
-          right: size.width * 0.03, top: size.height * 0.03),
+        margin: EdgeInsets.only(
+            left: size.width * 0.03,
+            right: size.width * 0.03,
+            top: size.height * 0.03),
         child: Card(
             elevation: 5,
             shape: RoundedRectangleBorder(

@@ -9,8 +9,10 @@ import 'package:project/components/dialog_builder.dart';
 import 'package:project/components/dialog_helper.dart';
 import 'package:project/components/rectangle_card.dart';
 import 'package:project/controllers/feed_controller.dart';
+import 'package:project/models/consumption.dart';
 import 'package:project/models/feed.dart';
 import 'package:project/models/pet.dart';
+import 'package:project/models/statistics.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
@@ -21,8 +23,10 @@ import 'managePet/pet_type.dart';
 class InformationPage extends StatefulWidget {
   var pet;
   Feed feed;
+  List<Consumption> consumptions;
+  Statistics statistics;
 
-  InformationPage({this.pet, this.feed});
+  InformationPage({this.pet, this.feed, this.consumptions, this.statistics});
 
   @override
   _InformationPageState createState() => _InformationPageState();
@@ -44,6 +48,9 @@ class _InformationPageState extends State<InformationPage> {
 
   @override
   void initState() {
+    print(this.widget.consumptions);
+    print(this.widget.statistics);
+
     loadTheme().then((data) {});
     feedController = FeedController(this.widget.feed.getMode(),
         this.widget.feed.getQuantity(), this.widget.feed.getSchedules());
@@ -71,6 +78,10 @@ class _InformationPageState extends State<InformationPage> {
     });
   }
 
+  String getStringDiffDays() {
+    return this.widget.statistics.getDiffDays() == 1 ? 'dia' : 'dias';
+  }
+
   // Fazer tamanho máximo e tamanho mínimo; colocar arrow back card
   @override
   Widget build(BuildContext context) {
@@ -84,15 +95,16 @@ class _InformationPageState extends State<InformationPage> {
         fontWeight: FontWeight.w500);
 
     return WillPopScope(
+      // ignore: missing_return
       onWillPop: () async {
         var feedsRepository = new FeedsRepository();
-        var feed = new Feed(this.widget.pet.getId(), feedController.getMode(),
+        var feed = new Feed(feedController.getMode(),
             feedController.getQuantity(), feedController.getSchedules());
 
         DialogBuilder(context, appColors).showLoadingIndicator();
 
         var statusCode =
-            await feedsRepository.updateByPetId(feed.getPetId(), feed);
+            await feedsRepository.updateByPetId(this.widget.pet.getId(), feed);
 
         print(statusCode);
         if (statusCode == 200) {
@@ -384,20 +396,22 @@ class _InformationPageState extends State<InformationPage> {
                         InformationCard(
                           size: size,
                           title: 'Média',
-                          content: 'Após 15 dias',
-                          value: 206,
+                          content:
+                              'Após ${this.widget.statistics.getDiffDays()} ' +
+                                  getStringDiffDays(),
+                          value: this.widget.statistics.getConsumptionAverage(),
                         ),
                         InformationCard(
                           size: size,
                           title: 'Máximo',
-                          content: '24/02/201',
-                          value: 300,
+                          content: this.widget.statistics.getGreaterDate(),
+                          value: this.widget.statistics.getGreaterConsumption(),
                         ),
                         InformationCard(
                           size: size,
                           title: 'Mínimo',
-                          content: '14/06/2021',
-                          value: 150,
+                          content: this.widget.statistics.getSmallerDate(),
+                          value: this.widget.statistics.getSmallerConsumption(),
                         ),
                       ],
                     ),
@@ -599,7 +613,7 @@ class InformationCard extends StatelessWidget {
               SizedBox(
                 width: size.width * 0.02,
               ),
-              Text('kcal',
+              Text('g',
                   style: GoogleFonts.inter(
                       fontSize: size.width * 0.037,
                       color: appColors.textColor())),

@@ -1,3 +1,5 @@
+import 'package:project/models/feed.dart';
+
 class Pet {
   int _id;
   int _userId;
@@ -7,9 +9,10 @@ class Pet {
   String _size;
   String _device;
   String _image;
+  Feed _feed;
 
   Pet(this._id, this._userId, this._name, this._animal, this._ration,
-      this._size, this._device, this._image);
+      this._size, this._device, this._image, this._feed);
 
   Pet.fromRegister(this._userId, this._name, this._animal, this._ration,
       this._size, this._device, this._image);
@@ -46,9 +49,21 @@ class Pet {
     return this._image;
   }
 
+  Feed getFeed() {
+    return this._feed;
+  }
+
   static Pet fromMap(Map<String, dynamic> map) {
-    return Pet(map['id'], map['user_id'], map['name'], map['animal'],
-        map['ration'], map['size'], map['device'], map['image']);
+    return Pet(
+        map['id'],
+        map['user_id'],
+        map['name'],
+        map['animal'],
+        map['ration'],
+        map['size'],
+        map['device'],
+        map['image'],
+        Feed.fromMap(map['feed']));
   }
 
   static Map<String, dynamic> toMap(Pet pet) {

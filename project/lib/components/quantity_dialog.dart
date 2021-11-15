@@ -138,7 +138,7 @@ class _QuantityDialogState extends State<QuantityDialog> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        if (this.widget.feedController.getQuantity() != 50)
+                        if (this.widget.feedController.getQuantity() > 50)
                           this.widget.feedController.changeQuantity(
                               this.widget.feedController.getQuantity() - 50);
 
@@ -166,6 +166,8 @@ class _QuantityDialogState extends State<QuantityDialog> {
             Align(
               child: GestureDetector(
                 onTap: () {
+                  if (this.widget.feedController.getQuantity() < 50)
+                    this.widget.feedController.changeQuantity(50);
                   Navigator.pop(context);
                 },
                 child: RoundedButton(
