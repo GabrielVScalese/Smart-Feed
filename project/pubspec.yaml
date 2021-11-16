@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  pie_chart: ^5.1.0
   intl: ^0.17.0
   udp: ^3.0.3
   flutter_modular: ^3.3.1

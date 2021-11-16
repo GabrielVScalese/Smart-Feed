@@ -9,6 +9,7 @@ class RefreshTokenRepository {
     var refreshToken = prefs.getString('refreshToken');
 
     var response = await dio.post('/refreshToken', data: {'id': refreshToken});
+    print(response.data);
 
     await prefs.setString('token', response.data['token']);
 

@@ -13,6 +13,7 @@ import 'package:project/models/consumption.dart';
 import 'package:project/models/feed.dart';
 import 'package:project/models/pet.dart';
 import 'package:project/models/statistics.dart';
+import 'package:project/pages/charts_page.dart';
 import 'package:project/repositories/feeds_repository.dart';
 import 'package:project/repositories/pets_repository.dart';
 import 'package:project/utils/app_colors.dart';
@@ -235,7 +236,7 @@ class _InformationPageState extends State<InformationPage> {
                         secondaryText: 'Editar',
                         icon: Icons.edit,
                         page: 'edit',
-                        pet: this.widget.pet),
+                        body: this.widget.pet),
                   ),
                 ),
                 SizedBox(
@@ -381,6 +382,7 @@ class _InformationPageState extends State<InformationPage> {
                     labelStyle: labelStyle,
                     principalText: 'Consumo',
                     secondaryText: 'Ver gráfico',
+                    body: this.widget.consumptions,
                   ),
                 ),
                 SizedBox(
@@ -488,7 +490,7 @@ class LabelRow extends StatelessWidget {
       @required this.principalText,
       this.icon,
       @required this.page,
-      this.pet,
+      this.body,
       @required this.secondaryText})
       : super(key: key);
 
@@ -497,7 +499,7 @@ class LabelRow extends StatelessWidget {
   final String principalText;
   final String secondaryText;
   final IconData icon;
-  final Pet pet;
+  final dynamic body;
   final String page;
 
   @override
@@ -518,18 +520,21 @@ class LabelRow extends StatelessWidget {
                   if (this.page == 'edit') {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => PetType(arguments: [
-                              {'value': this.pet.getAnimal()},
-                              {'value': this.pet.getSize()},
-                              {'value': this.pet.getRation()},
-                              {'value': this.pet.getImage()},
-                              {'value': this.pet.getName()},
+                              {'value': this.body.getAnimal()},
+                              {'value': this.body.getSize()},
+                              {'value': this.body.getRation()},
+                              {'value': this.body.getImage()},
+                              {'value': this.body.getName()},
                               {
                                 'value': RequestOptions(
                                     path:
-                                        'https://smart-feed-api.herokuapp.com/pets/${this.pet.getId()}',
+                                        'https://smart-feed-api.herokuapp.com/pets/${this.body.getId()}',
                                     method: 'PUT')
                               }
                             ])));
+                  } else if (this.page == 'chart') {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ChartsPage(consumptions: body)));
                   }
                 },
                 child: Text(
