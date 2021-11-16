@@ -6,6 +6,7 @@ import 'package:project/components/charts/simple_bar_chart.dart';
 import 'package:project/components/circle_card.dart';
 import 'package:project/components/page_title.dart';
 import 'package:project/models/consumption.dart';
+import 'package:project/pages/information_page.dart';
 import 'package:project/utils/app_colors.dart';
 import 'package:pie_chart/pie_chart.dart' as pc;
 
@@ -20,6 +21,7 @@ class ChartsPage extends StatefulWidget {
 class _ChartsPageState extends State<ChartsPage> {
   var appColors;
 
+  Map<String, double> periodConsumption = {};
   loadTheme() async {
     appColors = new AppColors();
     await appColors.initialize();
@@ -29,13 +31,15 @@ class _ChartsPageState extends State<ChartsPage> {
 
   @override
   void initState() {
+    handlePeriodConsumptions();
+    print(periodConsumption);
     super.initState();
     loadTheme().then((data) {});
   }
 
-  List<Consumption> handleWeekConsumptions() {
+  List<Consumption> handleDaysAgo(int daysAgo) {
     var now = DateTime.now();
-    var min = now.subtract(Duration(days: 7));
+    var min = now.subtract(Duration(days: daysAgo));
     List<Consumption> weekConsumption = [];
 
     for (var consumption in this.widget.consumptions)
@@ -45,12 +49,11 @@ class _ChartsPageState extends State<ChartsPage> {
     return weekConsumption;
   }
 
-  Map<String, double> handlePeriodConsumptions() {
+  void handlePeriodConsumptions() {
     // Madrugada -  0:00 - 4:59
     // Manhã -  5:00 - 11:59
     // Tarde -  12:00 - 18:59
     // Noite -  19:00 - 23:59
-    Map periodConsumption = {};
     double dawnCount = 0;
     double morningCount = 0;
     double afternoonCount = 0;
@@ -75,7 +78,23 @@ class _ChartsPageState extends State<ChartsPage> {
       'Tarde': afternoonCount,
       'Noite': nightCount
     };
-    return periodConsumption;
+  }
+
+  handleConsumptionTotal(int daysAgo) {
+    var total = 0;
+    for (var consumption in handleDaysAgo(daysAgo))
+      total += consumption.getQuantity();
+
+    return total;
+  }
+
+  handleVariation() {
+    var twoWeeksAgo = handleConsumptionTotal(14);
+    var actualWeek = handleConsumptionTotal(7);
+
+    twoWeeksAgo -= actualWeek;
+
+    return (((actualWeek / twoWeeksAgo) * 100) - 100).round();
   }
 
   @override
@@ -141,13 +160,18 @@ class _ChartsPageState extends State<ChartsPage> {
                       Container(
                         margin: EdgeInsets.only(left: size.width * 0.06),
                         child: Text(
-                          'Dias de consumo',
+                          'Últimos 7 dias',
                           style: labelStyle,
                         ),
                       ),
                       SizedBox(height: size.width * 0.05),
                       Center(
                         child: Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: appColors.cardColor(), width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
                           color: appColors.cardColor(),
                           elevation: 10,
                           child: Container(
@@ -155,9 +179,32 @@ class _ChartsPageState extends State<ChartsPage> {
                             height: size.width * 0.6,
                             width: size.width * 0.9,
                             child: SimpleBarChart(
-                                animate: true,
-                                consumptions: handleWeekConsumptions()),
+                              animate: true,
+                              consumptions: handleDaysAgo(7),
+                            ),
                           ),
+                        ),
+                      ),
+                      SizedBox(height: size.width * 0.05),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ConsumptionCard(
+                              size: size,
+                              title: 'Consumo',
+                              content: "Nos últimos 7 dias",
+                              value: handleConsumptionTotal(7),
+                            ),
+                            ConsumptionCard(
+                              size: size,
+                              title: 'Variação',
+                              content: "2 últimas semanas",
+                              value: handleVariation(),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: size.width * 0.05),
@@ -169,79 +216,151 @@ class _ChartsPageState extends State<ChartsPage> {
                         ),
                       ),
                       SizedBox(height: size.width * 0.05),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Card(
-                              color: appColors.cardColor(),
-                              elevation: 10,
-                              child: Container(
-                                  height: size.width * 0.54,
-                                  width: size.width * 0.54,
-                                  child: pc.PieChart(
-                                    dataMap: handlePeriodConsumptions(),
-                                    animationDuration:
-                                        Duration(milliseconds: 800),
-                                    chartLegendSpacing: 32,
-                                    chartRadius:
-                                        MediaQuery.of(context).size.width / 3.2,
-                                    colorList: [
-                                      Colors.blue,
-                                      Colors.green,
-                                      Colors.yellow,
-                                      Colors.red
-                                    ],
-                                    initialAngleInDegree: 0,
-                                    chartType: pc.ChartType.ring,
-                                    ringStrokeWidth: 32,
-                                    centerText: "HYBRID",
-                                    legendOptions: pc.LegendOptions(
-                                      showLegendsInRow: false,
-                                      legendPosition: pc.LegendPosition.right,
-                                      showLegends: true,
-                                      legendShape: BoxShape.circle,
-                                    ),
-                                    chartValuesOptions: pc.ChartValuesOptions(
-                                      showChartValueBackground: true,
-                                      showChartValues: true,
-                                      showChartValuesInPercentage: false,
-                                      showChartValuesOutside: false,
-                                      decimalPlaces: 1,
-                                    ),
-                                    // gradientList: ---To add gradient colors---
-                                    // emptyColorGradient: ---Empty Color gradient---
-                                  )),
+                      Center(
+                        child: Container(
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  color: appColors.cardColor(), width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
                             ),
-                            Column(
-                              children: [
-                                Card(
-                                  color: appColors.cardColor(),
-                                  elevation: 10,
-                                  child: Container(
-                                    height: size.width * 0.26,
-                                    width: size.width * 0.26,
-                                  ),
+                            color: appColors.cardColor(),
+                            elevation: 10,
+                            child: Container(
+                              height: size.width * 0.5,
+                              width: size.width * 0.9,
+                              child: pc.PieChart(
+                                dataMap: periodConsumption,
+                                animationDuration: Duration(seconds: 1),
+                                chartLegendSpacing: size.width * 0.07,
+                                chartRadius:
+                                    MediaQuery.of(context).size.width / 2.8,
+                                colorList: [
+                                  Colors.blue,
+                                  Colors.green,
+                                  Colors.yellow,
+                                  Colors.red
+                                ],
+                                initialAngleInDegree: 0,
+                                chartType: pc.ChartType.disc,
+                                ringStrokeWidth: 32,
+                                legendOptions: pc.LegendOptions(
+                                  legendTextStyle:
+                                      appColors.pieChartTextStyle(),
+                                  showLegendsInRow: false,
+                                  legendPosition: pc.LegendPosition.right,
+                                  showLegends: true,
+                                  legendShape: BoxShape.circle,
                                 ),
-                                Card(
-                                  color: appColors.cardColor(),
-                                  elevation: 10,
-                                  child: Container(
-                                    height: size.width * 0.26,
-                                    width: size.width * 0.26,
-                                  ),
+                                chartValuesOptions: pc.ChartValuesOptions(
+                                  showChartValueBackground: true,
+                                  showChartValues: true,
+                                  showChartValuesInPercentage: true,
+                                  showChartValuesOutside: false,
+                                  decimalPlaces: 1,
                                 ),
-                              ],
-                            )
-                          ],
+                              ),
+                            ),
+                          ),
                         ),
+                      ),
+                      SizedBox(
+                        height: size.width * 0.05,
                       ),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConsumptionCard extends StatelessWidget {
+  const ConsumptionCard(
+      {Key key,
+      @required this.size,
+      @required this.title,
+      @required this.content,
+      @required this.value})
+      : super(key: key);
+
+  final Size size;
+  final String title;
+  final String content;
+  final dynamic value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: appColors.cardColor(), width: 1),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Container(
+        height: size.height * 0.16,
+        width: size.height * 0.215,
+        decoration: BoxDecoration(
+          color: appColors.cardColor(),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        padding: EdgeInsets.only(
+          left: size.width * 0.05,
+          top: size.width * 0.04,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.inter(
+                fontSize: size.width * 0.05,
+                fontWeight: FontWeight.bold,
+                color: appColors.textColor(),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.015,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  value.toString(),
+                  style: GoogleFonts.inter(
+                    fontSize: size.width * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: appColors.textColor(),
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                Text(
+                  title == "Variação" ? '%' : 'g',
+                  style: GoogleFonts.inter(
+                    fontSize: size.width * 0.05,
+                    color: appColors.textColor(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: size.width * 0.02,
+            ),
+            Text(
+              content,
+              style: GoogleFonts.inter(
+                fontSize: size.width * 0.035,
+                color: appColors.descriptionTextColor(),
+              ),
+            ),
+          ],
         ),
       ),
     );

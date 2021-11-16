@@ -39,6 +39,10 @@ class ConsumptionsRepository {
       data = newResponse.data;
     }
 
+    if (response.statusCode != 200) {
+      return null;
+    }
+
     return Statistics.fromMap(data);
   }
 }

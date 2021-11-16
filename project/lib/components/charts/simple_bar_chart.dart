@@ -4,18 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/models/consumption.dart';
 
-class SimpleBarChart extends StatelessWidget {
+class SimpleBarChart extends StatefulWidget {
   final bool animate;
   final List<Consumption> consumptions;
 
   SimpleBarChart({this.animate, this.consumptions});
 
   @override
+  _SimpleBarChartState createState() => _SimpleBarChartState();
+}
+
+class _SimpleBarChartState extends State<SimpleBarChart> {
+  @override
   Widget build(BuildContext context) {
     return new charts.BarChart(
       _createSampleData(),
-      animate: animate,
-      barRendererDecorator: new charts.BarLabelDecorator<String>(),
+      animate: widget.animate,
+      barRendererDecorator: new charts.BarLabelDecorator<String>(
+          labelPosition: charts.BarLabelPosition.outside),
       domainAxis: new charts.OrdinalAxisSpec(),
     );
   }
@@ -28,7 +34,7 @@ class SimpleBarChart extends StatelessWidget {
           domainFn: (Consumption consumption, _) =>
               convertDate(consumption.getDate().toString()),
           measureFn: (Consumption consumption, _) => consumption.getQuantity(),
-          data: consumptions,
+          data: widget.consumptions,
           labelAccessorFn: (Consumption consumption, _) =>
               '${consumption.getQuantity()}g'),
     ];

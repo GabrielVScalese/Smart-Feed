@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage> {
             right: size.width * 0.03,
             top: size.height * 0.03),
         child: Card(
+            color: appColors.cardColor(),
             elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

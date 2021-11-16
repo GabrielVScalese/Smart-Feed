@@ -49,9 +49,6 @@ class _InformationPageState extends State<InformationPage> {
 
   @override
   void initState() {
-    print(this.widget.consumptions);
-    print(this.widget.statistics);
-
     loadTheme().then((data) {});
     feedController = FeedController(this.widget.feed.getMode(),
         this.widget.feed.getQuantity(), this.widget.feed.getSchedules());
@@ -80,6 +77,7 @@ class _InformationPageState extends State<InformationPage> {
   }
 
   String getStringDiffDays() {
+    if (this.widget.statistics == null) return "dias";
     return this.widget.statistics.getDiffDays() == 1 ? 'dia' : 'dias';
   }
 
@@ -398,22 +396,33 @@ class _InformationPageState extends State<InformationPage> {
                         InformationCard(
                           size: size,
                           title: 'Média',
-                          content:
-                              'Após ${this.widget.statistics.getDiffDays()} ' +
+                          content: this.widget.statistics == null
+                              ? "Sem consumo"
+                              : 'Após ${this.widget.statistics.getDiffDays()} ' +
                                   getStringDiffDays(),
-                          value: this.widget.statistics.getConsumptionAverage(),
+                          value: this.widget.statistics == null
+                              ? 0
+                              : this.widget.statistics.getConsumptionAverage(),
                         ),
                         InformationCard(
                           size: size,
                           title: 'Máximo',
-                          content: this.widget.statistics.getGreaterDate(),
-                          value: this.widget.statistics.getGreaterConsumption(),
+                          content: this.widget.statistics == null
+                              ? "Sem consumo"
+                              : this.widget.statistics.getGreaterDate(),
+                          value: this.widget.statistics == null
+                              ? 0
+                              : this.widget.statistics.getGreaterConsumption(),
                         ),
                         InformationCard(
                           size: size,
                           title: 'Mínimo',
-                          content: this.widget.statistics.getSmallerDate(),
-                          value: this.widget.statistics.getSmallerConsumption(),
+                          content: this.widget.statistics == null
+                              ? "Sem consumo"
+                              : this.widget.statistics.getSmallerDate(),
+                          value: this.widget.statistics == null
+                              ? 0
+                              : this.widget.statistics.getSmallerConsumption(),
                         ),
                       ],
                     ),

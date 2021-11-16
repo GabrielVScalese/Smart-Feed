@@ -126,4 +126,8 @@ class AppColors {
   Color modalCardColor() {
     return this.darkTheme ? Colors.grey[500] : Colors.grey[300];
   }
+
+  TextStyle pieChartTextStyle() {
+    return TextStyle(color: textColor());
+  }
 }
