@@ -214,8 +214,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (passwordController.text ==
                             confirmPasswordController.text) {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          User user = User(nameController.text,
-                              emailController.text, passwordController.text);
+                          User user = User(
+                              nameController.text, emailController.text,
+                              password: passwordController.text);
 
                           DialogBuilder(context, appColors)
                               .showLoadingIndicator();
@@ -235,9 +236,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               Color.fromRGBO(0, 153, 255, 1),
                             );
                             await Future.delayed(Duration(seconds: 3));
-                            Navigator.of(context).pushReplacement(
+                            try {
+                              Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            } catch (err) {}
                           }
 
                           if (statusCode == 400) {

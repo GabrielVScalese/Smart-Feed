@@ -94,6 +94,8 @@ class _ChartsPageState extends State<ChartsPage> {
 
     twoWeeksAgo -= actualWeek;
 
+    if (twoWeeksAgo == 0) return 0;
+
     return (((actualWeek / twoWeeksAgo) * 100) - 100).round();
   }
 

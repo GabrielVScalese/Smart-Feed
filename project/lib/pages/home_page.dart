@@ -32,14 +32,16 @@ class _HomePageState extends State<HomePage> {
   var appColors;
 
   getPetData(size) async {
-    var prefs = await SharedPreferences.getInstance();
-    var user = jsonDecode(prefs.getString('user'));
+    try {
+      var prefs = await SharedPreferences.getInstance();
+      var user = jsonDecode(prefs.getString('user'));
 
-    var petsRepository = PetsRepository();
-    _petList = await petsRepository.findByOwner(user['id']);
-    _dynamicPetList = _petList;
+      var petsRepository = PetsRepository();
+      _petList = await petsRepository.findByOwner(user['id']);
+      _dynamicPetList = _petList;
 
-    return _petList;
+      return _petList;
+    } catch (err) {}
   }
 
   loadTheme() async {
